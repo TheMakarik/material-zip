@@ -2868,11 +2868,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\moroz\\RiderProjects\\MaterialZip\\MaterialZip.UnitTests\\MaterialZip.UnitTests.csproj",
+      "projectUniqueName": "C:\\Users\\moroz\\RiderProjects\\material-zip\\MaterialZip.UnitTests\\MaterialZip.UnitTests.csproj",
       "projectName": "MaterialZip.UnitTests",
-      "projectPath": "C:\\Users\\moroz\\RiderProjects\\MaterialZip\\MaterialZip.UnitTests\\MaterialZip.UnitTests.csproj",
+      "projectPath": "C:\\Users\\moroz\\RiderProjects\\material-zip\\MaterialZip.UnitTests\\MaterialZip.UnitTests.csproj",
       "packagesPath": "C:\\Users\\moroz\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\moroz\\RiderProjects\\MaterialZip\\MaterialZip.UnitTests\\obj\\",
+      "outputPath": "C:\\Users\\moroz\\RiderProjects\\material-zip\\MaterialZip.UnitTests\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\moroz\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -2887,8 +2887,8 @@
         "net8.0-windows7.0": {
           "targetAlias": "net8.0-windows",
           "projectReferences": {
-            "C:\\Users\\moroz\\RiderProjects\\MaterialZip\\MaterialZip\\MaterialZip.csproj": {
-              "projectPath": "C:\\Users\\moroz\\RiderProjects\\MaterialZip\\MaterialZip\\MaterialZip.csproj"
+            "C:\\Users\\moroz\\RiderProjects\\material-zip\\MaterialZip\\MaterialZip.csproj": {
+              "projectPath": "C:\\Users\\moroz\\RiderProjects\\material-zip\\MaterialZip\\MaterialZip.csproj"
             }
           }
         }

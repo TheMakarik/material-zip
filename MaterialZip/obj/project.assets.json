@@ -1739,11 +1739,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\moroz\\RiderProjects\\MaterialZip\\MaterialZip\\MaterialZip.csproj",
+      "projectUniqueName": "C:\\Users\\moroz\\RiderProjects\\material-zip\\MaterialZip\\MaterialZip.csproj",
       "projectName": "MaterialZip",
-      "projectPath": "C:\\Users\\moroz\\RiderProjects\\MaterialZip\\MaterialZip\\MaterialZip.csproj",
+      "projectPath": "C:\\Users\\moroz\\RiderProjects\\material-zip\\MaterialZip\\MaterialZip.csproj",
       "packagesPath": "C:\\Users\\moroz\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\moroz\\RiderProjects\\MaterialZip\\MaterialZip\\obj\\",
+      "outputPath": "C:\\Users\\moroz\\RiderProjects\\material-zip\\MaterialZip\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\moroz\\AppData\\Roaming\\NuGet\\NuGet.Config"

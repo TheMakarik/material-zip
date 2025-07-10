@@ -26,8 +26,4 @@
       <ProjectReference Include="..\MaterialZip\MaterialZip.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="ConfigurationServicesTests\" />
-    </ItemGroup>
-
 </Project>

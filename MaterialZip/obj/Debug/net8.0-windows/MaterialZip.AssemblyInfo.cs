@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MaterialZip")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3e39ecbe1ab135cfba754412d0a85392d8c3dbb8")]
 [assembly: System.Reflection.AssemblyProductAttribute("MaterialZip")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MaterialZip")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
