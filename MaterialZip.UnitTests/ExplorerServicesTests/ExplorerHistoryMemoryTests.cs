@@ -18,8 +18,7 @@ public class ExplorerHistoryMemoryTests
       _logger = A.Fake<ILogger>();
       _memory = new ExplorerHistoryMemory(_logger);
    }
-
-   [Test]
+   
    [TestCase(2)]
    [TestCase(5)]
    [TestCase(10)]
@@ -49,8 +48,7 @@ public class ExplorerHistoryMemoryTests
       });
 
    }
-
-   [Test]
+   
    [TestCase(1)]
    [TestCase(3)]
    [TestCase(5)]
@@ -67,8 +65,7 @@ public class ExplorerHistoryMemoryTests
       Assert.That(index, Is.EqualTo(-1 + valuesCount));
       
    }
-
-   [Test]
+   
    [TestCase(3)]
    [TestCase(5)]
    [TestCase(4)]
