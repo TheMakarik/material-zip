@@ -1,6 +1,3 @@
 namespace MaterialZip.Benchmarks.Model.FileEntities;
 
-public class FileEntityRecrod
-{
-    
-}
+public record FileEntityRecord(string Path, bool IsDirectory);

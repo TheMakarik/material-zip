@@ -1,3 +1,8 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using BenchmarkDotNet.Running;
+using MaterialZip.Benchmarks.Benchs;
 
-Console.WriteLine("Hello, World!");
+#if !DEBUG
+//Run specific benchmark
+BenchmarkRunner.Run<BestFileEntityBench>();
+Console.ReadKey();
+#endif
