@@ -1,7 +1,11 @@
+using System.Windows.Data;
+using MaterialZip.Services.ConfigurationServices;
+using MaterialZip.Services.ConfigurationServices.Abstractions;
 using MaterialZip.Services.ExplorerServices;
 using MaterialZip.Services.ExplorerServices.Abstractions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace MaterialZip.DIExtensions;
 
@@ -29,8 +33,13 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection ConfigureByPattern<T>(this IServiceCollection services, IConfigurationManager configuration)
+    public static IServiceCollection AddThemeLoader(this IServiceCollection services)
     {
+        services
+            .AddScoped<IThemeLoader, ThemeLoader>()
+            .AddTransient<IColorConvertor, ColorConvertor>()
+            .AddTransient<IThemeConvertor, ThemeConvertor>()
+            .TryAddScoped<IApplicationConfigurationManager, ApplicationConfigurationManager>();
         return services;
     }
 }

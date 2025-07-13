@@ -6,7 +6,7 @@ using Serilog;
 namespace MaterialZip.Bootstrapping;
 
 /// <summary>
-/// 
+/// Builder of <see cref="Bootstrapper"/> inctance
 /// </summary>
 public class BootstrapperBuilder : IBootstrapperBuilder
 {

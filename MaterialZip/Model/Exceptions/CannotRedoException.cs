@@ -4,4 +4,4 @@ namespace MaterialZip.Model.Exceptions;
 /// Throws when you cannot make redo in your explorer history
 /// </summary>
 /// <param name="message">The message that describes the error</param>
-public class CannotRedoException(string message) : Exception(message);
+public sealed class CannotRedoException(string message) : Exception(message);

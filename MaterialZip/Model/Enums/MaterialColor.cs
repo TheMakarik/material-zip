@@ -85,19 +85,4 @@ public enum MaterialColor
     /// Deep orange color (500 level in Material Design palette)
     /// </summary>
     DeepOrange,
-
-    /// <summary>
-    /// Brown color (500 level in Material Design palette)
-    /// </summary>
-    Brown,
-
-    /// <summary>
-    /// Grey color (500 level in Material Design palette)
-    /// </summary>
-    Grey,
-
-    /// <summary>
-    /// Blue grey color (500 level in Material Design palette)
-    /// </summary>
-    BlueGrey
 }

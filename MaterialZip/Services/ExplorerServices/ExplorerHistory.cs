@@ -7,7 +7,7 @@ using Serilog;
 namespace MaterialZip.Services.ExplorerServices;
 
 
-public class ExplorerHistory(ILogger logger, IExplorerHistoryMemory memory) : IExplorerHistory
+public sealed class ExplorerHistory(ILogger logger, IExplorerHistoryMemory memory) : IExplorerHistory
 {
 
     private const string CannotRedoLogMessage = "Cannot redo because CanRedo is false, current index: {index}, history count: {count}, exception will be thrown";

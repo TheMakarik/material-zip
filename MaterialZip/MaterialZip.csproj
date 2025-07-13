@@ -10,7 +10,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Services\LocalizationServices\" />
+      <Folder Include="Utils\" />
       <Folder Include="View\UserControls\" />
     </ItemGroup>
 
@@ -21,6 +21,7 @@
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.6" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.6" />
       <PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.6" />
+      <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.7" />
       <PackageReference Include="Serilog" Version="4.3.0" />
       <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1" />
       <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />

@@ -3,6 +3,6 @@ using MaterialZip.Benchmarks.Benchs;
 
 #if !DEBUG
 //Run specific benchmark
-BenchmarkRunner.Run<BestFileEntityBench>();
+BenchmarkRunner.Run<EnumConvertingBench>();
 Console.ReadKey();
 #endif

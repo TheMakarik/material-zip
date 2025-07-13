@@ -11,7 +11,7 @@ namespace MaterialZip.Services.ExplorerServices;
 /// </summary>
 /// <param name="logger"><see cref="Serilog"/> logger </param>
 /// <remarks>To add a new directory to history do <see cref="CurrentDirectory"/> = {yourValue} to get just get property <see cref="CurrentDirectory"/> </remarks>
-public class ExplorerHistoryMemory(ILogger logger) : IExplorerHistoryMemory
+public sealed class ExplorerHistoryMemory(ILogger logger) : IExplorerHistoryMemory
 {
     private const string GettingACurrentEntityLogMessage
         = "Succed loading {path} from history";
