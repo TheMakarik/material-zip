@@ -6,7 +6,7 @@ using MaterialZip.Services.ExplorerServices.Abstractions;
 using MaterialZip.UnitTests.Core.Stubs;
 using Serilog;
 
-namespace MaterialZip.UnitTests;
+namespace MaterialZip.UnitTests.ExplorerTests;
 
 [TestFixture]
 public class ExplorerHistoryMemoryTests

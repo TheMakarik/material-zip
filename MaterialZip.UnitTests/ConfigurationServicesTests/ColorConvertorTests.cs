@@ -4,7 +4,7 @@ using MaterialZip.Model.Enums;
 using MaterialZip.Services.ConfigurationServices;
 using MaterialZip.Services.ConfigurationServices.Abstractions;
 
-namespace MaterialZip.UnitTests;
+namespace MaterialZip.UnitTests.ConfigurationServicesTests;
 
 [TestFixture]
 public class ColorConvertorTests

@@ -30,7 +30,7 @@ public class ThemeLoader(
     ILogger logger) : IThemeLoader
 {
     private const string StartTryingToLoadThemeLogMessage =
-        "Start trying to load theme, exprected theme: {theme}, primary color: {primaryColor}, secondaryColor {secondaryColor}";
+        "Start trying to load theme, expected theme: {theme}, primary color: {primaryColor}, secondaryColor {secondaryColor}";
     private const string SucceedMaterialColorsConvertingLogMessage =
         "Material theme was succesefully converted to: theme: {theme}, primary color: {primaryColor}, secondaryColor: {secondaryColor}";
     private const string ThemeWasLoadedLogMessage

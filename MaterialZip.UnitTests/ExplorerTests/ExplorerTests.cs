@@ -1,11 +1,10 @@
 using FakeItEasy;
-using MaterialZip.Model.Entities;
 using MaterialZip.Services.ExplorerServices;
 using MaterialZip.Services.ExplorerServices.Abstractions;
 using MaterialZip.UnitTests.Core.Stubs;
 using Serilog;
 
-namespace MaterialZip.UnitTests;
+namespace MaterialZip.UnitTests.ExplorerTests;
 
 [TestFixture]
 public class ExplorerTests
