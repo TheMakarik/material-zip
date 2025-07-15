@@ -157,7 +157,7 @@ public class ExplorerHistoryTests
         Assert.Multiple(() =>
         {
             Assert.IsTrue(canUndo);
-            Assert.That(canRedo, Is.EqualTo(_memory.Index + 1 < _memory.HistoryList.Count));
+            Assert.That(canRedo, Is.EqualTo(_memory.Index + 1 < _memory.HistoryList.Count()));
         });
     }
 }

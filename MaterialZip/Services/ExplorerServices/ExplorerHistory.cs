@@ -20,7 +20,7 @@ public sealed class ExplorerHistory(ILogger logger, IExplorerHistoryMemory memor
     public FileEntity CurrentDirectory { get => memory.CurrentDirectory; set => memory.CurrentDirectory = value; }
   
     /// <inheritdoc cref="IExplorerHistory.CanRedo"/>
-    public bool CanRedo => memory.Index + 1 < memory.HistoryList.Count;
+    public bool CanRedo => memory.Index + 1 < memory.HistoryList.Count();
  
     /// <inheritdoc cref="IExplorerHistory.CanUndo"/>
     public bool CanUndo => memory.Index > 0;
@@ -32,7 +32,7 @@ public sealed class ExplorerHistory(ILogger logger, IExplorerHistoryMemory memor
             memory.Index++;
         else
         {
-            logger.Fatal(CannotRedoLogMessage, memory.Index, memory.HistoryList.Count);
+            logger.Fatal(CannotRedoLogMessage, memory.Index, memory.HistoryList.Count());
             throw new CannotRedoException(CannotRedoExceptionText);
         }
     }
@@ -44,7 +44,7 @@ public sealed class ExplorerHistory(ILogger logger, IExplorerHistoryMemory memor
             memory.Index--;
         else
         {
-            logger.Fatal(CannotUndoLogMessage, memory.Index, memory.HistoryList.Count);
+            logger.Fatal(CannotUndoLogMessage, memory.Index, memory.HistoryList.Count());
             throw new CannotUndoException(CannotUndoExceptionText);
         }
     }

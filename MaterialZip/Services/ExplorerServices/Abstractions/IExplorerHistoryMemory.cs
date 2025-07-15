@@ -10,7 +10,7 @@ public interface IExplorerHistoryMemory
     /// <summary>
     /// List of saved <see cref="FileEntity"/>
     /// </summary>
-    public List<FileEntity> HistoryList { get; }
+    public IEnumerable<FileEntity> HistoryList { get; }
     
     /// <summary>
     /// Index of current <see cref="FileEntity"/>

@@ -200,17 +200,7 @@ public class ExplorerHistoryMemoryTests
         A.CallTo(() => _logger.Debug(A<string>._, A<string>._))
             .MustHaveHappened(3, Times.Exactly);
     }
-
-    [Test]
-    public void HistoryList_AfterInitialization_HasInitialCapacity()
-    {
-        //arrange
-        var memory = new ExplorerHistoryMemory(_logger);
-        //act
-        var capacity = memory.HistoryList.Capacity;
-        //assert
-        Assert.That(capacity, Is.EqualTo(10));
-    }
+    
 
     [Test]
     public void CurrentDirectory_AfterUndo_ReturnsCorrectEntity()
@@ -237,21 +227,9 @@ public class ExplorerHistoryMemoryTests
         //act
         var result = memory.CurrentDirectory;
         //assert
-        Assert.That(memory.HistoryList, Has.Count.EqualTo(2));
+        Assert.That(memory.HistoryList.Count(), Is.EqualTo(2));
     }
-
-    [Test]
-    public void AddDirectory_WhenHistoryFull_ExpandsCapacity()
-    {
-        //arrange
-        var memory = new ExplorerHistoryMemory(_logger);
-        var directories = FileEntityFactory.CreateDirectories(15);
-        //act
-        AddRangeToHistory(directories, memory);
-        //assert
-        Assert.That(memory.HistoryList.Capacity, Is.GreaterThanOrEqualTo(15));
-    }
-
+    
     [Test]
     public void Index_AfterMultipleUndoAndRedo_StaysConsistent()
     {

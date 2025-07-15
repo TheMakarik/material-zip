@@ -1,6 +1,5 @@
 using MaterialZip.Model.Entities;
 using MaterialZip.Model.Exceptions;
-using MaterialZip.Model.Extensions;
 using MaterialZip.Services.ExplorerServices.Abstractions;
 using Serilog;
 
@@ -22,10 +21,16 @@ public sealed class ExplorerHistoryMemory(ILogger logger) : IExplorerHistoryMemo
 
     private const string TryingToGetValueFromEmptyHistoryExceptionText
         = "Trying to get value from empty history collection, possible forgotten adding first element or validation"; 
-   
+    
+    private List<FileEntity> _historyList = new List<FileEntity>(10);
+    
     /// <inheritdoc cref=" IExplorerHistoryMemory.HistoryList"/>
-    public List<FileEntity> HistoryList { get; private set; } = new List<FileEntity>(10);
-  
+    public IEnumerable<FileEntity> HistoryList
+    {
+        get => _historyList;
+        private set => _historyList = value.ToList();
+    }
+
     /// <inheritdoc cref="IExplorerHistoryMemory.Index"/>
     public int Index { get; set; } = -1;
     
@@ -49,7 +54,7 @@ public sealed class ExplorerHistoryMemory(ILogger logger) : IExplorerHistoryMemo
 
     private FileEntity GetDirectoryIgnoringElementsExisting()
     {
-        var directory = HistoryList[Index];
+        var directory = HistoryList.ElementAt(Index);
         logger.Debug(GettingACurrentEntityLogMessage, directory.Path );
         return directory;
     }
@@ -57,7 +62,7 @@ public sealed class ExplorerHistoryMemory(ILogger logger) : IExplorerHistoryMemo
     private void AddDirectory(FileEntity directory)
     {
         CutHistoryListIfRedoIsDid();
-        HistoryList.Add(directory);
+        _historyList.Add(directory);
         logger.Debug(AddingANewDirectoryToHistoryLogMessage, directory.Path);
         Index++;
     }
@@ -65,11 +70,11 @@ public sealed class ExplorerHistoryMemory(ILogger logger) : IExplorerHistoryMemo
     private void CutHistoryListIfRedoIsDid()
     {
         if (IsRedoDone)
-            HistoryList = HistoryList.SubList(0, Index);
+            HistoryList = HistoryList.Take(Index);
     }
     
     private bool ElementsDoNotExist() => Index == -1;
-    private bool IsRedoDone => Index + 1 != HistoryList.Count;
+    private bool IsRedoDone => Index + 1 != HistoryList.Count();
 
 
 }
