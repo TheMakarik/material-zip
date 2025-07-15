@@ -4,8 +4,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaterialZip", "MaterialZip\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaterialZip.UnitTests", "MaterialZip.UnitTests\MaterialZip.UnitTests.csproj", "{90C77990-F53D-4847-9A5E-095E3CCC00DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaterialZip.Benchmarks", "MaterialZip.Benchmarks\MaterialZip.Benchmarks.csproj", "{AFD37593-1CD9-40FA-863C-1D8B6113B120}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,9 +18,5 @@ Global
 		{90C77990-F53D-4847-9A5E-095E3CCC00DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90C77990-F53D-4847-9A5E-095E3CCC00DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90C77990-F53D-4847-9A5E-095E3CCC00DC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AFD37593-1CD9-40FA-863C-1D8B6113B120}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AFD37593-1CD9-40FA-863C-1D8B6113B120}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AFD37593-1CD9-40FA-863C-1D8B6113B120}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AFD37593-1CD9-40FA-863C-1D8B6113B120}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
