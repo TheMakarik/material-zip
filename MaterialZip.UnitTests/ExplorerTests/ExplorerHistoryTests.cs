@@ -91,7 +91,6 @@ public class ExplorerHistoryTests
         catch (CannotRedoException)
         {
         }
-
         //assert
         A.CallTo(() => _logger.Fatal(A<string>._, An<int>._, An<int>._)).MustHaveHappenedOnceExactly();
     }
