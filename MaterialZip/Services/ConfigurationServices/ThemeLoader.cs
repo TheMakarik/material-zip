@@ -2,8 +2,6 @@ using System.Windows.Media;
 using MaterialDesignColors;
 using MaterialDesignColors.ColorManipulation;
 using MaterialDesignThemes.Wpf;
-using MaterialZip.Factories;
-using MaterialZip.Factories.Abstractions;
 using MaterialZip.Model.Enums;
 using MaterialZip.Services.ConfigurationServices.Abstractions;
 using Microsoft.Extensions.Logging;
@@ -17,7 +15,7 @@ namespace MaterialZip.Services.ConfigurationServices;
 /// <param name="themeConvertor"> <see cref="IThemeConvertor"/> instance from DI container</param>
 /// <param name="colorConvertor"> <see cref="IColorConvertor"/> instance from DI container</param>
 /// <param name="applicationConfigurationManager"> <see cref="IApplicationConfigurationManager"/> instance from DI container</param>
-/// <param name="paletteHelperFactory"> <see cref="IPaletteHelperFactory"/> instance from DI container</param>
+/// <param name="paletteHelper"> <see cref="PaletteHelper"/> Instance from DI container</param>
 /// <param name="logger"><see cref="ILogger"/>instance from DI container </param>
 /// <remarks>
 /// Class' method <see cref="LoadTheme"/> must be call once after <see cref="App"/> class created 
@@ -26,7 +24,7 @@ public class ThemeLoader(
     IThemeConvertor themeConvertor,
     IColorConvertor colorConvertor,
     IApplicationConfigurationManager applicationConfigurationManager,
-    IPaletteHelperFactory paletteHelperFactory,
+    PaletteHelper paletteHelper,
     ILogger logger) : IThemeLoader
 {
     private const string StartTryingToLoadThemeLogMessage =
@@ -59,8 +57,7 @@ public class ThemeLoader(
             applicationTheme.SecondaryColor.ToString());
 
         var theme = Theme.Create(applicationTheme.Theme, applicationTheme.PrimaryColor, applicationTheme.SecondaryColor);
-        var palette = paletteHelperFactory.GetFactory();
-        palette.SetTheme(theme);
+        paletteHelper.SetTheme(theme);
         
         logger.Information(ThemeWasLoadedLogMessage);
 

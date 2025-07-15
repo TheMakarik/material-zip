@@ -5,8 +5,6 @@ using MaterialDesignThemes.Wpf;
 using MaterialZip.Bootstrapping;
 using MaterialZip.Bootstrapping.Abstractions;
 using MaterialZip.DIExtensions;
-using MaterialZip.Factories;
-using MaterialZip.Factories.Abstractions;
 using MaterialZip.Model.Enums;
 using MaterialZip.Options;
 using MaterialZip.Services.ConfigurationServices.Abstractions;
@@ -33,7 +31,7 @@ public partial class App : Application
             .AddJsonFile("configuration.json");
         builder.Services
             .Configure<ApplicationOptions>(builder.Configuration.GetSection(nameof(ApplicationOptions)))
-            .AddSingleton<IPaletteHelperFactory, PaletteHelperFactory>()
+            .AddTransient<PaletteHelper>()
             .AddThemeLoader()
             .AddExplorer();
         builder.Logging
