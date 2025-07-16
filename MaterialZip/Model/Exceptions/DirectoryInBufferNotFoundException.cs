@@ -6,4 +6,4 @@ namespace MaterialZip.Model.Exceptions;
 /// Invokes if <see cref="ILastDirectoryBuffer"/> implementation cannot find buffer but trying to get it
 /// </summary>
 /// <param name="message">The message that describes the error</param>
-public class DirectoryNotFoundException(string message) : Exception(message);
+public class DirectoryInBufferNotFoundException(string message) : Exception(message);
