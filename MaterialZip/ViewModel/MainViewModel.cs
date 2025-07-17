@@ -1,6 +1,6 @@
 namespace MaterialZip.ViewModel;
 
-public class MainWindowViewModel
+public class MainViewModel
 {
     
 }

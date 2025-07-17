@@ -7,6 +7,8 @@ using MaterialZip.Bootstrapping.Abstractions;
 using MaterialZip.DIExtensions;
 using MaterialZip.Options;
 using MaterialZip.Services.ConfigurationServices.Abstractions;
+using MaterialZip.View;
+using MaterialZip.ViewModel;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -29,15 +31,19 @@ public partial class App : Application
     {
         var builder = Bootstrapper.CreateBuilder();
         builder.Configuration
-            .AddJsonFile("configuration.json");
+            .AddJsonFile("configuration.json", optional: true, reloadOnChange: true);
         builder.Services
             .Configure<ApplicationOptions>(builder.Configuration.GetSection(nameof(ApplicationOptions)))
-            .AddTransient<PaletteHelper>()
+            .AddScoped<PaletteHelper>()
+            .AddSingleton<ViewModelLocator>()
             .AddThemeLoader()
+            .AddScoped<MainViewModel>()
+            .AddScoped<MainView>()
             .AddExplorer();
         builder.Logging
             .ReadFrom.Configuration(builder.Configuration);
         _app = builder.CreateBootstrapper();
+        Ioc.Default.ConfigureServices(_app.Services);
     }
     
     protected override void OnStartup(StartupEventArgs e)
@@ -45,6 +51,7 @@ public partial class App : Application
         using (var scope = _app.Services.CreateScope())
         {
             scope.ServiceProvider.GetRequiredService<IThemeLoader>().LoadTheme();
+            scope.ServiceProvider.GetRequiredService<MainView>().Show();
         }
         _app.Logging.Debug(ApplicationStartedLogMessage);
         base.OnStartup(e);

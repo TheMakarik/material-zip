@@ -1,12 +1,13 @@
 using System.Collections.Concurrent;
 using System.Windows;
+using System.Windows.Controls;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
 namespace MaterialZip;
 
-public class ViewLocator
+public class ViewModelLocator(ILogger logger)
 {
     private const string ViewPattern = "View";
     private const string ViewModelPattern = "ViewModel";
@@ -14,26 +15,20 @@ public class ViewLocator
     private const string ViewModelWasAddedToCache = "ViewModel {viewModelName} was added to the cache";
     
     private readonly ConcurrentDictionary<Type, Type> _viewModelTypeCache = new();
-    private readonly ILogger _logger;
 
-    public ViewLocator(ILogger logger)
-    {
-        _logger = logger;
-    }
-    
-    public void ResolveViewModel(FrameworkElement view)
+    public void ResolveViewModel(ContentControl view)
     {
         var viewType = view.GetType();
         
         if (IsViewModelInCache(viewType, out var viewModelType))
-            _logger.Debug(ViewModelIsInCacheLogMessage, viewType.FullName);
+            logger.Debug(ViewModelIsInCacheLogMessage, viewType.FullName);
         else
         {
             viewModelType = GetViewModelType(viewType);
             if (viewModelType == null) return;
             
             _viewModelTypeCache.TryAdd(viewType, viewModelType);
-            _logger.Debug(ViewModelWasAddedToCache, viewModelType.FullName);
+            logger.Debug(ViewModelWasAddedToCache, viewModelType.FullName);
         }
         
         view.DataContext = Ioc.Default.GetRequiredService(viewModelType);

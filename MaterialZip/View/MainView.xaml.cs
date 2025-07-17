@@ -1,27 +1,16 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using MaterialZip.ViewModel;
-using Serilog;
+﻿using System.Windows;
 
-namespace MaterialZip;
+namespace MaterialZip.View;
 
 /// <summary>
-/// Interaction logic for MainWindow.xaml
+/// Interaction logic for MainView.xaml
 /// </summary>
-public partial class MainWindow : Window
+public partial class MainView : Window
 {
 
-    public MainWindow()
+    public MainView(ViewModelLocator locator)
     {
+        locator.ResolveViewModel(this);
         InitializeComponent();
     }
 
