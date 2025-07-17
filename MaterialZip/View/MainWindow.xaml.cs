@@ -9,6 +9,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MaterialZip.ViewModel;
+using Serilog;
 
 namespace MaterialZip;
 
@@ -21,5 +23,23 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+    }
+
+    private void Close(object sender, RoutedEventArgs e)
+    {
+        Close(); 
+    }
+
+
+    private void Maximize(object sender, RoutedEventArgs e)
+    {
+        this.WindowState = this.WindowState == WindowState.Maximized 
+            ? WindowState.Normal 
+            : WindowState.Maximized;
+    }
+
+    private void Minimize(object sender, RoutedEventArgs e)
+    {
+        this.WindowState = WindowState.Minimized;
     }
 }

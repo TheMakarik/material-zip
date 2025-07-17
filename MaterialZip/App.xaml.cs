@@ -1,16 +1,17 @@
-﻿using System.Windows;
-using System.Windows.Data;
-using MaterialDesignColors;
+﻿using System.Diagnostics;
+using System.Windows;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using MaterialDesignThemes.Wpf;
 using MaterialZip.Bootstrapping;
 using MaterialZip.Bootstrapping.Abstractions;
 using MaterialZip.DIExtensions;
-using MaterialZip.Model.Enums;
 using MaterialZip.Options;
 using MaterialZip.Services.ConfigurationServices.Abstractions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Serilog;
+using Serilog.Events;
 
 namespace MaterialZip;
 
@@ -20,7 +21,7 @@ namespace MaterialZip;
 public partial class App : Application
 {
     private const string ApplicationStartedLogMessage = "Application have been just started";
-    private const string ApplicationOnExitLogMessage = "Application was stoped with exit cose {code}";
+    private const string ApplicationOnExitLogMessage = "Application was stoped with exit code {code}";
     
     private readonly IBootstrapper _app;
     
@@ -45,7 +46,6 @@ public partial class App : Application
         {
             scope.ServiceProvider.GetRequiredService<IThemeLoader>().LoadTheme();
         }
-        
         _app.Logging.Debug(ApplicationStartedLogMessage);
         base.OnStartup(e);
     }

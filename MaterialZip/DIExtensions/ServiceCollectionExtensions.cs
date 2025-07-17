@@ -1,4 +1,3 @@
-using System.Windows.Data;
 using MaterialZip.Services.ConfigurationServices;
 using MaterialZip.Services.ConfigurationServices.Abstractions;
 using MaterialZip.Services.ExplorerServices;
@@ -6,6 +5,8 @@ using MaterialZip.Services.ExplorerServices.Abstractions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Serilog;
+
 
 namespace MaterialZip.DIExtensions;
 
