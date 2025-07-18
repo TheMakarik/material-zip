@@ -1,3 +1,5 @@
+using System.Windows;
+using System.Windows.Data;
 using MaterialZip.Services.ConfigurationServices;
 using MaterialZip.Services.ConfigurationServices.Abstractions;
 using MaterialZip.Services.ExplorerServices;
@@ -70,4 +72,5 @@ public static class ServiceCollectionExtensions
             .TryAddScoped<IApplicationConfigurationManager, ApplicationConfigurationManager>();
         return services;
     }
+    
 }

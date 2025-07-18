@@ -9,7 +9,7 @@ namespace MaterialZip.Model.Entities;
 /// <param name="CreatedAt">Time, when file was created</param>
 public record struct FileDataGridEntity(
     string Name,
-    long Size,
+    long? Size,
     DateTime LastChanging,
     DateTime CreatedAt
 );

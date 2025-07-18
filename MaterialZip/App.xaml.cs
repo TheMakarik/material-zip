@@ -36,6 +36,7 @@ public partial class App : Application
             .Configure<ApplicationOptions>(builder.Configuration.GetSection(nameof(ApplicationOptions)))
             .AddScoped<PaletteHelper>()
             .AddSingleton<ViewModelLocator>()
+            .AddLastDirectoryManagers()
             .AddThemeLoader()
             .AddScoped<MainViewModel>()
             .AddScoped<MainView>()
@@ -51,6 +52,9 @@ public partial class App : Application
         using (var scope = _app.Services.CreateScope())
         {
             scope.ServiceProvider.GetRequiredService<IThemeLoader>().LoadTheme();
+            var lastDirectoryGetter = scope.ServiceProvider.GetRequiredService<ILastDirectoryGetter>();
+            var buffer = scope.ServiceProvider.GetRequiredService<ILastDirectoryBuffer>();
+            buffer.ToBuffer(lastDirectoryGetter.LastDirectory);
             scope.ServiceProvider.GetRequiredService<MainView>().Show();
         }
         _app.Logging.Debug(ApplicationStartedLogMessage);
@@ -59,6 +63,10 @@ public partial class App : Application
 
     protected override void OnExit(ExitEventArgs e)
     {
+        var buffer =  _app.Services.GetRequiredService<ILastDirectoryBuffer>();
+        using(var scope = _app.Services.CreateScope())
+            scope.ServiceProvider.GetRequiredService<ILastDirectoryChanger>()
+                .ChangeLastDirectory(buffer.FromBuffer());
         _app.Logging.Information(ApplicationOnExitLogMessage, e.ApplicationExitCode);
         base.OnExit(e);
     }

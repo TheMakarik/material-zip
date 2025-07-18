@@ -25,13 +25,14 @@ public class ViewModelLocator(ILogger logger)
         else
         {
             viewModelType = GetViewModelType(viewType);
-            if (viewModelType == null) return;
+            if (viewModelType == null) 
+                return;
             
             _viewModelTypeCache.TryAdd(viewType, viewModelType);
             logger.Debug(ViewModelWasAddedToCache, viewModelType.FullName);
         }
         
-        view.DataContext = Ioc.Default.GetRequiredService(viewModelType);
+        view.DataContext = Ioc.Default.GetRequiredService(viewModelType!);
     }
     
     private Type? GetViewModelType(Type viewType)
