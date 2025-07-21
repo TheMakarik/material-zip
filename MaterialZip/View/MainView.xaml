@@ -112,7 +112,7 @@
             AutoGenerateColumns="True"
             Grid.Row="2"
             IsReadOnly="True"
-            ItemsSource="{Binding Entities, Converter={x:Static convertors:FileEntityCollectionToFileDataGridEntityEnumerableConvertor.Instance}}"
+            ItemsSource="{Binding Entities, Converter={x:Static convertors:FileEntityEnumerableToFileDataGridEntityEnumerableConvertor.Instance}}"
             Visibility="{Binding IsDataGridVisible, Converter={x:Static materialDesign:BooleanToVisibilityConverter.HiddenInstance}}">
 
             <DataGrid.Resources>

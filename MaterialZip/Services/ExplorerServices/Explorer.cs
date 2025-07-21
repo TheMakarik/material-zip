@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using MaterialZip.Model.Entities;
+using MaterialZip.Model.Exceptions;
 using MaterialZip.Services.ExplorerServices.Abstractions;
 using Serilog;
 
@@ -16,40 +17,47 @@ public sealed class Explorer(ILowLevelExplorer lowLevelExplorer, ILogger logger)
     private const string GetLogicalDrivesSucceedLogMessage = "Succesefully got  logical drives from computer: {drives}";
     private const string GetDirectoryContentSucceedLogMessage = "Succesefully got {directory} content";
     private const string TriedToGetFileContentLogMessage = "Tried to get file's content from {path}, emplty collection returned and possible errors may happen";
+    private const string CannotGetContentOfTheFileExceptionText = "Cannot get content of the file {0}";
     
-    /// <inheritdoc cref="IExplorer.GetLogicalDrives"/>
-    public IReadOnlyCollection<FileEntity> GetLogicalDrives()
+    /// <inheritdoc cref="IExplorer.GetLogicalDrivesAsync"/>
+    public async Task<IEnumerable<FileEntity>> GetLogicalDrivesAsync()
     {
-        var drives = lowLevelExplorer.GetLogicalDrives(); 
-        var entities = ToFileEntity(drives, isDirectory: true);
-        logger.Debug(GetLogicalDrivesSucceedLogMessage, drives);
-        return new ReadOnlyCollection<FileEntity>(entities.ToList());
+        return await Task.Run(() =>
+        {
+            var drives = lowLevelExplorer.GetLogicalDrives();
+            var entities = ToFileEntity(drives, isDirectory: true);
+            logger.Debug(GetLogicalDrivesSucceedLogMessage, drives);
+            return entities.ToList();
+        });
     }
-
-    /// <inheritdoc cref="IExplorer.GetDirectoryContent"/>
-    public IReadOnlyCollection<FileEntity> GetDirectoryContent(FileEntity directory)
+    
+    /// <inheritdoc cref="IExplorer.GetDirectoryContentAsync"/>
+    public async Task<IEnumerable<FileEntity>> GetDirectoryContentAsync(FileEntity directory)
     {
         if (!directory.IsDirectory)
         {
-            logger.Warning(TriedToGetFileContentLogMessage, directory.Path);
-            return new ReadOnlyCollection<FileEntity>(Enumerable.Empty<FileEntity>().ToList());
+            logger.Error(TriedToGetFileContentLogMessage, directory.Path);
+            throw new CannotGetFileContentException(string.Format(CannotGetContentOfTheFileExceptionText, directory.Path));
         }
         
         logger.Debug(GetDirectoryContentSucceedLogMessage, directory.Path);
-        var entities = GetContent(directory.Path);
-        return new ReadOnlyCollection<FileEntity>(entities.ToList());
+        var entities = await GetContent(directory.Path);
+        return entities;
     }
 
-    private IEnumerable<FileEntity> ToFileEntity(string[] paths, bool isDirectory)
+    private IEnumerable<FileEntity> ToFileEntity(IEnumerable<string> paths, bool isDirectory)
     {
         return paths.Select(p => new FileEntity(p, isDirectory)).ToArray(); 
     }
 
-    private IEnumerable<FileEntity> GetContent(string path)
+    private async Task<IEnumerable<FileEntity>> GetContent(string path)
     {
-        var directories = lowLevelExplorer.GetDirectories(path);
-        var files = lowLevelExplorer.GetFiles(path);
-        return ToFileEntity(directories, isDirectory: true)
-            .Concat(ToFileEntity(files, isDirectory: false));
+        return await Task.Run(() =>
+        {
+            var directories = lowLevelExplorer.GetDirectories(path);
+            var files = lowLevelExplorer.GetFiles(path);
+            return ToFileEntity(directories, isDirectory: true)
+                .Concat(ToFileEntity(files, isDirectory: false));
+        });
     }
 }

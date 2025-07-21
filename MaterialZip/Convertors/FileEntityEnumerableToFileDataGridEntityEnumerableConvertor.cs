@@ -12,8 +12,8 @@ namespace MaterialZip.Convertors;
 /// Converts a <see cref="FileEntity"/> to a <see cref="FileDataGridEntity"/> for display purposes.
 /// This converter supports one-way binding only.
 /// </summary>
-[ValueConversion(typeof(FileEntity), typeof(FileDataGridEntity))]
-public class FileEntityCollectionToFileDataGridEntityEnumerableConvertor : IValueConverter
+[ValueConversion(typeof(IEnumerable<FileEntity>), typeof(IEnumerable<FileDataGridEntity>))]
+public class FileEntityEnumerableToFileDataGridEntityEnumerableConvertor : IValueConverter
 {
 
     private const string CannotFindDirectory = "Directory {path} was gotten but not exists";
@@ -22,7 +22,7 @@ public class FileEntityCollectionToFileDataGridEntityEnumerableConvertor : IValu
     /// <summary>
     /// Convertor instance 
     /// </summary>
-    public static FileEntityCollectionToFileDataGridEntityEnumerableConvertor Instance { get; } = new();
+    public static FileEntityEnumerableToFileDataGridEntityEnumerableConvertor Instance { get; } = new();
     
     /// <summary>
     /// Converts a <see cref="FileEntity"/>  Read only Collection to a display-ready <see cref="FileDataGridEntity"/>  Collection.
@@ -37,9 +37,9 @@ public class FileEntityCollectionToFileDataGridEntityEnumerableConvertor : IValu
     /// </returns>
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is not IReadOnlyCollection<FileEntity> entities)
+        if (value is not IEnumerable<FileEntity> entities)
             return null;
-        var result = new List<FileDataGridEntity>(entities.Count);
+        var result = new List<FileDataGridEntity>(entities.Count());
         
       
             foreach (var entity in entities)

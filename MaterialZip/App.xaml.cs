@@ -5,6 +5,7 @@ using MaterialDesignThemes.Wpf;
 using MaterialZip.Bootstrapping;
 using MaterialZip.Bootstrapping.Abstractions;
 using MaterialZip.DIExtensions;
+using MaterialZip.Model.Entities;
 using MaterialZip.Options;
 using MaterialZip.Services.ConfigurationServices.Abstractions;
 using MaterialZip.View;
@@ -51,10 +52,10 @@ public partial class App : Application
     {
         using (var scope = _app.Services.CreateScope())
         {
-            scope.ServiceProvider.GetRequiredService<IThemeLoader>().LoadTheme();
+            LoadTheme(scope);
             var lastDirectoryGetter = scope.ServiceProvider.GetRequiredService<ILastDirectoryGetter>();
             var buffer = scope.ServiceProvider.GetRequiredService<ILastDirectoryBuffer>();
-            buffer.ToBuffer(lastDirectoryGetter.LastDirectory);
+            buffer.ToBuffer(new FileEntity(lastDirectoryGetter.LastDirectory, true));
             scope.ServiceProvider.GetRequiredService<MainView>().Show();
         }
         _app.Logging.Debug(ApplicationStartedLogMessage);
@@ -66,9 +67,14 @@ public partial class App : Application
         var buffer =  _app.Services.GetRequiredService<ILastDirectoryBuffer>();
         using(var scope = _app.Services.CreateScope())
             scope.ServiceProvider.GetRequiredService<ILastDirectoryChanger>()
-                .ChangeLastDirectory(buffer.FromBuffer());
+                .ChangeLastDirectory(buffer.FromBuffer().Path);
         _app.Logging.Information(ApplicationOnExitLogMessage, e.ApplicationExitCode);
         base.OnExit(e);
+    }
+
+    private void LoadTheme(IServiceScope scope)
+    {
+       scope.ServiceProvider.GetRequiredService<IThemeLoader>().LoadTheme();
     }
 }
 

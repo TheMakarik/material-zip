@@ -9,20 +9,20 @@ namespace MaterialZip.Services.ExplorerServices;
 public sealed class LowLevelExplorer : ILowLevelExplorer
 {
     /// <inheritdoc cref="ILowLevelExplorer.GetLogicalDrives"/>
-    public string[] GetLogicalDrives()
+    public IEnumerable<string>GetLogicalDrives()
     {
         return Directory.GetLogicalDrives();
     }
 
     /// <inheritdoc cref="ILowLevelExplorer.GetFiles"/>
-    public string[] GetFiles(string directory)
+    public IEnumerable<string> GetFiles(string directory)
     {
-        return Directory.GetFiles(directory);
+        return Directory.EnumerateFiles(directory);
     }
 
     /// <inheritdoc cref="ILowLevelExplorer.GetDirectories"/>
-    public string[] GetDirectories(string directory)
+    public IEnumerable<string> GetDirectories(string directory)
     {
-        return Directory.GetDirectories(directory);
+        return Directory.EnumerateDirectories(directory);
     }
 }

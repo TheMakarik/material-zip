@@ -1,3 +1,4 @@
+using MaterialZip.Model.Entities;
 using MaterialZip.Model.Exceptions;
 using MaterialZip.Services.ConfigurationServices.Abstractions;
 using Serilog;
@@ -12,27 +13,30 @@ public class LastDirectoryBuffer(ILogger logger) : ILastDirectoryBuffer
         = "{path} was loaded to the buffer replacing {oldPath}";
     private const string DirectoryWasGottenFromBufferLogMessage
         = "{path} was gotten from the buffer";
+    private const string DefaultPath 
+        = "...";
     
-    private string? _buffer;
+    private FileEntity? _buffer;
 
     /// <inheritdoc cref="ILastDirectoryBuffer.IsBufferEmpty"/>
     public bool IsBufferEmpty => _buffer is null;
     
     /// <inheritdoc cref="ILastDirectoryBuffer.ToBuffer"/>
-    public void ToBuffer(string directoryPath)
+    public void ToBuffer(FileEntity directory)
     {
-        logger.Debug(DirectoryWasLoadedToTheBufferMessage, directoryPath, _buffer ?? "/");
-        _buffer = directoryPath;
+        logger.Debug(DirectoryWasLoadedToTheBufferMessage, directory.Path, 
+            _buffer.GetValueOrDefault(new FileEntity(DefaultPath, true)).Path);
+        _buffer = directory;
     }
     
     /// <inheritdoc cref="ILastDirectoryBuffer.FromBuffer"/>
-    public string FromBuffer()
+    public FileEntity FromBuffer()
     {
         if (IsBufferEmpty)
             throw new DirectoryInBufferNotFoundException(DirectoryInBufferNotFoundExceptionText);
         #pragma warning disable
-        logger.Information(DirectoryWasGottenFromBufferLogMessage, _buffer);
-        return _buffer;
+        logger.Information(DirectoryWasGottenFromBufferLogMessage, _buffer.Value.Path);
+        return _buffer.Value;
         #pragma warning restore
     }
 }

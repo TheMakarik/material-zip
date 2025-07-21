@@ -7,11 +7,11 @@ public interface ILowLevelExplorer
 {
    
     /// <inheritdoc cref="System.IO.Directory.GetLogicalDrives"/>
-    public string[] GetLogicalDrives();
+    public IEnumerable<string> GetLogicalDrives();
     
     /// <inheritdoc cref="System.IO.Directory.GetFiles(string)"/>
-    public string[] GetFiles(string directory);
+    public IEnumerable<string> GetFiles(string directory);
     
     /// <inheritdoc cref="System.IO.Directory.GetDirectories(string)"/>
-    public string[] GetDirectories(string directory);
+    public IEnumerable<string> GetDirectories(string directory);
 }

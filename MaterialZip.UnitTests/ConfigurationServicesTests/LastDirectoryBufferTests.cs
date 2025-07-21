@@ -34,7 +34,7 @@ public class LastDirectoryBufferTests
     public void IsBufferEmpty_AfterAddingDirectory_IsFalse()
     {
         //arrange
-        var directory = FileEntityFactory.CreateDirectory().Path;
+        var directory = FileEntityFactory.CreateDirectory();
         //act
         _buffer.ToBuffer(directory);
         //assert
@@ -45,7 +45,7 @@ public class LastDirectoryBufferTests
     public void IsBufferEmpty_AfterAddingAngGettingDirectory_StillFalse()
     {
         //arrange
-        var directory = FileEntityFactory.CreateDirectory().Path;
+        var directory = FileEntityFactory.CreateDirectory();
         //act
         _buffer.ToBuffer(directory);
         var result = _buffer.FromBuffer();
@@ -57,7 +57,7 @@ public class LastDirectoryBufferTests
     public void FromBuffer_BufferIsNotEmpty_ReturnsDirectoryThatWasAddedToBuffer()
     {
         //arrange
-        var directory = FileEntityFactory.CreateDirectory().Path;
+        var directory = FileEntityFactory.CreateDirectory();
         //act
         _buffer.ToBuffer(directory);
         var result = _buffer.FromBuffer();
@@ -81,7 +81,7 @@ public class LastDirectoryBufferTests
     public void FromBuffer_WhenBufferIsNotEmpty_LogInformation()
     {
         //arrange
-        var directory = FileEntityFactory.CreateDirectory().Path;
+        var directory = FileEntityFactory.CreateDirectory();
         //act
         _buffer.ToBuffer(directory);
         var result = _buffer.FromBuffer();
@@ -95,7 +95,7 @@ public class LastDirectoryBufferTests
     public void ToBuffer_Always_LogDebug()
     {
         //arrange
-        var directory = FileEntityFactory.CreateDirectory().Path;
+        var directory = FileEntityFactory.CreateDirectory();
         //act
         _buffer.ToBuffer(directory);
         //assert
