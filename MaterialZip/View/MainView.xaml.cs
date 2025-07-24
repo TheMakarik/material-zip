@@ -3,9 +3,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shapes;
 using MaterialZip.Convertors;
 using MaterialZip.Model.Entities;
 using MaterialZip.ViewModel;
+using Serilog;
 
 
 namespace MaterialZip.View;
@@ -15,10 +17,15 @@ namespace MaterialZip.View;
 /// </summary>
 public partial class MainView
 {
+    private const string WindowWasLoadedLogMessage = "Window was loaded successefully";
+    private const string ExceptionOccuredLogMessage = "Exception occured";
+    
+    private readonly ILogger _logger;
 
-    public MainView(MainViewModel viewModel)
+    public MainView(MainViewModel viewModel, ILogger logger)
     {
-        this.DataContext = viewModel;
+        DataContext = viewModel;
+        _logger = logger;
         InitializeComponent();
     }
 
@@ -62,9 +69,9 @@ public partial class MainView
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Source + ex.StackTrace);
+           _logger.Warning(ex, ExceptionOccuredLogMessage);
         }
     }
 
-   
+    
 }

@@ -55,6 +55,7 @@ public partial class MainViewModel : ViewModelBase
     {
         _buffer.ToBuffer(directory);
         _history.CurrentDirectory = directory;
+        CurrentPath = directory.Path;
     }
 
     private void AddEntities(IEnumerable<FileEntity> entities)

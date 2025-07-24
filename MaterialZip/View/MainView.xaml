@@ -21,7 +21,7 @@
     xmlns:viewModel="clr-namespace:MaterialZip.ViewModel"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <controls:FastGrid RowDefinitions="Auto, Auto, 3*, *, Auto">
+    <controls:FastGrid RowDefinitions="Auto, Auto, Auto, *,  Auto">
         <!--  Title bar  -->
         <controls:FastGrid ColumnDefinitions="Auto, *" Grid.Row="0">
 
@@ -110,80 +110,101 @@
             </MenuItem>
         </Menu>
 
-        <!--  Directory viewers  -->
+
+        <!--  Path viewer  -->
+        <controls:FastGrid
+            ColumnDefinitions="Auto, *"
+            Grid.Row="2"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Center">
+
+            <materialDesign:PackIcon
+                Foreground="{Binding BorderBrush, ElementName=PathTextBox}"
+                Grid.Column="0"
+                Kind="Search"
+                Margin="3,0,4,0"
+                VerticalAlignment="Center"
+                Width="30" />
+
+            <TextBox
+                Grid.Column="1"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Left"
+                Margin="0,0,2,4"
+                Style="{DynamicResource MaterialDesignOutlinedTextBox}"
+                Text="{Binding CurrentPath}"
+                VerticalContentAlignment="Center"
+                materialDesign:HintAssist.Hint="Path"
+                x:Name="PathTextBox" />
+
+        </controls:FastGrid>
 
         <!--  DataGrid  -->
-        <ScrollViewer
-            Grid.Row="2"
+        <DataGrid
+            AutoGenerateColumns="False"
+            Grid.Row="3"
             HorizontalScrollBarVisibility="Auto"
+            IsReadOnly="True"
+            ItemsSource="{Binding Entities, Converter={x:Static convertors:FileEntityEnumerableToFileDataGridEntityEnumerableConvertor.Instance}}"
+            SelectedItem="{Binding SelectedItem}"
             VerticalScrollBarVisibility="Auto">
-            <DataGrid
-                AutoGenerateColumns="False"
-                IsReadOnly="True"
-                ItemsSource="{Binding Entities, Converter={x:Static convertors:FileEntityEnumerableToFileDataGridEntityEnumerableConvertor.Instance}}"
-                Name="ViewerDataGrid"
-                SelectedItem="{Binding SelectedItem}"
-                Visibility="{Binding IsDataGridVisible, Converter={x:Static materialDesign:BooleanToVisibilityConverter.HiddenInstance}}">
 
-                <DataGrid.Resources>
+            <DataGrid.Resources>
 
-                    <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
-                        <Setter Property="Background" Value="{Binding ElementName=CloseButton, Path=Background}" />
-                    </Style>
+                <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="{Binding ElementName=CloseButton, Path=Background}" />
+                </Style>
 
-                    <Style BasedOn="{StaticResource MaterialDesignDataGridCell}" TargetType="DataGridCell">
-                        <Style.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="BorderBrush" Value="Transparent" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
+                <Style BasedOn="{StaticResource MaterialDesignDataGridCell}" TargetType="DataGridCell">
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="BorderBrush" Value="Transparent" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
 
 
-                </DataGrid.Resources>
+            </DataGrid.Resources>
 
-                <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="Name" Width="130">
-                        <!--  Icon and file name  -->
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <Image
-                                        Height="{Binding FontSize, ElementName=FileNameLabel}"
-                                        Source="{Binding Path, Converter={x:Static convertors:PathToImageSourceConvertor.Instance}}"
-                                        Width="{Binding FontSize, ElementName=FileNameLabel}" />
-                                    <Label Content="{Binding Name}" Name="FileNameLabel" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTextColumn
-                        Binding="{Binding Size}"
-                        Header="Size"
-                        x:Name="SizeColumn" />
-                    <DataGridTextColumn Binding="{Binding LastChanging}" Header="Last changing" />
-                    <DataGridTextColumn Binding="{Binding CreatedAt}" Header="Created at" />
-                </DataGrid.Columns>
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Name" Width="130">
+                    <!--  Icon and file name  -->
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Image
+                                    Height="{Binding FontSize, ElementName=FileNameLabel}"
+                                    Source="{Binding Path, Converter={x:Static convertors:PathToImageSourceConvertor.Instance}}"
+                                    Width="{Binding FontSize, ElementName=FileNameLabel}" />
+                                <Label Content="{Binding Name}" Name="FileNameLabel" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn
+                    Binding="{Binding Size}"
+                    Header="Size"
+                    x:Name="SizeColumn" />
+                <DataGridTextColumn Binding="{Binding LastChanging}" Header="Last changing" />
+                <DataGridTextColumn Binding="{Binding CreatedAt}" Header="Created at" />
+            </DataGrid.Columns>
 
 
-                <!--
-                    Here is the reason why I deleted ViewModelLocator, I need to put somehow command here,
-                    but I cant, and due to ViewModelLocator I cant go to Code Behind
-                    You can help: https://stackoverflow.com/questions/79710670/use-mousedoubleclick-event-trigger-in-every-datagrid-row?noredirect=1#comment140610313_79710670
-                -->
-                <DataGrid.RowStyle>
-                    <Style BasedOn="{StaticResource {x:Type DataGridRow}}" TargetType="DataGridRow">
-                        <EventSetter Event="MouseDoubleClick" Handler="InvokeResetDirectoryContent" />
-                    </Style>
-                </DataGrid.RowStyle>
+            <!--
+                Here is the reason why I deleted ViewModelLocator, I need to put somehow command here,
+                but I cant, and due to ViewModelLocator I cant go to Code Behind
+                You can help: https://stackoverflow.com/questions/79710670/use-mousedoubleclick-event-trigger-in-every-datagrid-row?noredirect=1#comment140610313_79710670
+            -->
+            <DataGrid.RowStyle>
+                <Style BasedOn="{StaticResource {x:Type DataGridRow}}" TargetType="DataGridRow">
+                    <EventSetter Event="MouseDoubleClick" Handler="InvokeResetDirectoryContent" />
+                </Style>
+            </DataGrid.RowStyle>
 
-                <DataGrid.RowDetailsTemplate>
-                    <DataTemplate />
-                </DataGrid.RowDetailsTemplate>
-            </DataGrid>
-
-        </ScrollViewer>
-
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate />
+            </DataGrid.RowDetailsTemplate>
+        </DataGrid>
 
     </controls:FastGrid>
 
