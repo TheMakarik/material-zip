@@ -4,6 +4,8 @@ using MaterialZip.Services.ConfigurationServices;
 using MaterialZip.Services.ConfigurationServices.Abstractions;
 using MaterialZip.Services.ExplorerServices;
 using MaterialZip.Services.ExplorerServices.Abstractions;
+using MaterialZip.Services.WindowsFunctions;
+using MaterialZip.Services.WindowsFunctions.Abstractions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -72,5 +74,20 @@ public static class ServiceCollectionExtensions
             .TryAddScoped<IApplicationConfigurationManager, ApplicationConfigurationManager>();
         return services;
     }
-    
+
+    /// <summary>
+    /// Add default icon extractor to the <see cref="services"/>
+    /// </summary>
+    /// <param name="services"><see cref="IServiceCollection"/> instance</param>
+    /// <returns>>
+    /// <see cref="IServiceCollection"/> instance with <see cref="IBitmapSourceBuilder"/>, <see cref="IIconExtractor"/>
+    /// and <see cref="IAssociatedIconExtractor"/> services
+    /// </returns>
+    public static IServiceCollection AddIconExtractor(this IServiceCollection services)
+    {
+        services.AddSingleton<IBitmapSourceBuilder, BitmapSourceBuilder>()
+            .AddSingleton<IIconExtractor, IconExtractor>()
+            .AddSingleton<IAssociatedIconExtractor, AssociatedIconExtractor>();
+        return services;
+    }
 }

@@ -11,7 +11,6 @@ namespace MaterialZip.ViewModel;
 public partial class MainViewModel : ViewModelBase
 {
     private const string DefaultLogicalDrivesPath = "/";
-    private const string TryingToResetContentFromNullLogMessage = "Trying to reset content from null, method was stopped";
     
     private readonly ILogger _logger;
     private readonly IExplorer _explorer;

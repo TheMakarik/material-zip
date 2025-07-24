@@ -54,8 +54,8 @@ public sealed class Explorer(ILowLevelExplorer lowLevelExplorer, ILogger logger)
     {
         return await Task.Run(() =>
         {
-            var directories = lowLevelExplorer.GetDirectories(path);
-            var files = lowLevelExplorer.GetFiles(path);
+            var directories = lowLevelExplorer.EnumerateDirectories(path);
+            var files = lowLevelExplorer.EnumerateFiles(path);
             return ToFileEntity(directories, isDirectory: true)
                 .Concat(ToFileEntity(files, isDirectory: false));
         });

@@ -6,8 +6,10 @@ using MaterialZip.Services.WindowsFunctions.Abstractions;
 
 namespace MaterialZip.Services.WindowsFunctions;
 
+/// <inheritdoc cref="IBitmapSourceBuilder"/>
 public class BitmapSourceBuilder : IBitmapSourceBuilder
 {
+    /// <inheritdoc/>
     public BitmapSource Build(Icon icon)
     {
         return Imaging.CreateBitmapSourceFromHIcon(

@@ -123,7 +123,6 @@
                 ItemsSource="{Binding Entities, Converter={x:Static convertors:FileEntityEnumerableToFileDataGridEntityEnumerableConvertor.Instance}}"
                 Name="ViewerDataGrid"
                 SelectedItem="{Binding SelectedItem}"
-                SelectionChanged="ViewerDataGrid_OnSelectionChanged"
                 Visibility="{Binding IsDataGridVisible, Converter={x:Static materialDesign:BooleanToVisibilityConverter.HiddenInstance}}">
 
                 <DataGrid.Resources>
@@ -178,6 +177,9 @@
                     </Style>
                 </DataGrid.RowStyle>
 
+                <DataGrid.RowDetailsTemplate>
+                    <DataTemplate />
+                </DataGrid.RowDetailsTemplate>
             </DataGrid>
 
         </ScrollViewer>

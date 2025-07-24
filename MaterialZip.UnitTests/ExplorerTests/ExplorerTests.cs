@@ -60,7 +60,7 @@ public class ExplorerTests
         //act
         var result = await explorer.GetDirectoryContentAsync(dummyDirectory);
         //assert
-        A.CallTo(() => _lowLevelExplorer.GetFiles(dummyDirectory.Path)).MustHaveHappened();
+        A.CallTo(() => _lowLevelExplorer.EnumerateFiles(dummyDirectory.Path)).MustHaveHappened();
     }
 
     [Test]
@@ -72,7 +72,7 @@ public class ExplorerTests
         //act
         var result = await explorer.GetDirectoryContentAsync(dummyDirectory);
         //assert
-        A.CallTo(() => _lowLevelExplorer.GetDirectories(dummyDirectory.Path)).MustHaveHappened();
+        A.CallTo(() => _lowLevelExplorer.EnumerateDirectories(dummyDirectory.Path)).MustHaveHappened();
     }
 
     [Test]
@@ -130,8 +130,8 @@ public class ExplorerTests
         var dummyDirectoriesPath = FileEntityFactory.CreateDirectories(directoriesCount)
             .Select(e => e.Path)
             .ToArray();
-        A.CallTo(() => _lowLevelExplorer.GetFiles(dummyDirectory.Path)).Returns(dummyFilesPath);
-        A.CallTo(() => _lowLevelExplorer.GetDirectories(dummyDirectory.Path)).Returns(dummyDirectoriesPath);
+        A.CallTo(() => _lowLevelExplorer.EnumerateFiles(dummyDirectory.Path)).Returns(dummyFilesPath);
+        A.CallTo(() => _lowLevelExplorer.EnumerateDirectories(dummyDirectory.Path)).Returns(dummyDirectoriesPath);
         var explorer = new Explorer(_lowLevelExplorer, _logger);
         //act
         var result = await explorer.GetDirectoryContentAsync(dummyDirectory);
@@ -150,8 +150,8 @@ public class ExplorerTests
         var dummyDirectoriesPath = FileEntityFactory.CreateDirectories(directoriesCount)
             .Select(e => e.Path)
             .ToArray();
-        A.CallTo(() => _lowLevelExplorer.GetFiles(dummyDirectory.Path)).Returns(dummyFilesPath);
-        A.CallTo(() => _lowLevelExplorer.GetDirectories(dummyDirectory.Path)).Returns(dummyDirectoriesPath);
+        A.CallTo(() => _lowLevelExplorer.EnumerateFiles(dummyDirectory.Path)).Returns(dummyFilesPath);
+        A.CallTo(() => _lowLevelExplorer.EnumerateDirectories(dummyDirectory.Path)).Returns(dummyDirectoriesPath);
         var explorer = new Explorer(_lowLevelExplorer, _logger);
         //act
         var result = await explorer.GetDirectoryContentAsync(dummyDirectory);

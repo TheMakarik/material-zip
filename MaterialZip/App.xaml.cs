@@ -16,7 +16,6 @@ using MaterialZip.View;
 using MaterialZip.ViewModel;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 
@@ -42,11 +41,9 @@ public partial class App
             .AddScoped<PaletteHelper>()
             .AddLastDirectoryManagers()
             .AddThemeLoader()
+            .AddIconExtractor()
             .AddScoped<MainViewModel>()
             .AddScoped<MainView>()
-            .AddSingleton<IBitmapSourceBuilder, BitmapSourceBuilder>()
-            .AddSingleton<IIconExtractor, IconExtractor>()
-            .AddSingleton<IAssociatedIconExtractor, AssociatedIconExtractor>()
             .AddExplorer();
         builder.Logging
             .ReadFrom.Configuration(builder.Configuration);

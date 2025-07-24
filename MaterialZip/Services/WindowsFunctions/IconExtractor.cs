@@ -11,14 +11,38 @@ using Image = System.Windows.Controls.Image;
 namespace MaterialZip.Services.WindowsFunctions;
 
 
-public class IconExtractor(ILogger logger, IAssociatedIconExtractor extractor, IBitmapSourceBuilder bitmapSourceBuilder) : IIconExtractor
+/// <summary>
+/// Provides functionality to extract icons from file system paths and convert them to bitmap sources
+/// </summary>
+/// <param name="logger">The logger instance for error reporting</param>
+/// <param name="extractor">The associated icon extractor service</param>
+/// <param name="bitmapSourceBuilder">The bitmap source builder service</param>
+public class IconExtractor(
+    ILogger logger,
+    IAssociatedIconExtractor extractor,
+    IBitmapSourceBuilder bitmapSourceBuilder) : IIconExtractor
 {
+    private const string FailedToExtractIconLogMessage = "Failed to extract icon for path: {Path}";
+    private const string ExceptionOccuredLogMessage = "Error extracting icon for path: {Path}";
+    
+    /// <inheritdoc cref="IIconExtractor.FromPath"/>
     public BitmapSource? FromPath(string path)
     {
-        var icon = extractor.Extract(path);
-        if (icon is null)
+        try
+        {
+            var icon = extractor.Extract(path);
+            if (icon is null)
+            {
+                logger.Warning(FailedToExtractIconLogMessage, path);
+                return null;
+            }
+            
+            return bitmapSourceBuilder.Build(icon);
+        }
+        catch (Exception ex)
+        {
+            logger.Error(ex, ExceptionOccuredLogMessage, path);
             return null;
-        
-        return bitmapSourceBuilder.Build(icon);
+        }
     }
 }

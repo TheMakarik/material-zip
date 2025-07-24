@@ -66,9 +66,5 @@ public partial class MainView
         }
     }
 
-    private void ViewerDataGrid_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        var grid = sender as DataGrid;
-        grid!.BorderThickness = new Thickness(0);
-    }
+   
 }

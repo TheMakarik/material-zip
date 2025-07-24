@@ -14,14 +14,14 @@ public sealed class LowLevelExplorer : ILowLevelExplorer
         return Directory.GetLogicalDrives();
     }
 
-    /// <inheritdoc cref="ILowLevelExplorer.GetFiles"/>
-    public IEnumerable<string> GetFiles(string directory)
+    /// <inheritdoc cref="ILowLevelExplorer.EnumerateFiles"/>
+    public IEnumerable<string> EnumerateFiles(string directory)
     {
         return Directory.EnumerateFiles(directory);
     }
 
-    /// <inheritdoc cref="ILowLevelExplorer.GetDirectories"/>
-    public IEnumerable<string> GetDirectories(string directory)
+    /// <inheritdoc cref="ILowLevelExplorer.EnumerateDirectories"/>
+    public IEnumerable<string> EnumerateDirectories(string directory)
     {
         return Directory.EnumerateDirectories(directory);
     }
