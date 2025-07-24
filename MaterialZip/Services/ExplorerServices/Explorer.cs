@@ -16,7 +16,7 @@ public sealed class Explorer(ILowLevelExplorer lowLevelExplorer, ILogger logger)
 {
     private const string GetLogicalDrivesSucceedLogMessage = "Succesefully got  logical drives from computer: {drives}";
     private const string GetDirectoryContentSucceedLogMessage = "Succesefully got {directory} content";
-    private const string TriedToGetFileContentLogMessage = "Tried to get file's content from {path}, emplty collection returned and possible errors may happen";
+    private const string TriedToGetFileContentLogMessage = "Tried to get file's content from {path}, exception was thrown";
     private const string CannotGetContentOfTheFileExceptionText = "Cannot get content of the file {0}";
     
     /// <inheritdoc cref="IExplorer.GetLogicalDrivesAsync"/>

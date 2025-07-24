@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Windows;
+using System.Windows.Data;
+using System.Windows.Threading;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using MaterialDesignThemes.Wpf;
 using MaterialZip.Bootstrapping;
@@ -8,6 +10,8 @@ using MaterialZip.DIExtensions;
 using MaterialZip.Model.Entities;
 using MaterialZip.Options;
 using MaterialZip.Services.ConfigurationServices.Abstractions;
+using MaterialZip.Services.WindowsFunctions;
+using MaterialZip.Services.WindowsFunctions.Abstractions;
 using MaterialZip.View;
 using MaterialZip.ViewModel;
 using Microsoft.Extensions.Configuration;
@@ -21,7 +25,7 @@ namespace MaterialZip;
 /// <summary>
 /// Interaction logic for App.xaml
 /// </summary>
-public partial class App : Application
+public partial class App
 {
     private const string ApplicationStartedLogMessage = "Application have been just started";
     private const string ApplicationOnExitLogMessage = "Application was stoped with exit code {code}";
@@ -36,16 +40,19 @@ public partial class App : Application
         builder.Services
             .Configure<ApplicationOptions>(builder.Configuration.GetSection(nameof(ApplicationOptions)))
             .AddScoped<PaletteHelper>()
-            .AddSingleton<ViewModelLocator>()
             .AddLastDirectoryManagers()
             .AddThemeLoader()
             .AddScoped<MainViewModel>()
             .AddScoped<MainView>()
+            .AddSingleton<IBitmapSourceBuilder, BitmapSourceBuilder>()
+            .AddSingleton<IIconExtractor, IconExtractor>()
+            .AddSingleton<IAssociatedIconExtractor, AssociatedIconExtractor>()
             .AddExplorer();
         builder.Logging
             .ReadFrom.Configuration(builder.Configuration);
         _app = builder.CreateBootstrapper();
         Ioc.Default.ConfigureServices(_app.Services);
+      
     }
     
     protected override void OnStartup(StartupEventArgs e)
@@ -53,15 +60,13 @@ public partial class App : Application
         using (var scope = _app.Services.CreateScope())
         {
             LoadTheme(scope);
-            var lastDirectoryGetter = scope.ServiceProvider.GetRequiredService<ILastDirectoryGetter>();
-            var buffer = scope.ServiceProvider.GetRequiredService<ILastDirectoryBuffer>();
-            buffer.ToBuffer(new FileEntity(lastDirectoryGetter.LastDirectory, true));
-            scope.ServiceProvider.GetRequiredService<MainView>().Show();
+            SetBuffer(scope);
+            ShowWindow(scope);
         }
         _app.Logging.Debug(ApplicationStartedLogMessage);
         base.OnStartup(e);
     }
-
+    
     protected override void OnExit(ExitEventArgs e)
     {
         var buffer =  _app.Services.GetRequiredService<ILastDirectoryBuffer>();
@@ -76,5 +81,20 @@ public partial class App : Application
     {
        scope.ServiceProvider.GetRequiredService<IThemeLoader>().LoadTheme();
     }
+    
+    private void SetBuffer(IServiceScope scope)
+    {
+        var lastDirectoryGetter = scope.ServiceProvider.GetRequiredService<ILastDirectoryGetter>();
+        var buffer = scope.ServiceProvider.GetRequiredService<ILastDirectoryBuffer>();
+        buffer.ToBuffer(new FileEntity(lastDirectoryGetter.LastDirectory, true));
+    }
+    
+    private void ShowWindow(IServiceScope scope)
+    {
+        scope.ServiceProvider.GetRequiredService<MainView>().Show();
+    }
+    
+    
+
 }
 

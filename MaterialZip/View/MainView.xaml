@@ -14,13 +14,14 @@
     xmlns:controls="clr-namespace:MaterialZip.View.Controls"
     xmlns:convertors="clr-namespace:MaterialZip.Convertors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:MaterialZip.View"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="clr-namespace:MaterialZip.ViewModel"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <controls:FastGrid RowDefinitions="Auto, Auto, Auto, *, Auto">
+    <controls:FastGrid RowDefinitions="Auto, Auto, 3*, *, Auto">
         <!--  Title bar  -->
         <controls:FastGrid ColumnDefinitions="Auto, *" Grid.Row="0">
 
@@ -52,6 +53,10 @@
 
             <!--  Buttons  -->
             <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+                <!--
+                    I don't know why I don't have PrimaryHueDarkBrush in the resources,
+                    so I will be trying to get background color from this button by name
+                -->
                 <Button Click="Minimize" x:Name="CloseButton">
                     <materialDesign:PackIcon Kind="Minimize" />
                 </Button>
@@ -108,21 +113,74 @@
         <!--  Directory viewers  -->
 
         <!--  DataGrid  -->
-        <DataGrid
-            AutoGenerateColumns="True"
+        <ScrollViewer
             Grid.Row="2"
-            IsReadOnly="True"
-            ItemsSource="{Binding Entities, Converter={x:Static convertors:FileEntityEnumerableToFileDataGridEntityEnumerableConvertor.Instance}}"
-            Visibility="{Binding IsDataGridVisible, Converter={x:Static materialDesign:BooleanToVisibilityConverter.HiddenInstance}}">
+            HorizontalScrollBarVisibility="Auto"
+            VerticalScrollBarVisibility="Auto">
+            <DataGrid
+                AutoGenerateColumns="False"
+                IsReadOnly="True"
+                ItemsSource="{Binding Entities, Converter={x:Static convertors:FileEntityEnumerableToFileDataGridEntityEnumerableConvertor.Instance}}"
+                Name="ViewerDataGrid"
+                SelectedItem="{Binding SelectedItem}"
+                SelectionChanged="ViewerDataGrid_OnSelectionChanged"
+                Visibility="{Binding IsDataGridVisible, Converter={x:Static materialDesign:BooleanToVisibilityConverter.HiddenInstance}}">
 
-            <DataGrid.Resources>
-                <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
-                    <Setter Property="Background" Value="{Binding ElementName=CloseButton, Path=Background}" />
-                </Style>
-            </DataGrid.Resources>
+                <DataGrid.Resources>
 
-        </DataGrid>
+                    <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="{Binding ElementName=CloseButton, Path=Background}" />
+                    </Style>
 
+                    <Style BasedOn="{StaticResource MaterialDesignDataGridCell}" TargetType="DataGridCell">
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="BorderBrush" Value="Transparent" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+
+
+                </DataGrid.Resources>
+
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Name" Width="130">
+                        <!--  Icon and file name  -->
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Image
+                                        Height="{Binding FontSize, ElementName=FileNameLabel}"
+                                        Source="{Binding Path, Converter={x:Static convertors:PathToImageSourceConvertor.Instance}}"
+                                        Width="{Binding FontSize, ElementName=FileNameLabel}" />
+                                    <Label Content="{Binding Name}" Name="FileNameLabel" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn
+                        Binding="{Binding Size}"
+                        Header="Size"
+                        x:Name="SizeColumn" />
+                    <DataGridTextColumn Binding="{Binding LastChanging}" Header="Last changing" />
+                    <DataGridTextColumn Binding="{Binding CreatedAt}" Header="Created at" />
+                </DataGrid.Columns>
+
+
+                <!--
+                    Here is the reason why I deleted ViewModelLocator, I need to put somehow command here,
+                    but I cant, and due to ViewModelLocator I cant go to Code Behind
+                    You can help: https://stackoverflow.com/questions/79710670/use-mousedoubleclick-event-trigger-in-every-datagrid-row?noredirect=1#comment140610313_79710670
+                -->
+                <DataGrid.RowStyle>
+                    <Style BasedOn="{StaticResource {x:Type DataGridRow}}" TargetType="DataGridRow">
+                        <EventSetter Event="MouseDoubleClick" Handler="InvokeResetDirectoryContent" />
+                    </Style>
+                </DataGrid.RowStyle>
+
+            </DataGrid>
+
+        </ScrollViewer>
 
 
     </controls:FastGrid>

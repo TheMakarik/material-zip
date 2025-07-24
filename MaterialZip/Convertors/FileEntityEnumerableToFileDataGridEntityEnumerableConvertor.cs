@@ -10,7 +10,6 @@ namespace MaterialZip.Convertors;
 
 /// <summary>
 /// Converts a <see cref="FileEntity"/> to a <see cref="FileDataGridEntity"/> for display purposes.
-/// This converter supports one-way binding only.
 /// </summary>
 [ValueConversion(typeof(IEnumerable<FileEntity>), typeof(IEnumerable<FileDataGridEntity>))]
 public class FileEntityEnumerableToFileDataGridEntityEnumerableConvertor : IValueConverter
@@ -60,8 +59,10 @@ public class FileEntityEnumerableToFileDataGridEntityEnumerableConvertor : IValu
                         Name: info.Name,
                         Size: entity.IsDirectory ? null : (info as FileInfo)?.Length,
                         LastChanging: info.LastWriteTime.ToLocalTime(),
-                        CreatedAt: info.CreationTime.ToLocalTime()
+                        CreatedAt: info.CreationTime.ToLocalTime(),
+                        entity.Path
                     );
+                 
 
                     result.Add(fileDataGridEntity);
                 }
@@ -75,6 +76,15 @@ public class FileEntityEnumerableToFileDataGridEntityEnumerableConvertor : IValu
     
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        throw new NotSupportedException();
+        if (value is not IEnumerable<FileDataGridEntity> entities)
+             return null;
+        var result = new List<FileEntity>(entities.Count());
+        
+        foreach (var fileDataGridEntity in entities)
+        {
+            var isDirectory = Directory.Exists(fileDataGridEntity.Path);
+            result.Add(new FileEntity(fileDataGridEntity.Path, isDirectory));
+        }
+        return result;
     }
 }

@@ -7,9 +7,11 @@ namespace MaterialZip.Model.Entities;
 /// <param name="Size">Size of the file</param>
 /// <param name="LastChanging">Last time, when file was changed </param>
 /// <param name="CreatedAt">Time, when file was created</param>
+///  <param name="Path">Full path from directory, do not show it the table, use in convertor</param>
 public record struct FileDataGridEntity(
     string Name,
     long? Size,
     DateTime LastChanging,
-    DateTime CreatedAt
+    DateTime CreatedAt,
+    string Path
 );

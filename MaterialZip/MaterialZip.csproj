@@ -18,6 +18,7 @@
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.6" />
       <PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.6" />
       <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.7" />
+      <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
       <PackageReference Include="Serilog" Version="4.3.0" />
       <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1" />
       <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />
@@ -25,6 +26,7 @@
       <PackageReference Include="Serilog.Settings.Configuration" Version="9.0.0" />
       <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
       <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+      <PackageReference Include="System.Drawing.Common" Version="9.0.7" />
     </ItemGroup>
 
     <ItemGroup>
@@ -44,11 +46,21 @@
       <Content Include="Assets\Icon.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
+      <None Remove="Assets\FilesIcons\drive.png" />
+      <None Remove="Assets\FilesIcons\folder.png" />
+      <Content Include="Assets\FileIcons\folder.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Assets\FilesIcons\windrive.png" />
+      <None Remove="Assets\FileIcons\drive.png" />
+      <None Remove="Assets\FileIcons\harddisk.png" />
+      <Content Include="Assets\FileIcons\harddisk.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Resources\" />
-      <Folder Include="View\Styles\" />
     </ItemGroup>
 
 </Project>

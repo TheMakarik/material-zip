@@ -58,7 +58,6 @@ public class ThemeLoader(
 
         var theme = Theme.Create(applicationTheme.Theme, applicationTheme.PrimaryColor, applicationTheme.SecondaryColor);
         paletteHelper.SetTheme(theme);
-        
         logger.Information(ThemeWasLoadedLogMessage);
 
     }

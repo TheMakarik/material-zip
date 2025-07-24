@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MaterialZip.Model.Entities;
@@ -10,15 +11,17 @@ namespace MaterialZip.ViewModel;
 public partial class MainViewModel : ViewModelBase
 {
     private const string DefaultLogicalDrivesPath = "/";
-
-    private ILogger _logger;
-    private IExplorer _explorer;
-    private IExplorerHistory _history;
-    private ILastDirectoryBuffer _buffer;
+    private const string TryingToResetContentFromNullLogMessage = "Trying to reset content from null, method was stopped";
+    
+    private readonly ILogger _logger;
+    private readonly IExplorer _explorer;
+    private readonly IExplorerHistory _history;
+    private readonly ILastDirectoryBuffer _buffer;
     
     [ObservableProperty] private string _currentPath;
-    [ObservableProperty] private IEnumerable<FileEntity> _entities;
+    [ObservableProperty] private FileEntity? _selectedItem;
     [ObservableProperty] private bool _isDataGridVisible = true; 
+    [ObservableProperty] private ObservableCollection<FileEntity> _entities = new();
     
     public MainViewModel(
         ILastDirectoryBuffer buffer,
@@ -30,21 +33,35 @@ public partial class MainViewModel : ViewModelBase
         _logger = logger;
         _explorer = explorer;
         _history = history;
-        
-        var directory = buffer.FromBuffer();
-        SetDirectoryContent(directory);
+
+        var directory = _buffer.FromBuffer();
+        ResetDirectoryContent(directory);
     }
 
     
+
     [RelayCommand]
-    private async Task SetDirectoryContent(FileEntity directory)
+    private async Task ResetDirectoryContent(FileEntity directory)
     {
         if (directory.Path == DefaultLogicalDrivesPath)
-            Entities = await _explorer.GetLogicalDrivesAsync();
+          AddEntities(await _explorer.GetLogicalDrivesAsync());
         else
-            Entities = await _explorer.GetDirectoryContentAsync(directory);
+           AddEntities(await _explorer.GetDirectoryContentAsync(directory));
+        SaveDirectory(directory);
     }
 
-    
+
+
+    private void SaveDirectory(FileEntity directory)
+    {
+        _buffer.ToBuffer(directory);
+        _history.CurrentDirectory = directory;
+    }
+
+    private void AddEntities(IEnumerable<FileEntity> entities)
+    {
+        Entities = new ObservableCollection<FileEntity>(entities);
+        OnPropertyChanged(nameof(Entities));
+    }
     
 }
