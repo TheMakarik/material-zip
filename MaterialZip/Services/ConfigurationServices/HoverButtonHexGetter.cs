@@ -10,7 +10,7 @@ namespace MaterialZip.Services.ConfigurationServices;
 /// <param name="logger"><see cref="ILogger"/> instance from DI container</param>
 public class HoverButtonHexGetter(IApplicationConfigurationManager applicationConfigurationManager, ILogger logger) : IHoverButtonHexGetter
 {
-    private const string HoverButtonHexWasLoadedLogMessage = " hover button hex: {hex} was loaded successefully";
+    private const string HoverButtonHexWasLoadedLogMessage = "Hover button hex: {hex} was loaded successefully";
     
     /// <inheritdoc cref="IHoverButtonHexGetter.GetHoverButtonHex"/>
     public string GetHoverButtonHex()

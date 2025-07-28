@@ -9,16 +9,22 @@ namespace MaterialZip.Services.ExplorerServices;
 
 public sealed class ExplorerHistory(ILogger logger, IExplorerHistoryMemory memory) : IExplorerHistory
 {
-
+    /*
+     * BUG REPORT:
+     *   1) CanRedo isn't work AT ALL because Undo() always changing count (Possible cut by the ExplorerHistoryMemery.CutHistoryListIfRedoIsDid due to a wrong condition)
+     *   2) CanUndo after undid all elements still true, due to a wrong condition (but the condition is works with other cases)
+     */
+    
     private const string CannotRedoLogMessage = "Cannot redo because CanRedo is false, current index: {index}, history count: {count}, exception will be thrown";
     private const string CannotUndoLogMessage = "Cannot undo because CanUndo is false, current index: {index}, history count: {count}, exception will be thrown";
 
     private const string CannotRedoExceptionText = "Tried to invoke redo while CanRedo is false, possible forgotten validation";
     private const string CannotUndoExceptionText = "Tried to invoke undo while CanUndo is false, possible forgotten validation";
     
+    
     /// <inheritdoc cref="IExplorerHistory.CurrentDirectory"/>
     public FileEntity CurrentDirectory { get => memory.CurrentDirectory; set => memory.CurrentDirectory = value; }
-  
+    
     /// <inheritdoc cref="IExplorerHistory.CanRedo"/>
     public bool CanRedo => memory.Index + 1 < memory.HistoryList.Count();
  

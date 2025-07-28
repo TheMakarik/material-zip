@@ -145,6 +145,19 @@ public class ExplorerHistoryTests
     }
 
     [Test]
+    public void CanRedo_AfterUndo_ReturnsTrue()
+    {
+        //arrange
+        var history = new ExplorerHistory(_logger, _memory);
+        A.CallTo(() => _memory.Index).Returns(1);
+        history.Undo();
+        //act
+        var result = history.CanRedo;
+        //assert
+        Assert.IsTrue(result);
+    }
+
+    [Test]
     public void Index_AfterMultipleOperations_ReflectsMemoryState()
     {
         //arrange

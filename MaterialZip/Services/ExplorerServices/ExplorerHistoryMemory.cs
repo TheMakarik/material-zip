@@ -1,6 +1,7 @@
 using MaterialZip.Model.Entities;
 using MaterialZip.Model.Exceptions;
 using MaterialZip.Services.ExplorerServices.Abstractions;
+using MaterialZip.View.Controls;
 using Serilog;
 
 namespace MaterialZip.Services.ExplorerServices;
@@ -18,7 +19,6 @@ public sealed class ExplorerHistoryMemory(ILogger logger) : IExplorerHistoryMemo
         = "Added a new directory to history: {path}";
     private const string TryingGetDirectoryFromEmptyHistoryLogMessage
         = "Tried to get last directory from empty history, program will fall";
-
     private const string TryingToGetValueFromEmptyHistoryExceptionText
         = "Trying to get value from empty history collection, possible forgotten adding first element or validation"; 
     
@@ -61,10 +61,10 @@ public sealed class ExplorerHistoryMemory(ILogger logger) : IExplorerHistoryMemo
 
     private void AddDirectory(FileEntity directory)
     {
-        CutHistoryListIfRedoIsDid();
         _historyList.Add(directory);
         logger.Debug(AddingANewDirectoryToHistoryLogMessage, directory.Path);
         Index++;
+        CutHistoryListIfRedoIsDid();
     }
 
     private void CutHistoryListIfRedoIsDid()

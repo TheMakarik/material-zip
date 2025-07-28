@@ -20,9 +20,10 @@ public partial class MainViewModel : ViewModelBase
     private readonly IGitHubSourceOpener _gitHubSourceOpener;
     
     [ObservableProperty] private string _currentPath;
-    [ObservableProperty] private bool _isDataGridVisible = true;
     [ObservableProperty] private ObservableCollection<FileEntity> _selectedEntities = new();
     [ObservableProperty] private ObservableCollection<FileEntity> _entities = new();
+    [ObservableProperty] private bool _canUndo;
+    [ObservableProperty] private bool _canRedo;
     
     public string HoverButtonHex { get; init; } 
     
@@ -50,11 +51,7 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private async Task ResetDirectoryContent(FileEntity directory)
     {
-        if (directory.Path == DefaultLogicalDrivesPath)
-          AddEntities(await _explorer.GetLogicalDrivesAsync());
-        else
-           AddEntities(await _explorer.GetDirectoryContentAsync(directory));
-        SaveDirectory(directory);
+        await ResetDirectory(directory, updateHistory: true);
     }
 
     [RelayCommand]
@@ -62,12 +59,55 @@ public partial class MainViewModel : ViewModelBase
     {
         _gitHubSourceOpener.TryOpen();
     }
+
+    [RelayCommand]
+    private  async Task Redo()
+    {
+        if (!_history.CanRedo)
+            return;
+        
+        _history.Redo();
+        await ResetDirectoryContentToCurrentDirectory();
+    }
+
+    [RelayCommand]
+    private async Task Undo()
+    {
+        if (!_history.CanUndo)
+            return;
+        
+        _history.Undo();
+        await ResetDirectoryContentToCurrentDirectory();
+    }
     
-    private void SaveDirectory(FileEntity directory)
+    private void SaveDirectory(FileEntity directory, bool updateHistory)
     {
         _buffer.ToBuffer(directory);
-        _history.CurrentDirectory = directory;
+        
+        if(updateHistory)
+             _history.CurrentDirectory = directory;
+        
         CurrentPath = directory.Path;
+        UpdateCanRedoAndCanUndo();
+    }
+
+    private void UpdateCanRedoAndCanUndo()
+    {
+        CanRedo = _history.CanRedo;
+        CanUndo = _history.CanUndo;
+    }
+
+    private async Task ResetDirectory(FileEntity directory, bool updateHistory)
+    {
+        if (!directory.IsDirectory)
+            return;
+        
+        if (directory.Path == DefaultLogicalDrivesPath)
+            AddEntities(await _explorer.GetLogicalDrivesAsync());
+        else
+            AddEntities(await _explorer.GetDirectoryContentAsync(directory));
+        
+        SaveDirectory(directory, updateHistory);
     }
 
     private void AddEntities(IEnumerable<FileEntity> entities)
@@ -75,7 +115,7 @@ public partial class MainViewModel : ViewModelBase
         Entities = new ObservableCollection<FileEntity>(entities);
     }
     
-    
+    private async Task ResetDirectoryContentToCurrentDirectory() =>  await ResetDirectory(_history.CurrentDirectory, updateHistory: true);
 
     
 }

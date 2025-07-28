@@ -72,6 +72,7 @@
 
         <!--  Menu  -->
         <Menu Grid.Row="1" materialDesign:MenuAssist.MenuItemsPresenterMargin="0">
+
             <MenuItem Header="_File">
                 <MenuItem Header="Save" Icon="{materialDesign:PackIcon Kind=ContentSave}" />
                 <MenuItem Header="Save As.." />
@@ -108,6 +109,19 @@
                     Header="_Paste"
                     Icon="{materialDesign:PackIcon Kind=ContentPaste}" />
             </MenuItem>
+
+            <MenuItem
+                Command="{Binding UndoCommand}"
+                Foreground="{Binding CanUndo, Converter={x:Static convertors:BooleanToBrushConvertor.Instance}, ConverterParameter={x:Static Brushes.WhiteSmoke}}"
+                Header="{materialDesign:PackIcon Kind=ArrowLeft}"
+                HorizontalContentAlignment="Stretch"
+                VerticalContentAlignment="Stretch" />
+            <MenuItem
+                Command="{Binding RedoCommand}"
+                Foreground="{Binding CanRedo, Converter={x:Static convertors:BooleanToBrushConvertor.Instance}, ConverterParameter={x:Static Brushes.WhiteSmoke}}"
+                Header="{materialDesign:PackIcon Kind=ArrowRight}"
+                HorizontalContentAlignment="Stretch"
+                VerticalContentAlignment="Stretch" />
         </Menu>
 
 
@@ -199,9 +213,6 @@
                 </Style>
             </DataGrid.RowStyle>
 
-            <DataGrid.RowDetailsTemplate>
-                <DataTemplate />
-            </DataGrid.RowDetailsTemplate>
         </DataGrid>
 
 
