@@ -9,11 +9,6 @@ namespace MaterialZip.Services.ExplorerServices;
 
 public sealed class ExplorerHistory(ILogger logger, IExplorerHistoryMemory memory) : IExplorerHistory
 {
-    /*
-     * BUG REPORT:
-     *   1) CanRedo isn't work AT ALL because Undo() always changing count (Possible cut by the ExplorerHistoryMemery.CutHistoryListIfRedoIsDid due to a wrong condition)
-     *   2) CanUndo after undid all elements still true, due to a wrong condition (but the condition is works with other cases)
-     */
     
     private const string CannotRedoLogMessage = "Cannot redo because CanRedo is false, current index: {index}, history count: {count}, exception will be thrown";
     private const string CannotUndoLogMessage = "Cannot undo because CanUndo is false, current index: {index}, history count: {count}, exception will be thrown";
@@ -21,6 +16,7 @@ public sealed class ExplorerHistory(ILogger logger, IExplorerHistoryMemory memor
     private const string CannotRedoExceptionText = "Tried to invoke redo while CanRedo is false, possible forgotten validation";
     private const string CannotUndoExceptionText = "Tried to invoke undo while CanUndo is false, possible forgotten validation";
     
+    private object _lock = new();
     
     /// <inheritdoc cref="IExplorerHistory.CurrentDirectory"/>
     public FileEntity CurrentDirectory { get => memory.CurrentDirectory; set => memory.CurrentDirectory = value; }
@@ -34,24 +30,39 @@ public sealed class ExplorerHistory(ILogger logger, IExplorerHistoryMemory memor
     /// <inheritdoc cref="IExplorerHistory.Redo"/>
     public void Redo()
     {
-        if (CanRedo)
-            memory.Index++;
-        else
+        lock (_lock)
         {
-            logger.Fatal(CannotRedoLogMessage, memory.Index, memory.HistoryList.Count());
-            throw new CannotRedoException(CannotRedoExceptionText);
+            if (!CanRedo)
+            {
+                logger.Fatal(CannotRedoLogMessage, memory.Index, memory.HistoryList.Count());
+                throw new CannotRedoException(CannotRedoExceptionText); 
+            }
+            memory.Index++;
+            memory.IsRedoDone = true;
+            Console.Write("[");
+            foreach(var element in memory.HistoryList)
+                Console.Write(element.Path);
+            Console.Write("]");
+            Console.Write("Index " + memory.Index);
         }
     }
 
     /// <inheritdoc cref="IExplorerHistory.Undo"/>
     public void Undo()
     {
-        if (CanUndo)
-            memory.Index--;
-        else
+        lock (_lock)
         {
-            logger.Fatal(CannotUndoLogMessage, memory.Index, memory.HistoryList.Count());
-            throw new CannotUndoException(CannotUndoExceptionText);
+            if (!CanUndo)
+            {
+                logger.Fatal(CannotUndoLogMessage, memory.Index, memory.HistoryList.Count());
+                throw new CannotUndoException(CannotUndoExceptionText);
+            }
+            memory.Index--;
+            Console.Write("Elements: [");
+            foreach(var element in memory.HistoryList)
+                Console.Write(element.Path + ", ");
+            Console.Write("]\n");
+            Console.WriteLine("Index " + memory.Index); 
         }
     }
 

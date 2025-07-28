@@ -114,8 +114,9 @@ public partial class MainViewModel : ViewModelBase
     {
         Entities = new ObservableCollection<FileEntity>(entities);
     }
-    
-    private async Task ResetDirectoryContentToCurrentDirectory() =>  await ResetDirectory(_history.CurrentDirectory, updateHistory: true);
 
-    
+    private async Task ResetDirectoryContentToCurrentDirectory() 
+        => await ResetDirectory(_history.CurrentDirectory, updateHistory: false);
+
+
 }

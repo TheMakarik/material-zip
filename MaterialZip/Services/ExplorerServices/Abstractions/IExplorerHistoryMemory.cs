@@ -17,6 +17,7 @@ public interface IExplorerHistoryMemory
     /// </summary>
     public int Index { get; set; }
     
+    public bool IsRedoDone { get; set; }
     /// <summary>
     /// Current <see cref="FileEntity"/>, on set will update <see cref="HistoryList"/>
     /// </summary>

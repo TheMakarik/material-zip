@@ -9,7 +9,7 @@
   },
   "Serilog": {
     "Using": ["Serilog.Sinks.File", "Serilog.Sinks.Console"],
-    "MinimumLevel": "Debug",
+    "MinimumLevel": "Fatal",
     "Enrich": [ "FromLogContext", "WithMachineName", "WithThreadId" ],
     "WriteTo": [
       {

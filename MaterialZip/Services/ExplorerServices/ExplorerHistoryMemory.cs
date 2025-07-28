@@ -23,6 +23,7 @@ public sealed class ExplorerHistoryMemory(ILogger logger) : IExplorerHistoryMemo
         = "Trying to get value from empty history collection, possible forgotten adding first element or validation"; 
     
     private List<FileEntity> _historyList = new List<FileEntity>(10);
+    private bool _wasFirstAddingDid;
     
     /// <inheritdoc cref=" IExplorerHistoryMemory.HistoryList"/>
     public IEnumerable<FileEntity> HistoryList
@@ -32,10 +33,12 @@ public sealed class ExplorerHistoryMemory(ILogger logger) : IExplorerHistoryMemo
     }
 
     /// <inheritdoc cref="IExplorerHistoryMemory.Index"/>
-    public int Index { get; set; } = -1;
+    public int Index { get; set; } = -0;
     
     /// <inheritdoc cref="IExplorerHistoryMemory.CurrentDirectory"/>
     public FileEntity CurrentDirectory { get => GetDirectory(); set => AddDirectory(value); }
+    
+    public bool IsRedoDone { get; set; }
     
     private FileEntity GetDirectory()
     {
@@ -45,11 +48,11 @@ public sealed class ExplorerHistoryMemory(ILogger logger) : IExplorerHistoryMemo
 
     private void ThrowExceptionIfCannotGetDirectory()
     {
-        if (ElementsDoNotExist())
-        {
-            logger.Fatal(TryingGetDirectoryFromEmptyHistoryLogMessage);
-            throw new EmptyHistoryException(TryingToGetValueFromEmptyHistoryExceptionText);
-        }
+        if (ElementsExist())
+            return;
+        
+        logger.Fatal(TryingGetDirectoryFromEmptyHistoryLogMessage);
+        throw new EmptyHistoryException(TryingToGetValueFromEmptyHistoryExceptionText);
     }
 
     private FileEntity GetDirectoryIgnoringElementsExisting()
@@ -63,7 +66,10 @@ public sealed class ExplorerHistoryMemory(ILogger logger) : IExplorerHistoryMemo
     {
         _historyList.Add(directory);
         logger.Debug(AddingANewDirectoryToHistoryLogMessage, directory.Path);
-        Index++;
+        if (_wasFirstAddingDid)
+            Index++;
+        else
+            _wasFirstAddingDid = true;
         CutHistoryListIfRedoIsDid();
     }
 
@@ -71,10 +77,9 @@ public sealed class ExplorerHistoryMemory(ILogger logger) : IExplorerHistoryMemo
     {
         if (IsRedoDone)
             HistoryList = HistoryList.Take(Index);
+        IsRedoDone = false;
     }
     
-    private bool ElementsDoNotExist() => Index == -1;
-    private bool IsRedoDone => Index + 1 != HistoryList.Count();
-
-
+    private bool ElementsExist() => _wasFirstAddingDid;
+ 
 }
