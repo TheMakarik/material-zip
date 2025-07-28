@@ -4,6 +4,7 @@ using MaterialZip.Services.ConfigurationServices;
 using MaterialZip.Services.ConfigurationServices.Abstractions;
 using MaterialZip.Services.ExplorerServices;
 using MaterialZip.Services.ExplorerServices.Abstractions;
+using MaterialZip.Services.ValidationServices;
 using MaterialZip.Services.WindowsFunctions;
 using MaterialZip.Services.WindowsFunctions.Abstractions;
 using Microsoft.Extensions.Configuration;
@@ -44,15 +45,14 @@ public static class ServiceCollectionExtensions
     /// <param name="services"><see cref="Microsoft.Extensions.DependencyInjection.ServiceCollection"/> instance</param>
     /// <returns><see cref="Microsoft.Extensions.DependencyInjection.ServiceCollection"/> instance with theme loader services</returns>
     /// <remarks>
-    /// Services that will be added by interface: <see cref="IThemeLoader"/>, <see cref="IColorConvertor"/> and <see cref="IThemeConvertor"/> and also trying to add <see cref="IApplicationConfigurationManager"/>
-    /// Please do not use  <see cref="IColorConvertor"/> and <see cref="IThemeConvertor"/>  in your application, they only need to  
+    /// Services that will be added by interface: <see cref="IThemeLoader"/> and<see cref="IColorConvertor"/> and also trying to add <see cref="IApplicationConfigurationManager"/>
+    /// Please do not use  <see cref="IColorConvertor"/>  in your application, they only need to be used in <see cref="IThemeLoader"/> 
     /// </remarks>
     public static IServiceCollection AddThemeLoader(this IServiceCollection services)
     {
         services
             .AddScoped<IThemeLoader, ThemeLoader>()
             .AddTransient<IColorConvertor, ColorConvertor>()
-            .AddTransient<IThemeConvertor, ThemeConvertor>()
             .TryAddScoped<IApplicationConfigurationManager, ApplicationConfigurationManager>();
         return services;
     }
@@ -90,4 +90,37 @@ public static class ServiceCollectionExtensions
             .AddSingleton<IAssociatedIconExtractor, AssociatedIconExtractor>();
         return services;
     }
+
+    /// <summary>
+    /// Adds a url openers services to <see cref="services"/>
+    /// </summary>
+    /// <param name="services"><see cref="IServiceCollection"/> instance where services will be added</param>
+    /// <returns><see cref="IServiceCollection"/> instance with url openers services</returns>
+    /// <remarks>
+    /// Services that will be added: <see cref="IUrlOpener"/>, <see cref="IGitHubSourceOpener"/>
+    /// Services that will be added if was not added: <see cref="IApplicationConfigurationManager"/>, <see cref="IProcessRunner"/>
+    /// </remarks>
+    public static IServiceCollection AddUrlOpeners(this IServiceCollection services)
+    {
+        services
+            .AddScoped<IUrlOpener, UrlOpener>()
+            .AddScoped<IGitHubSourceOpener, GitHubSourceOpener>()
+            .TryAddScoped<IProcessRunner, ProcessRunner>();
+        services.TryAddScoped<IApplicationConfigurationManager, ApplicationConfigurationManager>();
+        return services;
+    }
+
+    /// <summary>
+    /// Add all validator to DI container
+    /// </summary>
+    /// <param name="services"><see cref="IServiceCollection"/> to add validators</param>
+    /// <returns><see cref="IServiceCollection"/> instance with validators</returns>
+    /// <remarks>
+    /// Validators that will be added: <see cref="AbsoluteUrlValidator"/>
+    /// </remarks>
+    public static IServiceCollection AddValidators(this IServiceCollection services)
+    {
+        return services.AddSingleton<AbsoluteUrlValidator>();
+    }
+    
 }

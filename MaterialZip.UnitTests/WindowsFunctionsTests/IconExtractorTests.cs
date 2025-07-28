@@ -30,7 +30,7 @@ public class IconExtractorTests
         //arrange
         var bitmap = A.Dummy<BitmapSource>();
         var path = FileEntityFactory.CreateFile().Path;
-        var dummyIcon = Icon.FromHandle(IntPtr.MaxValue);
+        var dummyIcon = Icon.FromHandle(IntPtr.MinValue);
         A.CallTo(() => _extractor.Extract(path)).Returns(dummyIcon);
         A.CallTo(() => _builder.Build(dummyIcon)).Returns(bitmap);
         var iconExtractor = new IconExtractor(_logger, _extractor, _builder);

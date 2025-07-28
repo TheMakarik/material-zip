@@ -1,9 +1,9 @@
 {
   "ApplicationOptions": {
     "Language": "en-US",
-    "Theme": "Light",
-    "PrimaryColor": "DeepPurple",
-    "SecondaryColor": "Purple",
+    "Color": "DeepPurple",
+    "HoverColorHex": "#b5b5b5",
+    "GithubSourceLink": "https://github.com/TheMakarik/material-zip",
     "LastDirectory": "/",
     "ResourcesLocation": "/Resources"
   },

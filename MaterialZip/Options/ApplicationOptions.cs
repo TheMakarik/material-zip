@@ -13,15 +13,15 @@ public class ApplicationOptions : IApplicationOptions
     /// <inheritdoc cref="IApplicationOptions.Language"/>
     public required CultureInfo Language { get; set; }
     
-    /// <inheritdoc cref="IApplicationOptions.Theme"/>
-    public MaterialTheme Theme { get; set; }
-    
-    /// <inheritdoc cref="IApplicationOptions.PrimaryColor"/>
-    public MaterialColor PrimaryColor { get; set; }
-    
-    /// <inheritdoc cref="IApplicationOptions.SecondaryColor"/>
-    public MaterialColor SecondaryColor { get; set; }
-    
+    /// <inheritdoc cref="IApplicationOptions.Color"/>
+    public MaterialColor Color { get; set; }
+
+    /// <inheritdoc cref="IApplicationOptions.GitHubSourceLink"/>
+    public required string GitHubSourceLink { get; set; }
+
+    /// <inheritdoc cref="IApplicationOptions.HoverColorHex"/>
+    public required string HoverColorHex { get; set; }
+
     /// <inheritdoc cref="IApplicationOptions.LastDirectory"/>
     public required string LastDirectory { get; set; }
     

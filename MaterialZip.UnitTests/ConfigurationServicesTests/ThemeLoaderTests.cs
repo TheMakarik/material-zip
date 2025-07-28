@@ -12,7 +12,6 @@ namespace MaterialZip.UnitTests.ConfigurationServicesTests;
 public class ThemeLoaderTests
 {
     private ILogger _logger;
-    private IThemeConvertor _themeConvertor;
     private IColorConvertor _colorConvertor;
     private IApplicationConfigurationManager _applicationConfigurationManager;
     private PaletteHelper _paletteHelper;
@@ -21,103 +20,38 @@ public class ThemeLoaderTests
     public void SetUp()
     {
         _logger = A.Fake<ILogger>();
-        _themeConvertor = A.Fake<IThemeConvertor>();
         _colorConvertor = A.Fake<IColorConvertor>();
         _applicationConfigurationManager = A.Fake<IApplicationConfigurationManager>();
         _paletteHelper = A.Fake<PaletteHelper>();
+        
+        A.CallTo(() => _applicationConfigurationManager.Color).Returns(MaterialColor.Amber);
     }
 
     [Test]
-    public void LoadTheme_Always_GettingThemeFromConfiguration()
+    public void Constructor_Always_GettingColorFromConfiguration()
     {
         //arrange
-        var themeLoader = CreateThemeLoader();
         //act
-        themeLoader.LoadTheme();
+        var themeLoader = CreateThemeLoader();
         //assert
-        A.CallTo(() => _applicationConfigurationManager.Theme).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _applicationConfigurationManager.Color).MustHaveHappenedOnceExactly();
     }
 
     [Test]
-    public void LoadTheme_Always_GettingPrimaryColorFromConfiguration()
+    public void LoadTheme_Always_ConvertMaterialColorToWpfColor()
     {
         //arrange
+        var materialColor = MaterialColor.Blue;
+        var expectedColor = Colors.Blue;
+        A.CallTo(() => _applicationConfigurationManager.Color).Returns(materialColor);
+        A.CallTo(() => _colorConvertor.ToWpfColor(materialColor)).Returns(expectedColor);
         var themeLoader = CreateThemeLoader();
         //act
         themeLoader.LoadTheme();
         //assert
-        A.CallTo(() => _applicationConfigurationManager.PrimaryColor).MustHaveHappenedOnceExactly();
-    }
-
-    [Test]
-    public void LoadTheme_Always_GettingSecondaryColorFromConfiguration()
-    {
-        //arrange
-        var themeLoader = CreateThemeLoader();
-        //act
-        themeLoader.LoadTheme();
-        //assert
-        A.CallTo(() => _applicationConfigurationManager.SecondaryColor).MustHaveHappenedOnceExactly();
-    }
-
-    [Test]
-    public void LoadTheme_Always_SetThemeToPaletteHelper()
-    {
-        //arrange
-        var themeLoader = CreateThemeLoader();
-        //act
-        themeLoader.LoadTheme();
-        //assert
-        A.CallTo(() => _paletteHelper.SetTheme(A<Theme>._)).MustHaveHappenedOnceExactly();
-    }
-
-    [TestCase(MaterialTheme.Dark, BaseTheme.Dark)]
-    [TestCase(MaterialTheme.Light, BaseTheme.Light)]
-    public void LoadTheme_Always_MustConvertTheme(MaterialTheme theme, BaseTheme expected)
-    {
-        //arrange
-        A.CallTo(() => _applicationConfigurationManager.Theme).Returns(theme);
-        A.CallTo(() => _themeConvertor.ToBaseTheme(theme)).Returns(expected);
-        var themeLoader = CreateThemeLoader();
-        //act
-        themeLoader.LoadTheme();
-        //assert
-        A.CallTo(() => _paletteHelper
-                .SetTheme(A<Theme>.That.Matches(t => t.GetBaseTheme() == expected)))
-            .MustHaveHappenedOnceExactly(); 
-    }
-
-    [TestCase(MaterialColor.Amber)]
-    public void LoadTheme_Always_MustConvertPrimaryColor(MaterialColor color)
-    {
-        //arrange
-        var expected = Color.FromArgb(3, 32, 50, 50);
-        A.CallTo(() => _applicationConfigurationManager.PrimaryColor).Returns(color);
-        A.CallTo(() => _colorConvertor.ToWpfColor(color)).Returns(expected);
-        var themeLoader = CreateThemeLoader();
-        //act
-        themeLoader.LoadTheme();
-        //assert
-        A.CallTo(() => _paletteHelper
-                .SetTheme(A<Theme>.That.Matches(t => t.PrimaryMid.Color == expected)))
-            .MustHaveHappenedOnceExactly(); 
+        A.CallTo(() => _colorConvertor.ToWpfColor(materialColor)).MustHaveHappenedOnceExactly();
     }
     
-    [TestCase(MaterialColor.Amber)]
-    public void LoadTheme_Always_MustConvertSecondaryColor(MaterialColor color)
-    {
-        //arrange
-        var expected = Color.FromArgb(3, 32, 50, 50);
-        A.CallTo(() => _applicationConfigurationManager.SecondaryColor).Returns(color);
-        A.CallTo(() => _colorConvertor.ToWpfColor(color)).Returns(expected);
-        var themeLoader = CreateThemeLoader();
-        //act
-        themeLoader.LoadTheme();
-        //assert
-        A.CallTo(() => _paletteHelper
-                .SetTheme(A<Theme>.That.Matches(t => t.SecondaryMid.Color == expected)))
-            .MustHaveHappenedOnceExactly(); 
-    }
 
     [Test]
     public void LoadTheme_Always_LogInformation3Times()
@@ -128,12 +62,11 @@ public class ThemeLoaderTests
         themeLoader.LoadTheme();
         //assert
         A.CallTo(_logger)
-                .Where(call => call.Method.Name == "Information")
-                .MustHaveHappened(3, Times.Exactly);
+            .Where(call => call.Method.Name == nameof(_logger.Information))
+            .MustHaveHappened(3, Times.Exactly);
     }
     
     private ThemeLoader CreateThemeLoader() => new ThemeLoader(
-        _themeConvertor,
         _colorConvertor, 
         _applicationConfigurationManager,
         _paletteHelper, 

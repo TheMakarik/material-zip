@@ -14,23 +14,22 @@ public interface IApplicationOptions
     /// </summary>
     public CultureInfo Language { get; set; }
     
-    /// <summary>
-    /// Current Application's theme
-    /// </summary>
-    /// <remarks>This enum will be converted to <see cref=" MaterialDesignThemes.Wpf.BaseTheme"/></remarks>
-    public MaterialTheme Theme { get; set; }
     
     /// <summary>
-    /// Current application primary color
+    /// Current application color
     /// </summary>
     /// <remarks>This enum will be converted to <see cref=" MaterialDesignColors.PrimaryColor"/></remarks>
-    public MaterialColor PrimaryColor { get; set; }
+    public MaterialColor Color { get; set; }
+
+    /// <summary>
+    /// Link to this application source
+    /// </summary>
+    public string GitHubSourceLink { get; set; }
     
     /// <summary>
-    /// Current application secondary color
+    /// Hex color of button's hover effect
     /// </summary>
-    /// <remarks>This enum will be converted to <see cref=" MaterialDesignColors.PrimaryColor"/></remarks>
-    public MaterialColor SecondaryColor { get; set; }
+    public string HoverColorHex { get; set; }
     
     /// <summary>
     /// Last opened directory 

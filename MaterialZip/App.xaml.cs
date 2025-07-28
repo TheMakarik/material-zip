@@ -9,6 +9,7 @@ using MaterialZip.Bootstrapping.Abstractions;
 using MaterialZip.DIExtensions;
 using MaterialZip.Model.Entities;
 using MaterialZip.Options;
+using MaterialZip.Services.ConfigurationServices;
 using MaterialZip.Services.ConfigurationServices.Abstractions;
 using MaterialZip.Services.WindowsFunctions;
 using MaterialZip.Services.WindowsFunctions.Abstractions;
@@ -42,7 +43,10 @@ public partial class App
             .AddLastDirectoryManagers()
             .AddThemeLoader()
             .AddIconExtractor()
+            .AddUrlOpeners()
+            .AddValidators()
             .AddScoped<MainViewModel>()
+            .AddScoped<IHoverButtonHexGetter, HoverButtonHexGetter>()
             .AddScoped<MainView>()
             .AddExplorer();
         builder.Logging
@@ -90,8 +94,7 @@ public partial class App
     {
         scope.ServiceProvider.GetRequiredService<MainView>().Show();
     }
-    
-    
 
 }
+
 

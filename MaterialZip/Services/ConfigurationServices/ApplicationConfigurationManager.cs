@@ -20,25 +20,27 @@ public sealed class ApplicationConfigurationManager(IOptionsSnapshot<Application
         set => options.Value.Language = value;
     }
 
-    /// <inheritdoc cref="IApplicationConfigurationManager.Theme"/>
-    public required MaterialTheme Theme
+  
+
+    /// <inheritdoc cref="IApplicationConfigurationManager.Color"/>
+    public required MaterialColor Color
     {
-        get => options.Value.Theme;
-        set => options.Value.Theme = value;
+        get => options.Value.Color;
+        set => options.Value.Color = value;
     }
 
-    /// <inheritdoc cref="IApplicationConfigurationManager.PrimaryColor"/>
-    public required MaterialColor PrimaryColor
-    {
-        get => options.Value.PrimaryColor;
-        set => options.Value.PrimaryColor = value;
+    /// <inheritdoc cref="IApplicationConfigurationManager.HoverColorHex"/>
+    public string HoverColorHex  
+    { 
+        get => options.Value.HoverColorHex;
+        set => options.Value.HoverColorHex = value;
     }
 
-    /// <inheritdoc cref="IApplicationConfigurationManager.SecondaryColor"/>
-    public required MaterialColor SecondaryColor
-    {
-        get => options.Value.SecondaryColor;
-        set => options.Value.SecondaryColor = value;
+    /// <inheritdoc cref="IApplicationConfigurationManager.GitHubSourceLink"/>
+    public required string GitHubSourceLink 
+    { 
+        get => options.Value.GitHubSourceLink;
+        set => options.Value.GitHubSourceLink = value;
     }
 
     /// <inheritdoc cref="IApplicationConfigurationManager.LastDirectory"/>

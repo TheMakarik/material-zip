@@ -13,14 +13,14 @@ public interface IApplicationConfigurationManager
     /// <inheritdoc cref="IApplicationOptions.Language"/>
     public CultureInfo Language { get; set; }
     
-    /// <inheritdoc cref="IApplicationOptions.Theme"/>
-    public MaterialTheme Theme { get; set; }
+    /// <inheritdoc cref="IApplicationOptions.olor"/>
+    public MaterialColor Color { get; set; }
     
-    /// <inheritdoc cref="IApplicationOptions.PrimaryColor"/>
-    public MaterialColor PrimaryColor { get; set; }
+    /// <inheritdoc cref="IApplicationOptions.HoverColorHex"/>
+    public string HoverColorHex { get; set; }
     
-    /// <inheritdoc cref="IApplicationOptions.SecondaryColor"/>
-    public MaterialColor SecondaryColor { get; set; }
+    /// <inheritdoc cref="IApplicationOptions.GitHubSourceLink"/>
+    public string GitHubSourceLink { get; set; }
     
     /// <inheritdoc cref="IApplicationOptions.LastDirectory"/>
     public string LastDirectory { get; set; }

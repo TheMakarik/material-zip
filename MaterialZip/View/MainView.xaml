@@ -130,6 +130,7 @@
                 Grid.Column="1"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Left"
+                KeyDown="PathTextBox_OnKeyDown"
                 Margin="0,0,2,4"
                 Style="{DynamicResource MaterialDesignOutlinedTextBox}"
                 Text="{Binding CurrentPath}"
@@ -146,8 +147,8 @@
             HorizontalScrollBarVisibility="Auto"
             IsReadOnly="True"
             ItemsSource="{Binding Entities, Converter={x:Static convertors:FileEntityEnumerableToFileDataGridEntityEnumerableConvertor.Instance}}"
-            SelectedItem="{Binding SelectedItem}"
-            VerticalScrollBarVisibility="Auto">
+            VerticalScrollBarVisibility="Auto"
+            x:Name="DataGridViewer">
 
             <DataGrid.Resources>
 
@@ -181,10 +182,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn
-                    Binding="{Binding Size}"
-                    Header="Size"
-                    x:Name="SizeColumn" />
+                <DataGridTextColumn Binding="{Binding Size}" Header="Size" />
                 <DataGridTextColumn Binding="{Binding LastChanging}" Header="Last changing" />
                 <DataGridTextColumn Binding="{Binding CreatedAt}" Header="Created at" />
             </DataGrid.Columns>
@@ -206,6 +204,33 @@
             </DataGrid.RowDetailsTemplate>
         </DataGrid>
 
+
+        <!--  Footer  -->
+        <controls:FastGrid
+            Background="{Binding Background, ElementName=CloseButton}"
+            ColumnDefinitions="Auto, Auto"
+            Grid.Row="4">
+
+            <controls:FastGrid.Resources>
+                <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="{Binding HoverButtonHex, Converter={x:Static convertors:HexStringToBrushConvertor.Instance}}" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </controls:FastGrid.Resources>
+
+            <Button
+                Command="{Binding OpenGitHubSourceCommand}"
+                Content="{materialDesign:PackIcon Kind=Github}"
+                Grid.Column="0" />
+            <Button Content="{materialDesign:PackIcon Kind=Settings}" Grid.Column="1" />
+        </controls:FastGrid>
+
     </controls:FastGrid>
+
 
 </Window>
