@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using MaterialZip.Model.Entities;
 using MaterialZip.Services.ConfigurationServices.Abstractions;
 using MaterialZip.Services.ExplorerServices.Abstractions;
+using MaterialZip.Services.LocalizationServices.Abstractions;
 using MaterialZip.Services.WindowsFunctions.Abstractions;
 using Serilog;
 
@@ -32,8 +33,9 @@ public partial class MainViewModel : ViewModelBase
         IExplorer explorer,
         IExplorerHistory history,
         IHoverButtonHexGetter hoverButtonHexGetter,
-        IGitHubSourceOpener gitHubSourceOpener
-        )
+        IGitHubSourceOpener gitHubSourceOpener,
+        ILocalizationProvider localization
+        ) : base(localization)
     {
         _buffer = buffer;
         _explorer = explorer;
@@ -103,14 +105,14 @@ public partial class MainViewModel : ViewModelBase
             return;
         
         if (directory.Path == DefaultLogicalDrivesPath)
-            AddEntities(await _explorer.GetLogicalDrivesAsync());
+            ResetEntities(await _explorer.GetLogicalDrivesAsync());
         else
-            AddEntities(await _explorer.GetDirectoryContentAsync(directory));
+            ResetEntities(await _explorer.GetDirectoryContentAsync(directory));
         
         SaveDirectory(directory, updateHistory);
     }
 
-    private void AddEntities(IEnumerable<FileEntity> entities)
+    private void ResetEntities(IEnumerable<FileEntity> entities)
     {
         Entities = new ObservableCollection<FileEntity>(entities);
     }

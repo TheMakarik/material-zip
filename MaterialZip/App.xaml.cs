@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Threading;
@@ -11,6 +12,8 @@ using MaterialZip.Model.Entities;
 using MaterialZip.Options;
 using MaterialZip.Services.ConfigurationServices;
 using MaterialZip.Services.ConfigurationServices.Abstractions;
+using MaterialZip.Services.LocalizationServices;
+using MaterialZip.Services.LocalizationServices.Abstractions;
 using MaterialZip.Services.WindowsFunctions;
 using MaterialZip.Services.WindowsFunctions.Abstractions;
 using MaterialZip.View;
@@ -37,6 +40,7 @@ public partial class App
         var builder = Bootstrapper.CreateBuilder();
         builder.Configuration
             .AddJsonFile("configuration.json", optional: true, reloadOnChange: true);
+        var resourcesLocation = builder.Configuration.GetSection(nameof(ApplicationOptions.ResourcesLocation));
         builder.Services
             .Configure<ApplicationOptions>(builder.Configuration.GetSection(nameof(ApplicationOptions)))
             .AddScoped<PaletteHelper>()
@@ -48,6 +52,8 @@ public partial class App
             .AddScoped<MainViewModel>()
             .AddScoped<IHoverButtonHexGetter, HoverButtonHexGetter>()
             .AddScoped<MainView>()
+            .AddLocalization(o => o.ResourcesPath = resourcesLocation.Value! )
+            .AddSingleton<ILocalizationProvider, LocalizationProvider<Application>>()
             .AddExplorer();
         builder.Logging
             .ReadFrom.Configuration(builder.Configuration);
@@ -60,6 +66,7 @@ public partial class App
     {
         using (var scope = _app.Services.CreateScope())
         {
+            LoadLocalization(scope);
             LoadTheme(scope);
             SetBuffer(scope);
             ShowWindow(scope);
@@ -67,7 +74,12 @@ public partial class App
         _app.Logging.Debug(ApplicationStartedLogMessage);
         base.OnStartup(e);
     }
-    
+
+    private void LoadLocalization(IServiceScope scope)
+    {
+        CultureInfo.CurrentUICulture = scope.ServiceProvider.GetRequiredService<IApplicationConfigurationManager>().Language;
+    }
+
     protected override void OnExit(ExitEventArgs e)
     {
         var buffer =  _app.Services.GetRequiredService<ILastDirectoryBuffer>();

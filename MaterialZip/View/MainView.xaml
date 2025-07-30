@@ -3,7 +3,7 @@
     Height="450"
     Icon="/Assets/Icon.png"
     Style="{DynamicResource MaterialDesignWindow}"
-    Title="Material Zip"
+    Title="{Binding Localization.AppName}"
     Width="800"
     WindowStartupLocation="CenterOwner"
     WindowStyle="None"
