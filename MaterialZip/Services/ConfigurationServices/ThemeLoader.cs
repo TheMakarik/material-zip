@@ -2,7 +2,7 @@ using System.Windows.Media;
 using MaterialDesignThemes.Wpf;
 using MaterialZip.Model.Enums;
 using MaterialZip.Services.ConfigurationServices.Abstractions;
-using ILogger = Serilog.ILogger;
+using Microsoft.Extensions.Logging;
 
 namespace MaterialZip.Services.ConfigurationServices;
 
@@ -12,7 +12,7 @@ namespace MaterialZip.Services.ConfigurationServices;
 /// <param name="colorConvertor"> <see cref="IColorConvertor"/> instance from DI container</param>
 /// <param name="applicationConfigurationManager"> <see cref="IApplicationConfigurationManager"/> instance from DI container</param>
 /// <param name="paletteHelper"> <see cref="PaletteHelper"/> Instance from DI container</param>
-/// <param name="logger"><see cref="ILogger"/>instance from DI container </param>
+/// <param name="logger"><see cref="ILogger{T}"/>instance from DI container </param>
 /// <remarks>
 /// Class' method <see cref="LoadTheme"/> must be call once after <see cref="App"/> class created 
 /// </remarks>
@@ -20,7 +20,7 @@ public class ThemeLoader(
     IColorConvertor colorConvertor,
     IApplicationConfigurationManager applicationConfigurationManager,
     PaletteHelper paletteHelper,
-    ILogger logger) : IThemeLoader
+    ILogger<ThemeLoader> logger) : IThemeLoader
 {
     private const string StartTryingToLoadThemeLogMessage =
         "Run trying to load theme with color: {Color}";
@@ -37,14 +37,14 @@ public class ThemeLoader(
     /// </summary>
     public void LoadTheme()
     {
-        logger.Information(StartTryingToLoadThemeLogMessage, _primaryColor.ToString());
+        logger.LogInformation(StartTryingToLoadThemeLogMessage, _primaryColor.ToString());
         
         var color = ConvertMaterialDesignColor();
         
-        logger.Information(SucceedMaterialColorsConvertingLogMessage, color.ToString());
+        logger.LogInformation(SucceedMaterialColorsConvertingLogMessage, color.ToString());
 
         SetTheme(color);
-        logger.Information(ThemeWasLoadedLogMessage);
+        logger.LogInformation(ThemeWasLoadedLogMessage);
 
     }
 

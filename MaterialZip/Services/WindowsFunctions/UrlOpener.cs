@@ -2,17 +2,17 @@ using System.Diagnostics;
 using MaterialZip.Services.ValidationServices;
 using MaterialZip.Services.WindowsFunctions.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
-using Serilog;
+using Microsoft.Extensions.Logging;
 
 namespace MaterialZip.Services.WindowsFunctions;
 
 /// <summary>
 /// Represent default implementation of <see cref="IUrlOpener"/>
 /// </summary>
-/// <param name="logger"><see cref="ILogger"/> instance from DI</param>
+/// <param name="logger"><see cref="Serilog.ILogger"/> instance from DI</param>
 /// <param name="processRunner"><see cref="IProcessRunner"/>instance from DI</param>
 /// <param name="urlValidator"><see cref="AbsoluteUrlValidator"/>instance from DI</param>
-public class UrlOpener(ILogger logger, IProcessRunner processRunner, AbsoluteUrlValidator urlValidator) : IUrlOpener
+public class UrlOpener(ILogger<UrlOpener> logger, IProcessRunner processRunner, AbsoluteUrlValidator urlValidator) : IUrlOpener
 {
     private const string ExceptionWasHappenedLogMessage = "Exception was happened and was handled";
     private const string UrlIsNotValidLogMessage = "Cannot open {url} because it is not valid url";
@@ -23,7 +23,7 @@ public class UrlOpener(ILogger logger, IProcessRunner processRunner, AbsoluteUrl
     {
         if (!urlValidator.IsValid(url))
         {
-            logger.Error(UrlIsNotValidLogMessage, url);
+            logger.LogError(UrlIsNotValidLogMessage, url);
             return false;
         }
         
@@ -34,12 +34,12 @@ public class UrlOpener(ILogger logger, IProcessRunner processRunner, AbsoluteUrl
                 FileName = url,
                 UseShellExecute = true 
             });
-            logger.Debug(UrlWasOpenedSuccessfully, url);
+            logger.LogDebug(UrlWasOpenedSuccessfully, url);
             return true;
         }
         catch (Exception exception)
         {
-            logger.Warning(exception, ExceptionWasHappenedLogMessage);
+            logger.LogWarning(exception, ExceptionWasHappenedLogMessage);
             return false;
         }
     }

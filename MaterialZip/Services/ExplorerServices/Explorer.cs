@@ -2,17 +2,17 @@ using System.Collections.ObjectModel;
 using MaterialZip.Model.Entities;
 using MaterialZip.Model.Exceptions;
 using MaterialZip.Services.ExplorerServices.Abstractions;
-using Serilog;
+using Microsoft.Extensions.Logging;
 
 namespace MaterialZip.Services.ExplorerServices;
 
 /// <summary>
-/// Represent the default application <see cref="IExplorer"/> interface implementation with logging using <see cref="ILogger"/> and proxy pattern implementation of <see cref="System.IO.Directory"/>
+/// Represent the default application <see cref="IExplorer"/> interface implementation with logging using <see cref="Serilog.ILogger"/> and proxy pattern implementation of <see cref="System.IO.Directory"/>
 /// </summary>
 /// <param name="lowLevelExplorer">proxy pattern implementation of <see cref="System.IO.Directory"/>, <see cref="ILowLevelExplorer"/> implementation</param>
-/// <param name="logger"><see cref="ILogger"/> instance</param>
+/// <param name="logger"><see cref="Serilog.ILogger"/> instance</param>
 
-public sealed class Explorer(ILowLevelExplorer lowLevelExplorer, ILogger logger) : IExplorer
+public sealed class Explorer(ILowLevelExplorer lowLevelExplorer, ILogger<Explorer> logger) : IExplorer
 {
     private const string GetLogicalDrivesSucceedLogMessage = "Succesefully got  logical drives from computer: {drives}";
     private const string GetDirectoryContentSucceedLogMessage = "Succesefully got {directory} content";
@@ -26,7 +26,7 @@ public sealed class Explorer(ILowLevelExplorer lowLevelExplorer, ILogger logger)
         {
             var drives = lowLevelExplorer.GetLogicalDrives();
             var entities = ToFileEntity(drives, isDirectory: true);
-            logger.Debug(GetLogicalDrivesSucceedLogMessage, drives);
+            logger.LogDebug(GetLogicalDrivesSucceedLogMessage, drives);
             return entities.ToList();
         });
     }
@@ -36,11 +36,11 @@ public sealed class Explorer(ILowLevelExplorer lowLevelExplorer, ILogger logger)
     {
         if (!directory.IsDirectory)
         {
-            logger.Error(TriedToGetFileContentLogMessage, directory.Path);
+            logger.LogError(TriedToGetFileContentLogMessage, directory.Path);
             throw new CannotGetFileContentException(string.Format(CannotGetContentOfTheFileExceptionText, directory.Path));
         }
         
-        logger.Debug(GetDirectoryContentSucceedLogMessage, directory.Path);
+        logger.LogDebug(GetDirectoryContentSucceedLogMessage, directory.Path);
         var entities = await GetContent(directory.Path);
         return entities;
     }

@@ -10,9 +10,6 @@ namespace MaterialZip.Bootstrapping;
 /// </summary>
 public class BootstrapperBuilder : IBootstrapperBuilder
 {
-    /// <inheritdoc cref="IBootstrapperBuilder.Logging"/>
-    public LoggerConfiguration Logging { get; set; } = new LoggerConfiguration();
-    
     /// <inheritdoc cref="IBootstrapperBuilder.Services"/>
     public IServiceCollection Services { get; set; } = new ServiceCollection();
     
@@ -22,9 +19,6 @@ public class BootstrapperBuilder : IBootstrapperBuilder
     /// <inheritdoc cref="IBootstrapperBuilder.CreateBootstrapper"/>
     public IBootstrapper CreateBootstrapper()
     {
-        var logger = Logging.CreateLogger();
-        Services.AddSingleton<ILogger>(logger);
-        return new Bootstrapper(logger, Services.BuildServiceProvider(),
-            Configuration.Build()); 
+        return new Bootstrapper(Services.BuildServiceProvider(), Configuration.Build()); 
     }
 }

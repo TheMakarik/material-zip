@@ -2,20 +2,22 @@ using FakeItEasy;
 using MaterialZip.Model.Exceptions;
 using MaterialZip.Services.ConfigurationServices;
 using MaterialZip.UnitTests.Core.Stubs;
+using Microsoft.Extensions.Logging;
 using Serilog;
+using LoggerExtensions = Microsoft.Extensions.Logging.LoggerExtensions;
 
 namespace MaterialZip.UnitTests.ConfigurationServicesTests;
 
 [TestFixture]
 public class LastDirectoryBufferTests
 {
-     private ILogger _logger;
+     private ILogger<LastDirectoryBuffer> _logger;
     private LastDirectoryBuffer _buffer;
 
     [SetUp]
     public void SetUp()
     {
-        _logger = A.Fake<ILogger>();
+        _logger = A.Fake<ILogger<LastDirectoryBuffer>>();
         _buffer = new LastDirectoryBuffer(_logger);
     }
 
@@ -76,20 +78,7 @@ public class LastDirectoryBufferTests
             var result = _buffer.FromBuffer();
         });
     }
-
-    [Test]
-    public void FromBuffer_WhenBufferIsNotEmpty_LogInformation()
-    {
-        //arrange
-        var directory = FileEntityFactory.CreateDirectory();
-        //act
-        _buffer.ToBuffer(directory);
-        var result = _buffer.FromBuffer();
-        //assert
-        A.CallTo(_logger)
-            .Where(f => f.Method.Name == nameof(_logger.Information))
-            .MustHaveHappenedOnceExactly();
-    }
+    
 
     [Test]
     public void ToBuffer_Always_LogDebug()
@@ -100,7 +89,7 @@ public class LastDirectoryBufferTests
         _buffer.ToBuffer(directory);
         //assert
         A.CallTo(_logger)
-            .Where(f => f.Method.Name == nameof(_logger.Debug))
+            .Where(f => f.Method.Name == nameof(_logger.Log))
             .MustHaveHappenedOnceExactly();
     }
 }

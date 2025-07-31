@@ -24,7 +24,4 @@ public interface IApplicationConfigurationManager
     
     /// <inheritdoc cref="IApplicationOptions.LastDirectory"/>
     public string LastDirectory { get; set; }
-    
-    /// <inheritdoc cref="IApplicationOptions.ResourcesLocation"/>
-    public string ResourcesLocation { get; set; }
 }

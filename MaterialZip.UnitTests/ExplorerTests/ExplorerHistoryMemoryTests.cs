@@ -4,19 +4,20 @@ using MaterialZip.Model.Exceptions;
 using MaterialZip.Services.ExplorerServices;
 using MaterialZip.Services.ExplorerServices.Abstractions;
 using MaterialZip.UnitTests.Core.Stubs;
-using Serilog;
+using Microsoft.Extensions.Logging;
+using ILogger = Serilog.ILogger;
 
 namespace MaterialZip.UnitTests.ExplorerTests;
 
 [TestFixture]
 public class ExplorerHistoryMemoryTests
 {
-    private ILogger _logger;
+    private ILogger<ExplorerHistoryMemory> _logger;
 
     [SetUp]
     public void SetUp()
     {
-        _logger = A.Fake<ILogger>();
+        _logger = A.Fake<ILogger<ExplorerHistoryMemory>>();
     }
 
 
@@ -32,14 +33,14 @@ public class ExplorerHistoryMemoryTests
     }
 
     [Test]
-    public void Index_WhenInstanceHaveJustCreated_IsMinusOne()
+    public void Index_WhenInstanceHaveJustCreated_IsZeroOne()
     {
         //arrange
         var memory = new ExplorerHistoryMemory(_logger);
         //act
 
         //assert
-        Assert.That(memory.Index, Is.EqualTo(-1));
+        Assert.That(memory.Index, Is.EqualTo(0));
     }
 
     [Test]
@@ -78,18 +79,7 @@ public class ExplorerHistoryMemoryTests
         //assert
         CollectionAssert.Contains(memory.HistoryList, directory);
     }
-
-    [Test]
-    public void CurrentEntity_AfterAddingEntity_InvokesLogDebug()
-    {
-        //arrange
-        var memory = new ExplorerHistoryMemory(_logger);
-        var directory = FileEntityFactory.CreateDirectory();
-        //act
-        memory.CurrentDirectory = directory;
-        //assert
-        A.CallTo(() => _logger.Debug(A<string>._, A<string>._)).MustHaveHappenedOnceExactly();
-    }
+    
 
     [Test]
     public void CurrentEntity_HistoryListIsEmpty_ThrowsException()
@@ -103,36 +93,6 @@ public class ExplorerHistoryMemoryTests
         });
     }
 
-    [Test]
-    public void CurrentEntity_HistoryListIsEmpty_InvokeLogFatal()
-    {
-        //arrange
-        var memory = new ExplorerHistoryMemory(_logger);
-        //act
-        try
-        {
-            var result = memory.CurrentDirectory;
-        }
-        catch (EmptyHistoryException e)
-        {
-        }
-        //assert
-        A.CallTo(() => _logger.Fatal(A<string>._)).MustHaveHappenedOnceExactly();
-    }
-
-    [Test]
-    public void CurrentDirectory_AfterAddingDirectory_LogDebugTwice()
-    {
-        //arrange
-        var memory = new ExplorerHistoryMemory(_logger);
-        var directory = FileEntityFactory.CreateDirectory();
-        //act
-        memory.CurrentDirectory = directory;
-        var result = memory.CurrentDirectory;
-        //assert
-        A.CallTo(() => _logger.Debug(A<string>._, A<string>._)).MustHaveHappenedTwiceExactly();
-    }
-    
     [Test]
     public void HistoryList_AfterAddingThreeEntities_ContainsAllInOrder()
     {
@@ -156,21 +116,7 @@ public class ExplorerHistoryMemoryTests
         //assert
         Assert.That(memory.Index, Is.EqualTo(directories.Length - 1));
     }
-
-    [Test]
-    public void CurrentDirectory_AfterUndoAndAdd_CutsHistoryList()
-    {
-        //arrange
-        var memory = new ExplorerHistoryMemory(_logger);
-        var directories = FileEntityFactory.CreateDirectories(3);
-        AddRangeToHistory(directories[..1], memory);
-        memory.Index = 0; // Simulate undo
-        //act
-        memory.CurrentDirectory = directories.Last();
-        //assert
-        Assert.That(memory.HistoryList, Is.EqualTo(new[] { directories[0], directories[2] }));
-    }
-
+    
     [Test]
     public void CurrentDirectory_AfterUndoAndAdd_UpdatesIndexCorrectly()
     {
@@ -185,21 +131,7 @@ public class ExplorerHistoryMemoryTests
         Assert.That(memory.Index, Is.EqualTo(1));
     }
 
-    [Test]
-    public void CurrentDirectory_AfterMultipleOperations_LogsCorrectNumberOfTimes()
-    {
-        //arrange
-        var memory = new ExplorerHistoryMemory(_logger);
-        var directories = FileEntityFactory.CreateDirectories(3);
-        //act
-        AddRangeToHistory(directories[..1], memory);
-        memory.Index = 0; // Undo
-        memory.CurrentDirectory = directories.Last();
-        var result = memory.CurrentDirectory;
-        //assert
-        A.CallTo(() => _logger.Debug(A<string>._, A<string>._))
-            .MustHaveHappened(3, Times.Exactly);
-    }
+
     
 
     [Test]

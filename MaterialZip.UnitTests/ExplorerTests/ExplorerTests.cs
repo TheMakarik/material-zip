@@ -3,7 +3,9 @@ using MaterialZip.Model.Exceptions;
 using MaterialZip.Services.ExplorerServices;
 using MaterialZip.Services.ExplorerServices.Abstractions;
 using MaterialZip.UnitTests.Core.Stubs;
+using Microsoft.Extensions.Logging;
 using Serilog;
+using LoggerExtensions = Microsoft.Extensions.Logging.LoggerExtensions;
 
 namespace MaterialZip.UnitTests.ExplorerTests;
 
@@ -11,13 +13,13 @@ namespace MaterialZip.UnitTests.ExplorerTests;
 public class ExplorerTests
 {
 
-    private ILogger _logger;
+    private ILogger<Explorer> _logger;
     private ILowLevelExplorer _lowLevelExplorer;
 
     [SetUp]
     public void SetUp()
     {
-        _logger = A.Fake<ILogger>();
+        _logger = A.Fake<ILogger<Explorer>>();
         _lowLevelExplorer = A.Fake<ILowLevelExplorer>();
     }
     
@@ -41,13 +43,12 @@ public class ExplorerTests
     public async Task  GetLogicalDrives_Always_InvokeLogDebug()
     {
         //arrange
-        A.CallTo(() => _logger.Debug(A<string>._)).DoesNothing();
         var explorer = new Explorer(_lowLevelExplorer, _logger);
         //act
         var result = await explorer.GetLogicalDrivesAsync();
         //assert
         A.CallTo(_logger)
-            .Where(f => f.Method.Name == nameof(_logger.Debug))
+            .Where(f => f.Method.Name == nameof(_logger.Log))
             .MustHaveHappened();
     }
 
@@ -103,7 +104,7 @@ public class ExplorerTests
 
         //assert
         A.CallTo( _logger)
-            .Where(f => f.Method.Name == nameof(_logger.Error))
+            .Where(f => f.Method.Name == nameof(_logger.Log))
             .MustHaveHappened();
     }
 
@@ -116,7 +117,9 @@ public class ExplorerTests
         //act
         var result = await explorer.GetDirectoryContentAsync(dummyDirectory);
         //assert
-        A.CallTo(() => _logger.Debug(A<string>._, A<string>._)).MustHaveHappened();
+        A.CallTo( _logger)
+            .Where(f => f.Method.Name == nameof(_logger.Log))
+            .MustHaveHappened();
     }
     
     [TestCase(4, 4)]

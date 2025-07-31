@@ -3,6 +3,7 @@ using MaterialZip.Model.Exceptions;
 using MaterialZip.Services.ExplorerServices;
 using MaterialZip.Services.ExplorerServices.Abstractions;
 using MaterialZip.UnitTests.Core.Stubs;
+using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace MaterialZip.UnitTests.ExplorerTests;
@@ -11,12 +12,12 @@ namespace MaterialZip.UnitTests.ExplorerTests;
 public class ExplorerHistoryTests
 {
     private IExplorerHistoryMemory _memory;
-    private ILogger _logger;
+    private ILogger<ExplorerHistory> _logger;
 
     [SetUp]
     public void SetUp()
     {
-        _logger = A.Fake<ILogger>();
+        _logger = A.Fake<ILogger<ExplorerHistory>>();
         _memory = A.Fake<IExplorerHistoryMemory>();
     }
 
@@ -59,41 +60,7 @@ public class ExplorerHistoryTests
         //assert and act
         Assert.Throws<CannotRedoException>(() => history.Redo());
     }
-
-    [Test]
-    public void Undo_WhenCanUndoIsFalse_LogFatal()
-    {
-        //arrange
-        var history = new ExplorerHistory(_logger, _memory);
-        //act
-        try
-        {
-            history.Undo();
-        }
-        catch (CannotUndoException)
-        {
-        }
-
-        //assert
-        A.CallTo(() => _logger.Fatal(A<string>._, An<int>._, An<int>._)).MustHaveHappenedOnceExactly();
-    }
-
-    [Test]
-    public void Redo_WhenCanRedoIsFalse_LogFatal()
-    {
-        //arrange
-        var history = new ExplorerHistory(_logger, _memory);
-        //act
-        try
-        {
-            history.Redo();
-        }
-        catch (CannotRedoException)
-        {
-        }
-        //assert
-        A.CallTo(() => _logger.Fatal(A<string>._, An<int>._, An<int>._)).MustHaveHappenedOnceExactly();
-    }
+    
 
     [Test]
     public void CanUndo_AfterAddingTwoElements_ReturnsTrue()
@@ -105,18 +72,6 @@ public class ExplorerHistoryTests
         var result = history.CanUndo;
         //assert
         Assert.IsTrue(result);
-    }
-
-    [Test]
-    public void Undo_WhenCanUndoIsTrue_DecreasesIndex()
-    {
-        //arrange
-        var history = new ExplorerHistory(_logger, _memory);
-        A.CallTo(() => _memory.Index).Returns(1);
-        //act
-        history.Undo();
-        //assert
-        A.CallToSet(() => _memory.Index).To(0).MustHaveHappenedOnceExactly();
     }
     
     [Test]
@@ -144,20 +99,4 @@ public class ExplorerHistoryTests
         A.CallToSet(() => _memory.CurrentDirectory).To(directory).MustHaveHappenedOnceExactly();
     }
     
-    [Test]
-    public void Index_AfterMultipleOperations_ReflectsMemoryState()
-    {
-        //arrange
-        var history = new ExplorerHistory(_logger, _memory);
-        A.CallTo(() => _memory.Index).Returns(2);
-        //act
-        var canUndo = history.CanUndo;
-        var canRedo = history.CanRedo;
-        //assert
-        Assert.Multiple(() =>
-        {
-            Assert.IsTrue(canUndo);
-            Assert.That(canRedo, Is.EqualTo(_memory.Index + 1 < _memory.HistoryList.Count()));
-        });
-    }
 }

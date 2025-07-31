@@ -4,7 +4,8 @@ using FakeItEasy;
 using MaterialZip.Services.WindowsFunctions;
 using MaterialZip.Services.WindowsFunctions.Abstractions;
 using MaterialZip.UnitTests.Core.Stubs;
-using Serilog;
+using Microsoft.Extensions.Logging;
+using LoggerExtensions = Microsoft.Extensions.Logging.LoggerExtensions;
 
 namespace MaterialZip.UnitTests.WindowsFunctionsTests;
 
@@ -12,14 +13,14 @@ namespace MaterialZip.UnitTests.WindowsFunctionsTests;
 public class IconExtractorTests
 {
     private IAssociatedIconExtractor _extractor;
-    private ILogger _logger;
+    private ILogger<IconExtractor> _logger;
     private IBitmapSourceBuilder _builder;
 
     [SetUp]
     public void SetUp()
     {
         _extractor = A.Fake<IAssociatedIconExtractor>();
-        _logger = A.Fake<ILogger>();
+        _logger = A.Fake<ILogger<IconExtractor>>();
         _builder = A.Fake<IBitmapSourceBuilder>();
     }
 
@@ -64,7 +65,7 @@ public class IconExtractorTests
         var bitmapSource = iconExtractor.FromPath(path);
         //assert
         A.CallTo(_logger)
-            .Where(f => f.Method.Name == nameof(_logger.Warning))
+            .Where(f => f.Method.Name == nameof(_logger.Log))
             .MustHaveHappenedOnceExactly();
     }
     
@@ -79,7 +80,7 @@ public class IconExtractorTests
         var bitmapSource = iconExtractor.FromPath(path);
         //assert
         A.CallTo(_logger)
-            .Where(f => f.Method.Name == nameof(_logger.Error))
+            .Where(f => f.Method.Name == nameof(_logger.Log))
             .MustHaveHappenedOnceExactly();
     }
     

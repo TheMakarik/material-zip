@@ -22,6 +22,7 @@
       <PackageReference Include="Serilog" Version="4.3.0" />
       <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1" />
       <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />
+      <PackageReference Include="Serilog.Extensions.Logging" Version="9.0.2" />
       <PackageReference Include="Serilog.Settings.Configuration" Version="9.0.0" />
       <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
       <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
@@ -59,26 +60,26 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="Resources\Strings.ru-RU.resx">
+      <EmbeddedResource Update="Resources\ru-RU.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>ru-RU.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Update="Resources\Strings.en-US.resx">
+      <EmbeddedResource Update="Resources\en-US.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>String.Designer.cs</LastGenOutput>
       </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Resources\Strings.ru-RU.Designer.cs">
+      <Compile Update="Resources\ru-RU.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
-        <DependentUpon>Strings.ru-RU.resx</DependentUpon>
+        <DependentUpon>ru-RU.resx</DependentUpon>
       </Compile>
-      <Compile Update="Resources\Strings.en-US.Designer.cs">
+      <Compile Update="Resources\en-US.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
-        <DependentUpon>Strings.en-US.resx</DependentUpon>
+        <DependentUpon>en-US.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

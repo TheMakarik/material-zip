@@ -19,9 +19,7 @@ public sealed class ApplicationConfigurationManager(IOptionsSnapshot<Application
         get => options.Value.Language;
         set => options.Value.Language = value;
     }
-
-  
-
+    
     /// <inheritdoc cref="IApplicationConfigurationManager.Color"/>
     public required MaterialColor Color
     {
@@ -49,11 +47,5 @@ public sealed class ApplicationConfigurationManager(IOptionsSnapshot<Application
         get => options.Value.LastDirectory;
         set => options.Value.LastDirectory = value;
     }
-
-    /// <inheritdoc cref="IApplicationConfigurationManager.ResourcesLocation"/>
-    public required string ResourcesLocation
-    {
-        get => options.Value.ResourcesLocation;
-        set => options.Value.ResourcesLocation = value;
-    }
+    
 }

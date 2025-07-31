@@ -2,7 +2,8 @@ using FakeItEasy;
 using MaterialZip.Services.ConfigurationServices;
 using MaterialZip.Services.ConfigurationServices.Abstractions;
 using MaterialZip.UnitTests.Core.Stubs;
-using Serilog;
+using Microsoft.Extensions.Logging;
+using ILogger = Serilog.ILogger;
 
 namespace MaterialZip.UnitTests.ConfigurationServicesTests;
 
@@ -10,13 +11,13 @@ namespace MaterialZip.UnitTests.ConfigurationServicesTests;
 public class LastDirectoryChangerTests
 {
     private IApplicationConfigurationManager _applicationConfigurationManager;
-    private ILogger _logger
+    private ILogger<LastDirectoryChanger> _logger
         ;
 
     [SetUp]
     public void SetUp()
     {
-        _logger = A.Fake<ILogger>();
+        _logger = A.Fake<ILogger<LastDirectoryChanger>>();
         _applicationConfigurationManager = A.Fake<IApplicationConfigurationManager>();
     }
 
@@ -42,7 +43,7 @@ public class LastDirectoryChangerTests
         lastDirectoryChanger.ChangeLastDirectory(dummyPath);
         //assert
         A.CallTo(_logger)
-            .Where(f => f.Method.Name == nameof(_logger.Information))
+            .Where(f => f.Method.Name == nameof(_logger.Log))
             .MustHaveHappenedOnceExactly();
     }
     

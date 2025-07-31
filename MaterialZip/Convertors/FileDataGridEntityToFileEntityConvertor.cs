@@ -4,7 +4,8 @@ using System.Windows.Data;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using MaterialZip.Model.Entities;
 using Microsoft.Extensions.DependencyInjection;
-using Serilog;
+using Microsoft.Extensions.Logging;
+using ILogger = Serilog.ILogger;
 
 namespace MaterialZip.Convertors;
 
@@ -64,7 +65,7 @@ public class FileDataGridEntityToFileEntityConvertor : IValueConverter
     /// <exception cref="IOException">Thrown when file system access fails.</exception>
     /// <exception cref="UnauthorizedAccessException">Thrown when lacking permissions.</exception>
     /// <remarks>
-    /// Logs warnings through <see cref="ILogger"/> when exceptions are handled.
+    /// Logs warnings through <see cref="Serilog.ILogger"/> when exceptions are handled.
     /// </remarks>
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo? culture)
     {
@@ -79,7 +80,9 @@ public class FileDataGridEntityToFileEntityConvertor : IValueConverter
 
             if (!info.Exists)
             {
-                Ioc.Default.GetRequiredService<ILogger>().Error(CannotFindDirectory, info.FullName);
+                Ioc.Default
+                    .GetRequiredService<ILogger<FileEntityEnumerableToFileDataGridEntityEnumerableConvertor>>()
+                    .LogError(CannotFindDirectory, info.FullName);
                 return null;
             }
 
@@ -93,7 +96,9 @@ public class FileDataGridEntityToFileEntityConvertor : IValueConverter
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
-            Ioc.Default.GetRequiredService<ILogger>().Warning(HandledExceptionLogMessage, ex, ex.Message);
+            Ioc.Default
+                .GetRequiredService<ILogger<FileEntityEnumerableToFileDataGridEntityEnumerableConvertor>>()
+                .LogWarning(HandledExceptionLogMessage, ex, ex.Message);
             return null;
         }
     }

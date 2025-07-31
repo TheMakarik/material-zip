@@ -7,5 +7,5 @@ namespace MaterialZip.Services.LocalizationServices;
 public class LocalizationProvider<T>(IStringLocalizer<T> localizer) : ILocalizationProvider
 {
     /// <inheritdoc/>
-    public string AppName => localizer[nameof(AppName)];
+    public string AppName => localizer["AppName"];
 }

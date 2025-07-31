@@ -37,8 +37,4 @@ public interface IApplicationOptions
     /// <remarks>Dont change it every time last directory was changed, it's hard to update configuration every time, create a buffer and update configuration only on closing</remarks>
     public string LastDirectory { get; set; }
     
-    /// <summary>
-    /// Resource dictionaries location
-    /// </summary>
-    public string ResourcesLocation { get; set; }
 }

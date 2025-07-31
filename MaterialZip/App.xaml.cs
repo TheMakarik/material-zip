@@ -20,6 +20,7 @@ using MaterialZip.View;
 using MaterialZip.ViewModel;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 
@@ -32,16 +33,27 @@ public partial class App
 {
     private const string ApplicationStartedLogMessage = "Application have been just started";
     private const string ApplicationOnExitLogMessage = "Application was stoped with exit code {code}";
+    private const string ConfigurationPath = "configuration.json";
+    
     
     private readonly IBootstrapper _app;
     
     public App()
     {
         var builder = Bootstrapper.CreateBuilder();
+        
+      
         builder.Configuration
-            .AddJsonFile("configuration.json", optional: true, reloadOnChange: true);
-        var resourcesLocation = builder.Configuration.GetSection(nameof(ApplicationOptions.ResourcesLocation));
+            .AddJsonFile(ConfigurationPath, optional: true, reloadOnChange: true);
+        
+        Log.Logger = new LoggerConfiguration()
+            .ReadFrom.Configuration(builder.Configuration)
+            .CreateLogger();
+ 
         builder.Services
+            .AddLogging(logBuilder =>
+                logBuilder.ClearProviders()
+                .AddSerilog(Log.Logger))
             .Configure<ApplicationOptions>(builder.Configuration.GetSection(nameof(ApplicationOptions)))
             .AddScoped<PaletteHelper>()
             .AddLastDirectoryManagers()
@@ -52,11 +64,10 @@ public partial class App
             .AddScoped<MainViewModel>()
             .AddScoped<IHoverButtonHexGetter, HoverButtonHexGetter>()
             .AddScoped<MainView>()
-            .AddLocalization(o => o.ResourcesPath = resourcesLocation.Value! )
+            .AddLocalization()
             .AddSingleton<ILocalizationProvider, LocalizationProvider<Application>>()
             .AddExplorer();
-        builder.Logging
-            .ReadFrom.Configuration(builder.Configuration);
+    
         _app = builder.CreateBootstrapper();
         Ioc.Default.ConfigureServices(_app.Services);
       
@@ -71,22 +82,24 @@ public partial class App
             SetBuffer(scope);
             ShowWindow(scope);
         }
-        _app.Logging.Debug(ApplicationStartedLogMessage);
+        _app.Services.GetRequiredService<ILogger<Application>>().LogDebug(ApplicationStartedLogMessage);
         base.OnStartup(e);
     }
 
     private void LoadLocalization(IServiceScope scope)
     {
-        CultureInfo.CurrentUICulture = scope.ServiceProvider.GetRequiredService<IApplicationConfigurationManager>().Language;
+     
     }
 
-    protected override void OnExit(ExitEventArgs e)
+    protected override async void OnExit(ExitEventArgs e)
     {
         var buffer =  _app.Services.GetRequiredService<ILastDirectoryBuffer>();
         using(var scope = _app.Services.CreateScope())
             scope.ServiceProvider.GetRequiredService<ILastDirectoryChanger>()
                 .ChangeLastDirectory(buffer.FromBuffer().Path);
-        _app.Logging.Information(ApplicationOnExitLogMessage, e.ApplicationExitCode);
+        _app.Services.GetRequiredService<ILogger<Application>>().LogInformation(ApplicationOnExitLogMessage, e.ApplicationExitCode);
+        (_app.Services as IDisposable)?.Dispose();
+        await Log.CloseAndFlushAsync();
         base.OnExit(e);
     }
 

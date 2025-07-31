@@ -1,11 +1,12 @@
 using MaterialZip.Model.Entities;
 using MaterialZip.Model.Exceptions;
 using MaterialZip.Services.ConfigurationServices.Abstractions;
+using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace MaterialZip.Services.ConfigurationServices;
 
-public class LastDirectoryBuffer(ILogger logger) : ILastDirectoryBuffer
+public class LastDirectoryBuffer(ILogger<LastDirectoryBuffer> logger) : ILastDirectoryBuffer
 {
     private const string DirectoryInBufferNotFoundExceptionText 
         = "Cannot find directory in buffer, possible forgotten validation";
@@ -24,7 +25,7 @@ public class LastDirectoryBuffer(ILogger logger) : ILastDirectoryBuffer
     /// <inheritdoc cref="ILastDirectoryBuffer.ToBuffer"/>
     public void ToBuffer(FileEntity directory)
     {
-        logger.Debug(DirectoryWasLoadedToTheBufferMessage, directory.Path, 
+        logger.LogDebug(DirectoryWasLoadedToTheBufferMessage, directory.Path, 
             _buffer.GetValueOrDefault(new FileEntity(DefaultPath, true)).Path);
         _buffer = directory;
     }
@@ -35,7 +36,7 @@ public class LastDirectoryBuffer(ILogger logger) : ILastDirectoryBuffer
         if (IsBufferEmpty)
             throw new DirectoryInBufferNotFoundException(DirectoryInBufferNotFoundExceptionText);
         #pragma warning disable
-        logger.Information(DirectoryWasGottenFromBufferLogMessage, _buffer.Value.Path);
+        logger.LogInformation(DirectoryWasGottenFromBufferLogMessage, _buffer.Value.Path);
         return _buffer.Value;
         #pragma warning restore
     }

@@ -12,13 +12,9 @@ namespace MaterialZip.Bootstrapping;
 /// <param name="services">Service provider instance</param>
 /// <param name="configuration">Configuration instance</param>
 public class Bootstrapper(
-    ILogger logging, 
     IServiceProvider services, 
     IConfiguration configuration) : IBootstrapper
 {
-    /// <inheritdoc cref="IBootstrapper.Logging"/>
-    public ILogger Logging { get; init; } = logging;
-
     /// <inheritdoc cref="IBootstrapper.Services"/>
     public IServiceProvider Services { get; init; } = services;
 

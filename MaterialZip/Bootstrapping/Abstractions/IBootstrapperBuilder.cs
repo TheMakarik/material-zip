@@ -10,10 +10,6 @@ namespace MaterialZip.Bootstrapping.Abstractions;
 /// </summary>
 public interface IBootstrapperBuilder
 {
-    /// <summary>
-    /// Logger factory for application  with <see cref="Microsoft.Extensions.Logging"/>
-    /// </summary>
-    public LoggerConfiguration Logging { get; set; }
     
     /// <summary>
     ///  DI Services container builder  for application  with <see cref="Microsoft.Extensions.DependencyInjection"/>

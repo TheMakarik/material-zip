@@ -4,14 +4,15 @@ using MaterialDesignThemes.Wpf;
 using MaterialZip.Model.Enums;
 using MaterialZip.Services.ConfigurationServices;
 using MaterialZip.Services.ConfigurationServices.Abstractions;
-using Serilog;
+using Microsoft.Extensions.Logging;
+using ILogger = Serilog.ILogger;
 
 namespace MaterialZip.UnitTests.ConfigurationServicesTests;
 
 [TestFixture]
 public class ThemeLoaderTests
 {
-    private ILogger _logger;
+    private ILogger<ThemeLoader> _logger;
     private IColorConvertor _colorConvertor;
     private IApplicationConfigurationManager _applicationConfigurationManager;
     private PaletteHelper _paletteHelper;
@@ -19,7 +20,7 @@ public class ThemeLoaderTests
     [SetUp]
     public void SetUp()
     {
-        _logger = A.Fake<ILogger>();
+        _logger = A.Fake<ILogger<ThemeLoader>>();
         _colorConvertor = A.Fake<IColorConvertor>();
         _applicationConfigurationManager = A.Fake<IApplicationConfigurationManager>();
         _paletteHelper = A.Fake<PaletteHelper>();
@@ -62,7 +63,7 @@ public class ThemeLoaderTests
         themeLoader.LoadTheme();
         //assert
         A.CallTo(_logger)
-            .Where(call => call.Method.Name == nameof(_logger.Information))
+            .Where(call => call.Method.Name == nameof(_logger.Log))
             .MustHaveHappened(3, Times.Exactly);
     }
     

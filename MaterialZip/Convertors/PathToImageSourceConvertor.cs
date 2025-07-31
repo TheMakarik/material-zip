@@ -7,7 +7,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using MaterialZip.Services.WindowsFunctions.Abstractions;
-using Serilog;
+using Microsoft.Extensions.Logging;
+using ILogger = Serilog.ILogger;
 
 namespace MaterialZip.Convertors;
 
@@ -35,11 +36,11 @@ public class PathToImageSourceConvertor : IValueConverter
     /// </summary>
     public static PathToImageSourceConvertor Instance { get; } = new();
     
-    private readonly ILogger _logger;
+    private readonly ILogger<PathToImageSourceConvertor> _logger;
 
     public PathToImageSourceConvertor()
     {
-        _logger = Ioc.Default.GetRequiredService<ILogger>();
+        _logger = Ioc.Default.GetRequiredService<ILogger<PathToImageSourceConvertor>>();
     }
 
     /// <summary>
@@ -60,7 +61,7 @@ public class PathToImageSourceConvertor : IValueConverter
     {
         if (value is not string path)
         {
-            _logger.Warning(NullInputLogMessage);
+            _logger.LogWarning(NullInputLogMessage);
             return null;
         }
 
@@ -75,7 +76,7 @@ public class PathToImageSourceConvertor : IValueConverter
 
             if (!File.Exists(path))
             {
-                _logger.Warning(FileNotFoundLogMessage, path);
+                _logger.LogWarning(FileNotFoundLogMessage, path);
                 return null;
             }
 
@@ -83,7 +84,7 @@ public class PathToImageSourceConvertor : IValueConverter
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or UriFormatException)
         {
-            _logger.Error(ex, IconExtractionFailedLogMessage, path, ex.Message);
+            _logger.LogError(ex, IconExtractionFailedLogMessage, path, ex.Message);
             return null;
         }
     }
@@ -94,7 +95,7 @@ public class PathToImageSourceConvertor : IValueConverter
     /// <exception cref="NotSupportedException">Always thrown when this method is called.</exception>
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        _logger.Error(ConvertBackNotSupportedMessage);
+        _logger.LogError(ConvertBackNotSupportedMessage);
         throw new NotSupportedException(ConvertBackNotSupportedMessage);
     }
     

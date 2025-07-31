@@ -10,7 +10,8 @@ using System.Windows.Shapes;
 using MaterialZip.Convertors;
 using MaterialZip.Model.Entities;
 using MaterialZip.ViewModel;
-using Serilog;
+using Microsoft.Extensions.Logging;
+using ILogger = Serilog.ILogger;
 
 
 namespace MaterialZip.View;
@@ -27,16 +28,16 @@ public partial class MainView
     private const string TryingToChangePathToUnexistingDirectoryLogMessage =
         "Trying to change path to unexisting directory {path}, directory was not changed";
     
-    private readonly ILogger _logger;
+    private readonly ILogger<MainView> _logger;
     private readonly MainViewModel _viewModel;
 
-    public MainView(MainViewModel viewModel, ILogger logger)
+    public MainView(MainViewModel viewModel, ILogger<MainView> logger)
     {
         _viewModel = viewModel;
         DataContext = _viewModel;
         _logger = logger;
         InitializeComponent();
-        _logger.Debug(WindowWasLoadedLogMessage);
+        _logger.LogDebug(WindowWasLoadedLogMessage);
     }
 
    
@@ -78,7 +79,7 @@ public partial class MainView
         }
         catch (Exception exception)
         {
-            _logger.Warning(exception, ExceptionOccuredLogMessage);
+            _logger.LogWarning(exception, ExceptionOccuredLogMessage);
         }
     }
 
@@ -95,14 +96,14 @@ public partial class MainView
             if (Directory.Exists(directory.Path))
             {
                 await _viewModel.ResetDirectoryContentCommand.ExecuteAsync(directory);
-                _logger.Information(DirectoryPathChangedUsingTextBoxLogMessage, directory.Path);
+                _logger.LogInformation(DirectoryPathChangedUsingTextBoxLogMessage, directory.Path);
             }
             else
-                _logger.Warning(TryingToChangePathToUnexistingDirectoryLogMessage, directory.Path);
+                _logger.LogWarning(TryingToChangePathToUnexistingDirectoryLogMessage, directory.Path);
         }
         catch (Exception exception)
         {
-            _logger.Warning(exception, ExceptionOccuredLogMessage);
+            _logger.LogWarning(exception, ExceptionOccuredLogMessage);
         }
     }
     

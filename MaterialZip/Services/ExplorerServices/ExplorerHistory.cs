@@ -2,17 +2,20 @@ using System.Collections;
 using MaterialZip.Model.Entities;
 using MaterialZip.Model.Exceptions;
 using MaterialZip.Services.ExplorerServices.Abstractions;
+using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace MaterialZip.Services.ExplorerServices;
 
 
-public sealed class ExplorerHistory(ILogger logger, IExplorerHistoryMemory memory) : IExplorerHistory
+public sealed class ExplorerHistory(ILogger<ExplorerHistory> logger, IExplorerHistoryMemory memory) : IExplorerHistory
 {
     
     private const string CannotRedoLogMessage = "Cannot redo because CanRedo is false, current index: {index}, history count: {count}, exception will be thrown";
     private const string CannotUndoLogMessage = "Cannot undo because CanUndo is false, current index: {index}, history count: {count}, exception will be thrown";
-
+    private const string UndoWasMadeLogMessage = "Undo from {directory} to {directory}";
+    private const string RedoWasMadeLogMessage = "Redo from {directory} to {directory}";
+    
     private const string CannotRedoExceptionText = "Tried to invoke redo while CanRedo is false, possible forgotten validation";
     private const string CannotUndoExceptionText = "Tried to invoke undo while CanUndo is false, possible forgotten validation";
     
@@ -34,16 +37,12 @@ public sealed class ExplorerHistory(ILogger logger, IExplorerHistoryMemory memor
         {
             if (!CanRedo)
             {
-                logger.Fatal(CannotRedoLogMessage, memory.Index, memory.HistoryList.Count());
+                logger.LogCritical(CannotRedoLogMessage, memory.Index, memory.HistoryList.Count());
                 throw new CannotRedoException(CannotRedoExceptionText); 
             }
             memory.Index++;
             memory.IsRedoDone = true;
-            Console.Write("[");
-            foreach(var element in memory.HistoryList)
-                Console.Write(element.Path);
-            Console.Write("]");
-            Console.Write("Index " + memory.Index);
+            logger.LogDebug(RedoWasMadeLogMessage, memory.HistoryList.ElementAt(memory.Index - 1), CurrentDirectory.Path);
         }
     }
 
@@ -54,15 +53,11 @@ public sealed class ExplorerHistory(ILogger logger, IExplorerHistoryMemory memor
         {
             if (!CanUndo)
             {
-                logger.Fatal(CannotUndoLogMessage, memory.Index, memory.HistoryList.Count());
+                logger.LogCritical(CannotUndoLogMessage, memory.Index, memory.HistoryList.Count());
                 throw new CannotUndoException(CannotUndoExceptionText);
             }
             memory.Index--;
-            Console.Write("Elements: [");
-            foreach(var element in memory.HistoryList)
-                Console.Write(element.Path + ", ");
-            Console.Write("]\n");
-            Console.WriteLine("Index " + memory.Index); 
+            logger.LogDebug(UndoWasMadeLogMessage, memory.HistoryList.ElementAt(memory.Index + 1), CurrentDirectory.Path);
         }
     }
 

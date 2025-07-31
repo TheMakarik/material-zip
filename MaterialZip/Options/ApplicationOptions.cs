@@ -24,7 +24,5 @@ public class ApplicationOptions : IApplicationOptions
 
     /// <inheritdoc cref="IApplicationOptions.LastDirectory"/>
     public required string LastDirectory { get; set; }
-    
-    /// <inheritdoc cref="IApplicationOptions.ResourcesLocation"/>
-    public required string ResourcesLocation { get; set; }
+
 }

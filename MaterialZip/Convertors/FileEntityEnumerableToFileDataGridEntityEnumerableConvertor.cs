@@ -4,7 +4,8 @@ using System.IO;
 using System.Windows.Data;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using MaterialZip.Model.Entities;
-using Serilog;
+using Microsoft.Extensions.Logging;
+using ILogger = Serilog.ILogger;
 
 namespace MaterialZip.Convertors;
 
@@ -43,7 +44,7 @@ public class FileEntityEnumerableToFileDataGridEntityEnumerableConvertor : IValu
     /// Skips items that:
     /// - Don't exist in the file system
     /// - Cause IO-related exceptions
-    /// Logs errors and warnings through <see cref="ILogger"/>.
+    /// Logs errors and warnings through <see cref="Serilog.ILogger"/>.
     /// </remarks>
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
@@ -62,7 +63,9 @@ public class FileEntityEnumerableToFileDataGridEntityEnumerableConvertor : IValu
 
                 if (!info.Exists)
                 {
-                    Ioc.Default.GetRequiredService<ILogger>().Error(CannotFindDirectory, info.FullName);
+                    Ioc.Default
+                        .GetRequiredService<ILogger<FileEntityEnumerableToFileDataGridEntityEnumerableConvertor>>()
+                        .LogError(CannotFindDirectory, info.FullName);
                     continue;
                 }
 
@@ -78,7 +81,9 @@ public class FileEntityEnumerableToFileDataGridEntityEnumerableConvertor : IValu
             }
             catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
             {
-                Ioc.Default.GetRequiredService<ILogger>().Warning(HandledExceptionLogMessage, ex, ex.Message);
+                Ioc.Default
+                    .GetRequiredService<ILogger<FileEntityEnumerableToFileDataGridEntityEnumerableConvertor>>()
+                    .LogWarning(HandledExceptionLogMessage, ex, ex.Message);
             }
         }
         return result;

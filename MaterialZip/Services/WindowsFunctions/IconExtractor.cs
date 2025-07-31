@@ -5,6 +5,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using MaterialZip.Model.Entities;
 using MaterialZip.Services.WindowsFunctions.Abstractions;
+using Microsoft.Extensions.Logging;
 using Serilog;
 using Image = System.Windows.Controls.Image;
 
@@ -18,7 +19,7 @@ namespace MaterialZip.Services.WindowsFunctions;
 /// <param name="extractor">The associated icon extractor service</param>
 /// <param name="bitmapSourceBuilder">The bitmap source builder service</param>
 public class IconExtractor(
-    ILogger logger,
+    ILogger<IconExtractor> logger,
     IAssociatedIconExtractor extractor,
     IBitmapSourceBuilder bitmapSourceBuilder) : IIconExtractor
 {
@@ -33,7 +34,7 @@ public class IconExtractor(
             var icon = extractor.Extract(path);
             if (icon is null)
             {
-                logger.Warning(FailedToExtractIconLogMessage, path);
+                logger.LogWarning(FailedToExtractIconLogMessage, path);
                 return null;
             }
             
@@ -41,7 +42,7 @@ public class IconExtractor(
         }
         catch (Exception ex)
         {
-            logger.Error(ex, ExceptionOccuredLogMessage, path);
+            logger.LogError(ex, ExceptionOccuredLogMessage, path);
             return null;
         }
     }
