@@ -73,41 +73,14 @@
         <!--  Menu  -->
         <Menu Grid.Row="1" materialDesign:MenuAssist.MenuItemsPresenterMargin="0">
 
-            <MenuItem Header="_File">
-                <MenuItem Header="Save" Icon="{materialDesign:PackIcon Kind=ContentSave}" />
-                <MenuItem Header="Save As.." />
-                <MenuItem
-                    Header="Exit"
-                    Icon="{materialDesign:PackIcon Kind=ExitToApp}"
-                    InputGestureText="Ctrl+E" />
-                <Separator />
-                <MenuItem
-                    Header="Excellent"
-                    IsCheckable="True"
-                    IsChecked="True" />
-                <MenuItem Header="Rubbish" IsCheckable="True" />
-                <MenuItem Header="Dig Deeper" InputGestureText="Ctrl+D">
-                    <MenuItem Header="Enlightenment?" IsCheckable="True" />
-                    <MenuItem Header="Disappointment" IsCheckable="True" />
-                </MenuItem>
-                <MenuItem Header="Look Deeper" InputGestureText="Ctrl+D">
-                    <MenuItem Header="Plain" />
-                    <MenuItem Header="Ice Cream" />
-                </MenuItem>
+            <MenuItem Header="{Binding Localization.Edit}">
+                <!--  Menu items  -->
             </MenuItem>
-            <MenuItem Header="_Edit">
-                <MenuItem
-                    Command="Cut"
-                    Header="_Cut"
-                    Icon="{materialDesign:PackIcon Kind=ContentCut}" />
-                <MenuItem
-                    Command="Copy"
-                    Header="_Copy"
-                    Icon="{materialDesign:PackIcon Kind=ContentCopy}" />
-                <MenuItem
-                    Command="Paste"
-                    Header="_Paste"
-                    Icon="{materialDesign:PackIcon Kind=ContentPaste}" />
+            <MenuItem Header="{Binding Localization.View}">
+                <!--  Menu items  -->
+            </MenuItem>
+            <MenuItem Header="{Binding Localization.Services}">
+                <!--  Menu items  -->
             </MenuItem>
 
             <MenuItem
@@ -182,8 +155,13 @@
             </DataGrid.Resources>
 
             <DataGrid.Columns>
-                <DataGridTemplateColumn Header="Name" Width="130">
-                    <!--  Icon and file name  -->
+
+                <DataGridTemplateColumn Width="130">
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding DataContext.Localization.Name, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -196,9 +174,47 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Binding="{Binding Size}" Header="Size" />
-                <DataGridTextColumn Binding="{Binding LastChanging}" Header="Last changing" />
-                <DataGridTextColumn Binding="{Binding CreatedAt}" Header="Created at" />
+
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding DataContext.Localization.Size, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding Size}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding DataContext.Localization.DateOfChanging, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding LastChanging}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding DataContext.Localization.DateOfCreating, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding CreatedAt}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
             </DataGrid.Columns>
 
 

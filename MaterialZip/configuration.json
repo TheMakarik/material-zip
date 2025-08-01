@@ -7,11 +7,11 @@
     "LastDirectory": "/"
   },
   "LocalizationOptions": {
-    "ResourcesPath": "/Resources"
+    "ResourcesPath": "Resources"
   },
   "Serilog": {
     "Using": ["Serilog.Sinks.File", "Serilog.Sinks.Console"],
-    "MinimumLevel": "Debug",
+    "MinimumLevel": "Verbose",
     "Enrich": ["WithThreadId"],
     "WriteTo": [
       {

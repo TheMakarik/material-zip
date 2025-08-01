@@ -21,4 +21,25 @@
     <data name="AppName" xml:space="preserve">
         <value>Zip Архиватор</value>
     </data>
+    <data name="DateOfCreating" xml:space="preserve">
+        <value>Создан в</value>
+    </data>
+    <data name="Edit" xml:space="preserve">
+        <value>Изменить</value>
+    </data>
+    <data name="Name" xml:space="preserve">
+        <value>Имя</value>
+    </data>
+    <data name="Services" xml:space="preserve">
+        <value>Сервисы</value>
+    </data>
+    <data name="Size" xml:space="preserve">
+        <value>Размер</value>
+    </data>
+    <data name="View" xml:space="preserve">
+        <value>Вид</value>
+    </data>
+    <data name="DateOfChanging" xml:space="preserve">
+        <value>Изменен в</value>
+    </data>
 </root>

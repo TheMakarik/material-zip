@@ -64,13 +64,11 @@ public partial class App
             .AddScoped<MainViewModel>()
             .AddScoped<IHoverButtonHexGetter, HoverButtonHexGetter>()
             .AddScoped<MainView>()
-            .AddLocalization()
-            .AddSingleton<ILocalizationProvider, LocalizationProvider<Application>>()
+            .AddSingleton<ILocalizationProvider, LocalizationProvider>()
             .AddExplorer();
     
         _app = builder.CreateBootstrapper();
         Ioc.Default.ConfigureServices(_app.Services);
-      
     }
     
     protected override void OnStartup(StartupEventArgs e)
@@ -88,7 +86,9 @@ public partial class App
 
     private void LoadLocalization(IServiceScope scope)
     {
-     
+        CultureInfo.CurrentUICulture = scope.ServiceProvider
+                .GetRequiredService<IApplicationConfigurationManager>()
+                .Language;
     }
 
     protected override async void OnExit(ExitEventArgs e)

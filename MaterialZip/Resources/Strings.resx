@@ -21,4 +21,25 @@
     <data name="AppName" xml:space="preserve">
         <value>Material Zip</value>
     </data>
+    <data name="View" xml:space="preserve">
+        <value>View</value>
+    </data>
+    <data name="Edit" xml:space="preserve">
+        <value>Edit</value>
+    </data>
+    <data name="Services" xml:space="preserve">
+        <value>Services</value>
+    </data>
+    <data name="Name" xml:space="preserve">
+        <value>Name</value>
+    </data>
+    <data name="Size" xml:space="preserve">
+        <value>Size</value>
+    </data>
+    <data name="DateOfCreating" xml:space="preserve">
+        <value>Created at</value>
+    </data>
+    <data name="DateOfChanging" xml:space="preserve">
+        <value>Changed at</value>
+    </data>
 </root>

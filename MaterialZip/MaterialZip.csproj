@@ -60,26 +60,26 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="Resources\ru-RU.resx">
+      <EmbeddedResource Update="Resources\Strings.resx">
         <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>ru-RU.Designer.cs</LastGenOutput>
+        <LastGenOutput>Strings.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <EmbeddedResource Update="Resources\en-US.resx">
+      <EmbeddedResource Update="Resources\Strings.ru-RU.resx">
         <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>String.Designer.cs</LastGenOutput>
+        <LastGenOutput>Strings.ru-RU.Designer.cs</LastGenOutput>
       </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Resources\ru-RU.Designer.cs">
+      <Compile Update="Resources\Strings.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
-        <DependentUpon>ru-RU.resx</DependentUpon>
+        <DependentUpon>Strings.resx</DependentUpon>
       </Compile>
-      <Compile Update="Resources\en-US.Designer.cs">
+      <Compile Update="Resources\Strings.ru-RU.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
-        <DependentUpon>en-US.resx</DependentUpon>
+        <DependentUpon>Strings.ru-RU.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

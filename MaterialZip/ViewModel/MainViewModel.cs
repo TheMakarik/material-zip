@@ -1,7 +1,9 @@
 using System.Collections.ObjectModel;
+using System.Globalization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MaterialZip.Model.Entities;
+using MaterialZip.Resources;
 using MaterialZip.Services.ConfigurationServices.Abstractions;
 using MaterialZip.Services.ExplorerServices.Abstractions;
 using MaterialZip.Services.LocalizationServices.Abstractions;
@@ -77,7 +79,6 @@ public partial class MainViewModel : ViewModelBase
     {
         if (!_history.CanUndo)
             return;
-        
         _history.Undo();
         await ResetDirectoryContentToCurrentDirectory();
     }

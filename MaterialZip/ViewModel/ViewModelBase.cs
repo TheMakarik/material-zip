@@ -8,5 +8,5 @@ namespace MaterialZip.ViewModel;
 /// </summary>
 public partial class ViewModelBase(ILocalizationProvider localization) : ObservableObject
 {
-    public ILocalizationProvider Localization { get; } = localization;
+    [ObservableProperty] private ILocalizationProvider _localization = localization;
 }
