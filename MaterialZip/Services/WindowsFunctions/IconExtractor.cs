@@ -18,7 +18,7 @@ namespace MaterialZip.Services.WindowsFunctions;
 /// <param name="logger">The logger instance for error reporting</param>
 /// <param name="extractor">The associated icon extractor service</param>
 /// <param name="bitmapSourceBuilder">The bitmap source builder service</param>
-public class IconExtractor(
+public sealed class IconExtractor(
     ILogger<IconExtractor> logger,
     IAssociatedIconExtractor extractor,
     IBitmapSourceBuilder bitmapSourceBuilder) : IIconExtractor

@@ -10,7 +10,7 @@ using Timer = System.Timers.Timer;
 
 namespace MaterialZip.ViewModel;
 
-public partial class ExceptionOccuredViewModel(ILocalizationProvider localization, ILogPathOpener logPathOpener) : ViewModelBase(localization)
+public sealed partial class ExceptionOccuredViewModel(ILocalizationProvider localization, ILogPathOpener logPathOpener) : ViewModelBase(localization)
 {
     [ObservableProperty] private string _exceptionString = string.Empty;
     [ObservableProperty] private bool _isPopupVisible = false;

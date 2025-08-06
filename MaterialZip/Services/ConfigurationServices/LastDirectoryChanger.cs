@@ -12,7 +12,7 @@ namespace MaterialZip.Services.ConfigurationServices;
 /// <remarks>
 /// Do not call it too often, better use <see cref="ILastDirectoryBuffer"/> to change last directory and invoke this class only at application closing
 /// </remarks>
-public class LastDirectoryChanger(IApplicationConfigurationManager applicationConfigurationManager, ILogger<LastDirectoryChanger> logger) : ILastDirectoryChanger
+public sealed class LastDirectoryChanger(IApplicationConfigurationManager applicationConfigurationManager, ILogger<LastDirectoryChanger> logger) : ILastDirectoryChanger
 {
     private const string LastDirectoryChangedLogMessage = "Last directory in configuration was changed to {directory}";
     

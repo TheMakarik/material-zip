@@ -13,7 +13,7 @@ using Serilog;
 
 namespace MaterialZip.ViewModel;
 
-public partial class MainViewModel : ViewModelBase
+public sealed partial class MainViewModel : ViewModelBase
 {
     private const string DefaultLogicalDrivesPath = "/";
     

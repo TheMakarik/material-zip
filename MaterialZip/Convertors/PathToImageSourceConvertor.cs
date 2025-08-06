@@ -20,7 +20,7 @@ namespace MaterialZip.Convertors;
 /// The converter uses <see cref="IIconExtractor"/> service for file icons.
 /// </remarks>
 [ValueConversion(typeof(string), typeof(ImageSource))]
-public class PathToImageSourceConvertor : IValueConverter
+public sealed class PathToImageSourceConvertor : IValueConverter
 {
     private const string FolderIconPath = "pack://application:,,,/Assets/FileIcons/folder.png";
     private const string DriveIconPath = "pack://application:,,,/Assets/FileIcons/harddisk.png";

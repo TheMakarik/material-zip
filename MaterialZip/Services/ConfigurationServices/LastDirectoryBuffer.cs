@@ -6,7 +6,7 @@ using Serilog;
 
 namespace MaterialZip.Services.ConfigurationServices;
 
-public class LastDirectoryBuffer(ILogger<LastDirectoryBuffer> logger) : ILastDirectoryBuffer
+public sealed class LastDirectoryBuffer(ILogger<LastDirectoryBuffer> logger) : ILastDirectoryBuffer
 {
     private const string DirectoryInBufferNotFoundExceptionText 
         = "Cannot find directory in buffer, possible forgotten validation";

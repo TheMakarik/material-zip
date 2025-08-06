@@ -5,7 +5,7 @@ namespace MaterialZip.Services.ValidationServices;
 /// <summary>
 /// Default absolute url validator
 /// </summary>
-public class AbsoluteUrlValidator : IValidator
+public sealed class AbsoluteUrlValidator : IValidator
 {
     /// <summary>
     /// Validate url using <see cref="Uri.TryCreate(string, UriKind, out Uri)"/> method

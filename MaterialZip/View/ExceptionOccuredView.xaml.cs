@@ -4,7 +4,7 @@ using MaterialDesignThemes.Wpf;
 
 namespace MaterialZip.View;
 
-public partial class ExceptionOccuredView : Window
+public sealed partial class ExceptionOccuredView : Window
 {
     public ExceptionOccuredView()
     {

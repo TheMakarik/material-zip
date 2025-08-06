@@ -6,7 +6,7 @@ namespace MaterialZip.Services.WindowsFunctions;
 /// <summary>
 /// Represent default proxy of <see cref="Process.Start(string)"/>, <see cref="Process.Start(string, IEnumerable{string})"/> and <see cref="Process.Start(ProcessStartInfo)"/> methods
 /// </summary>
-public class ProcessRunner : IProcessRunner
+public sealed class ProcessRunner : IProcessRunner
 {
     /// <inheritdoc cref="IProcessRunner.Run(string)"/>
     public Process Run(string path)

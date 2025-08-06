@@ -8,7 +8,7 @@ using MaterialZip.Services.WindowsFunctions.Abstractions;
 namespace MaterialZip.Services.WindowsFunctions;
 
 /// <inheritdoc cref="ILogPathOpener"/>
-public class LogPathOpener(IWindowsExplorerOpener windowsExplorerOpener, IApplicationConfigurationManager applicationConfigurationManager) : ILogPathOpener
+public sealed class LogPathOpener(IWindowsExplorerOpener windowsExplorerOpener, IApplicationConfigurationManager applicationConfigurationManager) : ILogPathOpener
 {
     /// <inheritdoc/>
     public void Open()

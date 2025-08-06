@@ -4,7 +4,7 @@ using MaterialZip.Services.LocalizationServices.Abstractions;
 namespace MaterialZip.Services.LocalizationServices;
 
 /// <inheritdoc cref="ILocalizationProvider"/>
-public class LocalizationProvider : ILocalizationProvider
+public sealed class LocalizationProvider : ILocalizationProvider
 {
     /// <inheritdoc/>
     public string AppName => Strings.AppName;

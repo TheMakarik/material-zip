@@ -6,7 +6,7 @@ namespace MaterialZip.Services.ConfigurationServices;
 /// <summary>
 /// Class for getting hover button hex value
 /// </summary>
-public class HoverButtonHexGetter : IHoverButtonHexGetter
+public sealed class HoverButtonHexGetter : IHoverButtonHexGetter
 {
     private const string HoverButtonHexWasLoadedLogMessage = "Hover button hex: {hex} was loaded successefully";
     

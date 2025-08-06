@@ -8,7 +8,7 @@ namespace MaterialZip.Convertors;
 /// Convert hex string to <see cref="Brush"/> using <see cref="BrushConverter"/>
 /// </summary>
 [ValueConversion(typeof(string), typeof(Brush))]
-public class HexStringToBrushConvertor : IValueConverter
+public sealed class HexStringToBrushConvertor : IValueConverter
 {
     private const string HexPatternStart = "#";
 

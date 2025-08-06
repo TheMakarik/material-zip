@@ -12,7 +12,7 @@ namespace MaterialZip.Services.WindowsFunctions;
 /// <param name="logger"><see cref="Serilog.ILogger"/> instance from DI</param>
 /// <param name="processRunner"><see cref="IProcessRunner"/>instance from DI</param>
 /// <param name="urlValidator"><see cref="AbsoluteUrlValidator"/>instance from DI</param>
-public class UrlOpener(ILogger<UrlOpener> logger, IProcessRunner processRunner, AbsoluteUrlValidator urlValidator) : IUrlOpener
+public sealed class UrlOpener(ILogger<UrlOpener> logger, IProcessRunner processRunner, AbsoluteUrlValidator urlValidator) : IUrlOpener
 {
     private const string ExceptionWasHappenedLogMessage = "Exception was happened and was handled";
     private const string UrlIsNotValidLogMessage = "Cannot open {url} because it is not valid url";

@@ -9,7 +9,7 @@ namespace MaterialZip.Services.ConfigurationServices;
 /// <summary>
 /// Represent default convertor from <see cref="MaterialColor"/> to <see cref="Color"/>
 /// </summary>
-public class ColorConvertor : IColorConvertor
+public sealed class ColorConvertor : IColorConvertor
 {
     /// <inheritdoc cref="IColorConvertor.ToWpfColor"/>
     public Color ToWpfColor(MaterialColor color)

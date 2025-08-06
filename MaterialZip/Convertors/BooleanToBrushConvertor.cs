@@ -12,7 +12,7 @@ namespace MaterialZip.Convertors;
 /// Converts a boolean value to a Brush, using a specified Brush for true and a color from IHoverButtonHexGetter for false
 /// </summary>
 [ValueConversion(typeof(bool), typeof(Brush))]
-public class BooleanToBrushConvertor : IValueConverter
+public sealed class BooleanToBrushConvertor : IValueConverter
 {
     
     private const string ConvertBackNotSupportedMessage = "Conversion from Brush back to bool is not supported";

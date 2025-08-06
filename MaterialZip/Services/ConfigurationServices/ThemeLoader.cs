@@ -16,7 +16,7 @@ namespace MaterialZip.Services.ConfigurationServices;
 /// <remarks>
 /// Class' method <see cref="LoadTheme"/> must be call once after <see cref="App"/> class created 
 /// </remarks>
-public class ThemeLoader(
+public sealed class ThemeLoader(
     IColorConvertor colorConvertor,
     IApplicationConfigurationManager applicationConfigurationManager,
     PaletteHelper paletteHelper,

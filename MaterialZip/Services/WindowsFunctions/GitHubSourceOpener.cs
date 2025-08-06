@@ -9,7 +9,7 @@ namespace MaterialZip.Services.WindowsFunctions;
 /// </summary>
 /// <param name="urlOpener"><see cref="IUrlOpener"/> instance from DI</param>
 /// <param name="applicationConfigurationManager"> <see cref="IApplicationConfigurationManager "/> instance from DI</param>
-public class GitHubSourceOpener(IUrlOpener urlOpener, IApplicationConfigurationManager applicationConfigurationManager) : IGitHubSourceOpener
+public sealed class GitHubSourceOpener(IUrlOpener urlOpener, IApplicationConfigurationManager applicationConfigurationManager) : IGitHubSourceOpener
 {
     /// <inheritdoc cref="IGitHubSourceOpener.TryOpen"/>
     public bool TryOpen()

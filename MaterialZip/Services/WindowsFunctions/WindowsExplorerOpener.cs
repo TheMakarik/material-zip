@@ -8,7 +8,7 @@ using System.IO;
 namespace MaterialZip.Services.WindowsFunctions;
 
 /// <inheritdoc cref="IWindowsExplorerOpener"/>
-public class WindowsExplorerOpener(
+public sealed class WindowsExplorerOpener(
     ILogger<WindowsExplorerOpener> logger, 
     IApplicationConfigurationManager applicationConfigurationManager, 
     IProcessRunner processRunner) : IWindowsExplorerOpener

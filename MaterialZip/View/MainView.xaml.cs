@@ -19,7 +19,7 @@ namespace MaterialZip.View;
 /// <summary>
 /// Interaction logic for MainView.xaml
 /// </summary>
-public partial class MainView
+public sealed partial class MainView
 {
     private const string WindowWasLoadedLogMessage = "Window was loaded successefully";
     private const string ExceptionOccuredLogMessage = "Exception occured";
@@ -88,7 +88,6 @@ public partial class MainView
     {
         try
         {
-            throw new IndexOutOfRangeException();
             var directory = new FileEntity( PathTextBox.Text, IsDirectory: true);
         
             if (eventArgs.Key != Key.Enter)
@@ -105,7 +104,6 @@ public partial class MainView
         catch (Exception exception)
         {
             _logger.LogWarning(exception, ExceptionOccuredLogMessage);
-            throw new IndexOutOfRangeException();
         }
     }
 

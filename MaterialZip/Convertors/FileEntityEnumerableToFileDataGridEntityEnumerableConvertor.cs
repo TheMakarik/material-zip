@@ -18,7 +18,7 @@ namespace MaterialZip.Convertors;
 /// Provides a static instance via <see cref="Instance"/> property for reuse.
 /// </remarks>
 [ValueConversion(typeof(IEnumerable<FileEntity>), typeof(IEnumerable<FileDataGridEntity>))]
-public class FileEntityEnumerableToFileDataGridEntityEnumerableConvertor : IValueConverter
+public sealed class FileEntityEnumerableToFileDataGridEntityEnumerableConvertor : IValueConverter
 {
     
     private const string CannotFindDirectory = "Directory {path} was gotten but not exists";
