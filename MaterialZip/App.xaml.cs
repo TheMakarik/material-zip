@@ -7,7 +7,8 @@ using CommunityToolkit.Mvvm.DependencyInjection;
 using MaterialDesignThemes.Wpf;
 using MaterialZip.Bootstrapping;
 using MaterialZip.Bootstrapping.Abstractions;
-using MaterialZip.DIExtensions;
+using MaterialZip.Extensions;
+using MaterialZip.Factories.Abstractions;
 using MaterialZip.Model.Entities;
 using MaterialZip.Options;
 using MaterialZip.Services.ConfigurationServices;
@@ -51,6 +52,7 @@ public partial class App
             .CreateLogger();
  
         builder.Services
+            .AddExceptionView()
             .AddLogging(logBuilder =>
                 logBuilder.ClearProviders()
                 .AddSerilog(Log.Logger))
@@ -58,6 +60,7 @@ public partial class App
             .AddScoped<PaletteHelper>()
             .AddLastDirectoryManagers()
             .AddThemeLoader()
+            .AddWindowsExplorerServices()
             .AddIconExtractor()
             .AddUrlOpeners()
             .AddValidators()
@@ -79,6 +82,7 @@ public partial class App
             LoadTheme(scope);
             SetBuffer(scope);
             ShowWindow(scope);
+            AddExceptionHandler();
         }
         _app.Services.GetRequiredService<ILogger<Application>>().LogDebug(ApplicationStartedLogMessage);
         base.OnStartup(e);
@@ -117,9 +121,23 @@ public partial class App
     
     private void ShowWindow(IServiceScope scope)
     {
-        scope.ServiceProvider.GetRequiredService<MainView>().Show();
+        var view = scope.ServiceProvider.GetRequiredService<MainView>();
+        MainWindow = view;
+        view.Show();
     }
 
+    private void AddExceptionHandler()
+    {
+        DispatcherUnhandledException += (sender, args) =>
+        {
+            using var scope = _app.Services.CreateScope();
+            scope.ServiceProvider.GetRequiredService<IExceptionOccuredViewFactory>().Show(args.Exception);
+            MainWindow?.Close();
+            args.Handled = true;
+        } ;
+    }
+
+    
 }
 
 

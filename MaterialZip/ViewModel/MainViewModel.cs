@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Globalization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -91,13 +92,6 @@ public partial class MainViewModel : ViewModelBase
              _history.CurrentDirectory = directory;
         
         CurrentPath = directory.Path;
-        UpdateCanRedoAndCanUndo();
-    }
-
-    private void UpdateCanRedoAndCanUndo()
-    {
-        CanRedo = _history.CanRedo;
-        CanUndo = _history.CanUndo;
     }
 
     private async Task ResetDirectory(FileEntity directory, bool updateHistory)
@@ -121,5 +115,13 @@ public partial class MainViewModel : ViewModelBase
     private async Task ResetDirectoryContentToCurrentDirectory() 
         => await ResetDirectory(_history.CurrentDirectory, updateHistory: false);
 
-
+    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(Entities))
+        {
+            CanRedo = _history.CanRedo;
+            CanUndo = _history.CanUndo;
+        }
+        base.OnPropertyChanged(e);
+    }
 }

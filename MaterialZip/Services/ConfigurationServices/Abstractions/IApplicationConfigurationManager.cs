@@ -24,4 +24,10 @@ public interface IApplicationConfigurationManager
     
     /// <inheritdoc cref="IApplicationOptions.LastDirectory"/>
     public string LastDirectory { get; set; }
+    
+    /// <inheritdoc cref="IApplicationOptions.WindowsExplorerPathInWindows"/>
+    public string WindowsExplorerPathInWindows { get; set; }
+    
+    /// <inheritdoc cref="IApplicationOptions.LogsPath"/>
+    public string LogsPath { get; set; }
 }

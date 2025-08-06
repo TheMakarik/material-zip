@@ -88,6 +88,7 @@ public partial class MainView
     {
         try
         {
+            throw new IndexOutOfRangeException();
             var directory = new FileEntity( PathTextBox.Text, IsDirectory: true);
         
             if (eventArgs.Key != Key.Enter)
@@ -104,7 +105,13 @@ public partial class MainView
         catch (Exception exception)
         {
             _logger.LogWarning(exception, ExceptionOccuredLogMessage);
+            throw new IndexOutOfRangeException();
         }
     }
-    
+
+    protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+    {
+        DragMove();
+        base.OnMouseLeftButtonDown(e);
+    }
 }

@@ -42,4 +42,19 @@
     <data name="DateOfChanging" xml:space="preserve">
         <value>Changed at</value>
     </data>
+    <data name="ExceptionOccured">
+        <value>Error occured</value>
+    </data>
+    <data name="ExceptionOccuredMessage">
+        <value>We sorry but error occured during this application</value>
+    </data>
+    <data name="ShowMoreText" xml:space="preserve">
+        <value>Show More</value>
+    </data>
+    <data name="CopyStackTrace" xml:space="preserve">
+        <value>Copy </value>
+    </data>
+    <data name="OpenLogs" xml:space="preserve">
+        <value>Open logs</value>
+    </data>
 </root>

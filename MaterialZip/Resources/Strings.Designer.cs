@@ -69,6 +69,15 @@ namespace MaterialZip.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy .
+        /// </summary>
+        internal static string CopyStackTrace {
+            get {
+                return ResourceManager.GetString("CopyStackTrace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Changed at.
         /// </summary>
         internal static string DateOfChanging {
@@ -96,6 +105,24 @@ namespace MaterialZip.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error occured.
+        /// </summary>
+        internal static string ExceptionOccured {
+            get {
+                return ResourceManager.GetString("ExceptionOccured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We sorry but error occured during this application.
+        /// </summary>
+        internal static string ExceptionOccuredMessage {
+            get {
+                return ResourceManager.GetString("ExceptionOccuredMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         internal static string Name {
@@ -105,11 +132,29 @@ namespace MaterialZip.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open logs.
+        /// </summary>
+        internal static string OpenLogs {
+            get {
+                return ResourceManager.GetString("OpenLogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Services.
         /// </summary>
         internal static string Services {
             get {
                 return ResourceManager.GetString("Services", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show More.
+        /// </summary>
+        internal static string ShowMoreText {
+            get {
+                return ResourceManager.GetString("ShowMoreText", resourceCulture);
             }
         }
         

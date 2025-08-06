@@ -42,4 +42,19 @@
     <data name="DateOfChanging" xml:space="preserve">
         <value>Изменен в</value>
     </data>
+    <data name="ExceptionOccured" xml:space="preserve">
+        <value>Произошла ошибка</value>
+    </data>
+    <data name="ShowMoreText" xml:space="preserve">
+        <value>Показать больше</value>
+    </data>
+    <data name="ExceptionOccuredMessage" xml:space="preserve">
+        <value>Нам жаль, но произошла ошибка во время работы этого приложения</value>
+    </data>
+    <data name="CopyStackTrace" xml:space="preserve">
+        <value>Копировать</value>
+    </data>
+    <data name="OpenLogs" xml:space="preserve">
+        <value>Показать журнал</value>
+    </data>
 </root>

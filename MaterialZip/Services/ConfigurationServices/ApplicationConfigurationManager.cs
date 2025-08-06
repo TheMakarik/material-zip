@@ -47,5 +47,18 @@ public sealed class ApplicationConfigurationManager(IOptionsSnapshot<Application
         get => options.Value.LastDirectory;
         set => options.Value.LastDirectory = value;
     }
+
+    /// <inheritdoc cref="IApplicationConfigurationManagers.WindowsExplorerPathInWindows"/>
+    public string WindowsExplorerPathInWindows
+    {
+        get => options.Value.WindowsExplorerPathInWindows; 
+        set => options.Value.WindowsExplorerPathInWindows = value;
+    }
     
+    /// <inheritdoc cref="IApplicationConfigurationManager.LogsPath"/>
+    public string LogsPath 
+    {  
+        get => options.Value.LogsPath;
+        set => options.Value.LogsPath = value; 
+    }
 }

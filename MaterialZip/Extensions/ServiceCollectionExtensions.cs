@@ -1,5 +1,6 @@
-using System.Windows;
-using System.Windows.Data;
+using System.IO;
+using MaterialZip.Factories;
+using MaterialZip.Factories.Abstractions;
 using MaterialZip.Services.ConfigurationServices;
 using MaterialZip.Services.ConfigurationServices.Abstractions;
 using MaterialZip.Services.ExplorerServices;
@@ -7,13 +8,12 @@ using MaterialZip.Services.ExplorerServices.Abstractions;
 using MaterialZip.Services.ValidationServices;
 using MaterialZip.Services.WindowsFunctions;
 using MaterialZip.Services.WindowsFunctions.Abstractions;
-using Microsoft.Extensions.Configuration;
+using MaterialZip.View;
+using MaterialZip.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Serilog;
 
-
-namespace MaterialZip.DIExtensions;
+namespace MaterialZip.Extensions;
 
 /// <summary>
 /// <see cref="Microsoft.Extensions.DependencyInjection.ServiceCollection"/> extensions methods for normal-view of <see cref="Bootstrapping.Bootstrapper"/>
@@ -121,6 +121,45 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddValidators(this IServiceCollection services)
     {
         return services.AddSingleton<AbsoluteUrlValidator>();
+    }
+
+    /// <summary>
+    /// Add exception view services to the <see cref="IServiceCollection"/>
+    /// </summary>
+    /// <param name="services"><see cref="IServiceCollection"/> instance</param>
+    /// <returns><see cref="IServiceCollection"/> instance with exception view services</returns>
+    /// <remarks>
+    /// Services that will be added: 
+    /// <see cref="IExceptionOccuredViewFactory"/>, 
+    /// <see cref="ExceptionOccuredView"/>, 
+    /// <see cref="ExceptionOccuredViewModel"/>
+    /// </remarks>
+    public static IServiceCollection AddExceptionView(this IServiceCollection services)
+    {
+        return services
+            .AddScoped<IExceptionOccuredViewFactory, ExceptionOccuredViewFactory>()
+            .AddScoped<ExceptionOccuredView>()
+            .AddScoped<ExceptionOccuredViewModel>();
+    }
+
+    /// <summary>
+    /// Add Windows Explorer related services to the <see cref="IServiceCollection"/>
+    /// </summary>
+    /// <param name="services"><see cref="IServiceCollection"/> instance</param>
+    /// <returns><see cref="IServiceCollection"/> instance with Windows Explorer services</returns>
+    /// <remarks>
+    /// Services that will be added: 
+    /// <see cref="IWindowsExplorerOpener"/>, 
+    /// <see cref="ILogPathOpener"/>.
+    /// Also tries to add <see cref="IApplicationConfigurationManager"/> if not already registered.
+    /// </remarks>
+    public static IServiceCollection AddWindowsExplorerServices(this IServiceCollection services)
+    {
+        services
+            .AddSingleton<IWindowsExplorerOpener, WindowsExplorerOpener>()
+            .AddSingleton<ILogPathOpener, LogPathOpener>()
+            .TryAddScoped<IApplicationConfigurationManager, ApplicationConfigurationManager>();
+        return services;
     }
     
 }

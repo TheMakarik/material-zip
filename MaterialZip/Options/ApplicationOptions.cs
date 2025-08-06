@@ -25,4 +25,9 @@ public class ApplicationOptions : IApplicationOptions
     /// <inheritdoc cref="IApplicationOptions.LastDirectory"/>
     public required string LastDirectory { get; set; }
 
+    /// <inheritdoc cref="IApplicationOptions.WindowsExplorerPathInWindows"/>
+    public required string WindowsExplorerPathInWindows { get; set; }
+    
+    /// <inheritdoc cref="IApplicationOptions.LogsPath"/>
+    public required string LogsPath { get; set; }
 }

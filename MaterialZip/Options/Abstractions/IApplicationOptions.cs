@@ -37,4 +37,14 @@ public interface IApplicationOptions
     /// <remarks>Dont change it every time last directory was changed, it's hard to update configuration every time, create a buffer and update configuration only on closing</remarks>
     public string LastDirectory { get; set; }
     
+    /// <summary>
+    /// Windows explorer path in System32 folder
+    /// </summary>
+    public string WindowsExplorerPathInWindows { get; set; }
+    
+    /// <summary>
+    /// Logs path for this project
+    /// </summary>
+    public string LogsPath { get; set; }
+    
 }

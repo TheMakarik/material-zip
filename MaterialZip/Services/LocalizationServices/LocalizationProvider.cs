@@ -30,4 +30,19 @@ public class LocalizationProvider : ILocalizationProvider
     
     /// <inheritdoc/>
     public string View => Strings.View;
+
+    /// <inheritdoc/>
+    public string ShowMore => Strings.ShowMoreText;
+    
+    /// <inheritdoc/>
+    public string ExceptionOccured => Strings.ExceptionOccured;
+
+    /// <inheritdoc/>
+    public string ExceptionOccuredMessage => Strings.ExceptionOccuredMessage;
+    
+    /// <inheritdoc/>
+    public string OpenLogs => Strings.OpenLogs;
+
+    /// <inheritdoc/>
+    public string CopyStackTrace => Strings.CopyStackTrace;
 }

@@ -41,7 +41,33 @@ public interface ILocalizationProvider
     public string Services { get; }
     
     /// <summary>
-    /// Summary menu
+    /// View menu
     /// </summary>
     public string View { get; }
+
+    /// <summary>
+    /// Show more summary
+    /// </summary>
+    public string ShowMore { get; }
+    
+    /// <summary>
+    /// Exception occurred message
+    /// </summary>
+    
+    public string ExceptionOccured { get; }
+    
+    /// <summary>
+    /// Exception occured long message 
+    /// </summary>
+    public string ExceptionOccuredMessage { get; }
+
+    /// <summary>
+    /// Open logs message
+    /// </summary>
+    public string OpenLogs { get; }
+    
+    /// <summary>
+    /// Copy stack trace message
+    /// </summary>
+    public string CopyStackTrace { get; }
 }

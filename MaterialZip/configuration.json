@@ -1,14 +1,13 @@
 {
   "ApplicationOptions": {
-    "Language": "en-US",
+    "Language": "ru-RU",
     "Color": "DeepPurple",
     "HoverColorHex": "#b5b5b5",
     "GithubSourceLink": "https://github.com/TheMakarik/material-zip",
-    "LastDirectory": "/"
-  },
-  "LocalizationOptions": {
-    "ResourcesPath": "Resources"
-  },
+    "LastDirectory": "/",
+    "WindowsExplorerPathInWindows": "/explorer.exe",
+    "LogsPath": "/Logs"
+  }, 
   "Serilog": {
     "Using": ["Serilog.Sinks.File", "Serilog.Sinks.Console"],
     "MinimumLevel": "Verbose",
@@ -17,14 +16,14 @@
       {
         "Name": "Console",
         "Args": {
-          "outputTemplate": "[{Timestamp:yyyy-MM-dd HH:mm}] [Thread: {ThreadId}] [{Level}] [From: {SourceContext}] {Message:lj}{NewLine}{Exception}{NewLine}"
+          "outputTemplate": "[{Timestamp:yyyy-MM-dd HH:mm}] [Thread: {ThreadId}] [{Level}] [From: {SourceContext}] {Message:lj} {Exception}{NewLine}"
         }
       },
       {
         "Name": "File",
         "Args": {
-          "path": "Logs/log.txt",
-          "outputTemplate": "[{Timestamp:yyyy-MM-dd HH:mm}] [{Level}] {Message:lj}{NewLine}{Exception}",
+          "path": "Logs/log_.txt",
+          "outputTemplate":  "[{Timestamp:yyyy-MM-dd HH:mm}] [Thread: {ThreadId}] [{Level}] [From: {SourceContext}] {Message:lj} {Exception}{NewLine}",
           "rollingInterval": "Day"
         }
       }
