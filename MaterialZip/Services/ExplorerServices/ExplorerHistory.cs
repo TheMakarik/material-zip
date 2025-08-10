@@ -15,6 +15,8 @@ public sealed class ExplorerHistory(ILogger<ExplorerHistory> logger, IExplorerHi
     private const string CannotUndoLogMessage = "Cannot undo because CanUndo is false, current index: {index}, history count: {count}, exception will be thrown";
     private const string UndoWasMadeLogMessage = "Undo from {directory} to {directory}";
     private const string RedoWasMadeLogMessage = "Redo from {directory} to {directory}";
+    private const string ExplorerHistoryStateLogMessage =
+        "ExplorerHistoryState -> Index: {index}, Items: {items}, CanRedo: {canRedo}, CanUndo: {canUndo}";
     
     private const string CannotRedoExceptionText = "Tried to invoke redo while CanRedo is false, possible forgotten validation";
     private const string CannotUndoExceptionText = "Tried to invoke undo while CanUndo is false, possible forgotten validation";
@@ -40,6 +42,7 @@ public sealed class ExplorerHistory(ILogger<ExplorerHistory> logger, IExplorerHi
                 logger.LogCritical(CannotRedoLogMessage, memory.Index, memory.HistoryList.Count());
                 throw new CannotRedoException(CannotRedoExceptionText); 
             }
+            LogState();
             memory.Index++;
             memory.IsRedoDone = true;
             logger.LogDebug(RedoWasMadeLogMessage, memory.HistoryList.ElementAt(memory.Index - 1), CurrentDirectory.Path);
@@ -56,6 +59,7 @@ public sealed class ExplorerHistory(ILogger<ExplorerHistory> logger, IExplorerHi
                 logger.LogCritical(CannotUndoLogMessage, memory.Index, memory.HistoryList.Count());
                 throw new CannotUndoException(CannotUndoExceptionText);
             }
+            LogState();
             memory.Index--;
             logger.LogDebug(UndoWasMadeLogMessage, memory.HistoryList.ElementAt(memory.Index + 1), CurrentDirectory.Path);
         }
@@ -68,5 +72,8 @@ public sealed class ExplorerHistory(ILogger<ExplorerHistory> logger, IExplorerHi
     /// <inheritdoc cref="List{T}.GetEnumerator"/>
     IEnumerator IEnumerable.GetEnumerator() 
         => GetEnumerator();
+    
+    private void LogState()
+        =>  logger.LogDebug(ExplorerHistoryStateLogMessage, memory.Index, memory.HistoryList.Select(e => e.Path), CanRedo, CanUndo);
     
 }

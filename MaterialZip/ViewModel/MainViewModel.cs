@@ -17,7 +17,6 @@ namespace MaterialZip.ViewModel;
 public sealed partial class MainViewModel : ViewModelBase
 {
     private const string DefaultLogicalDrivesPath = "/";
-    private const string PopupWasOpenedLogMessage = "Popup was opened";
     private const string TryingToOpenFileLogMessage = "Trying to open {file} as directory";
     
     private readonly IExplorer _explorer;

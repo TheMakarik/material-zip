@@ -14,8 +14,6 @@ public sealed class LastDirectoryBuffer(ILogger<LastDirectoryBuffer> logger) : I
         = "{path} was loaded to the buffer replacing {oldPath}";
     private const string DirectoryWasGottenFromBufferLogMessage
         = "{path} was gotten from the buffer";
-    private const string DefaultPath 
-        = "...";
     
     private FileEntity? _buffer;
 
@@ -26,7 +24,7 @@ public sealed class LastDirectoryBuffer(ILogger<LastDirectoryBuffer> logger) : I
     public void ToBuffer(FileEntity directory)
     {
         logger.LogDebug(DirectoryWasLoadedToTheBufferMessage, directory.Path, 
-            _buffer.GetValueOrDefault(new FileEntity(DefaultPath, true)).Path);
+            _buffer.GetValueOrDefault(new FileEntity(string.Empty, true)).Path);
         _buffer = directory;
     }
     

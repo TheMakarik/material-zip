@@ -3,7 +3,7 @@ namespace MaterialZip.Services.ValidationServices.Abstractions;
 /// <summary>
 /// Represent default abstraction for every validators
 /// </summary>
-public interface IValidator
+public interface IValidator<T>
 { 
     /// <summary>
     /// Validate something
@@ -11,5 +11,5 @@ public interface IValidator
     /// <param name="value">Value to validate</param>
     /// <typeparam name="T">Validate type</typeparam>
     /// <returns>Validating result</returns>
-    public bool IsValid<T>(T value);
+    public bool IsValid(T value);
 }

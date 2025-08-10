@@ -6,12 +6,15 @@ using MaterialDesignThemes.Wpf.Converters;
 using MaterialZip.Services.ConfigurationServices.Abstractions;
 using MaterialZip.Services.LocalizationServices.Abstractions;
 using MaterialZip.Services.WindowsFunctions.Abstractions;
+using Microsoft.Extensions.Logging;
 using Timer = System.Timers.Timer;
 
 namespace MaterialZip.ViewModel;
 
-public sealed partial class ExceptionOccuredViewModel(ILocalizationProvider localization, ILogPathOpener logPathOpener) : ViewModelBase(localization)
+public sealed partial class ExceptionOccuredViewModel(ILocalizationProvider localization, ILogPathOpener logPathOpener, ILogger<ExceptionOccuredViewModel> logger) : ViewModelBase(localization)
 {
+    private const string ExceptionStringWasCopiedLogMessage = "{exceptionString} was copied";
+    
     [ObservableProperty] private string _exceptionString = string.Empty;
     [ObservableProperty] private bool _isPopupVisible = false;
     
@@ -31,8 +34,10 @@ public sealed partial class ExceptionOccuredViewModel(ILocalizationProvider loca
     private async Task CopyTrace()
     {
         Clipboard.SetText(ExceptionString);
+        logger.LogDebug(ExceptionStringWasCopiedLogMessage, ExceptionString);
         IsPopupVisible = true;
         await Task.Delay(TimeSpan.FromSeconds(2));
         IsPopupVisible = false;
+      
     }
 }
