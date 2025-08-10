@@ -9,6 +9,7 @@ using MaterialZip.Services.ConfigurationServices.Abstractions;
 using MaterialZip.Services.ExplorerServices.Abstractions;
 using MaterialZip.Services.LocalizationServices.Abstractions;
 using MaterialZip.Services.WindowsFunctions.Abstractions;
+using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace MaterialZip.ViewModel;
@@ -16,19 +17,23 @@ namespace MaterialZip.ViewModel;
 public sealed partial class MainViewModel : ViewModelBase
 {
     private const string DefaultLogicalDrivesPath = "/";
+    private const string PopupWasOpenedLogMessage = "Popup was opened";
+    private const string TryingToOpenFileLogMessage = "Trying to open {file} as directory";
     
     private readonly IExplorer _explorer;
+    private readonly ILogger<MainViewModel> _logger;
     private readonly IExplorerHistory _history;
     private readonly ILastDirectoryBuffer _buffer;
-    private readonly IHoverButtonHexGetter _hoverButtonHexGetter;
     private readonly IGitHubSourceOpener _gitHubSourceOpener;
+    private readonly IWindowsExplorerOpener _windowsExplorerOpener;
     
     [ObservableProperty] private string _currentPath;
     [ObservableProperty] private ObservableCollection<FileEntity> _selectedEntities = new();
     [ObservableProperty] private ObservableCollection<FileEntity> _entities = new();
     [ObservableProperty] private bool _canUndo;
     [ObservableProperty] private bool _canRedo;
-    
+   
+
     public string HoverButtonHex { get; init; } 
     
     public MainViewModel(
@@ -37,16 +42,19 @@ public sealed partial class MainViewModel : ViewModelBase
         IExplorerHistory history,
         IHoverButtonHexGetter hoverButtonHexGetter,
         IGitHubSourceOpener gitHubSourceOpener,
-        ILocalizationProvider localization
+        ILocalizationProvider localization,
+        ILogger<MainViewModel> logger,
+        IWindowsExplorerOpener windowsExplorerOpener
         ) : base(localization)
     {
         _buffer = buffer;
         _explorer = explorer;
         _history = history;
-        _hoverButtonHexGetter = hoverButtonHexGetter;
         _gitHubSourceOpener = gitHubSourceOpener;
+        _logger = logger;
+        _windowsExplorerOpener = windowsExplorerOpener;
 
-        HoverButtonHex = _hoverButtonHexGetter.GetHoverButtonHex();
+        HoverButtonHex = hoverButtonHexGetter.GetHoverButtonHex();
         var directory = _buffer.FromBuffer();
         ResetDirectoryContent(directory);
     }
@@ -83,6 +91,22 @@ public sealed partial class MainViewModel : ViewModelBase
         _history.Undo();
         await ResetDirectoryContentToCurrentDirectory();
     }
+
+    [RelayCommand]
+    private void ShowInWindowsExplorer(FileEntity entity)
+    {
+        Task.Run(() => _windowsExplorerOpener.Open(entity.Path));
+    }
+    
+    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(Entities))
+        {
+            CanRedo = _history.CanRedo;
+            CanUndo = _history.CanUndo;
+        }
+        base.OnPropertyChanged(e);
+    }
     
     private void SaveDirectory(FileEntity directory, bool updateHistory)
     {
@@ -97,8 +121,11 @@ public sealed partial class MainViewModel : ViewModelBase
     private async Task ResetDirectory(FileEntity directory, bool updateHistory)
     {
         if (!directory.IsDirectory)
+        {
+            _logger.LogWarning(TryingToOpenFileLogMessage, directory.Path);
             return;
-        
+        }
+
         if (directory.Path == DefaultLogicalDrivesPath)
             ResetEntities(await _explorer.GetLogicalDrivesAsync());
         else
@@ -115,13 +142,5 @@ public sealed partial class MainViewModel : ViewModelBase
     private async Task ResetDirectoryContentToCurrentDirectory() 
         => await ResetDirectory(_history.CurrentDirectory, updateHistory: false);
 
-    protected override void OnPropertyChanged(PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName == nameof(Entities))
-        {
-            CanRedo = _history.CanRedo;
-            CanUndo = _history.CanUndo;
-        }
-        base.OnPropertyChanged(e);
-    }
+    
 }

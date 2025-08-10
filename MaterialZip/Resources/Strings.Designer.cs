@@ -60,6 +60,33 @@ namespace MaterialZip.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add selected to archive.
+        /// </summary>
+        internal static string AddSelectedToArchive {
+            get {
+                return ResourceManager.GetString("AddSelectedToArchive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All folders.
+        /// </summary>
+        internal static string AllDirectories {
+            get {
+                return ResourceManager.GetString("AllDirectories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All files.
+        /// </summary>
+        internal static string AllFiles {
+            get {
+                return ResourceManager.GetString("AllFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Material Zip.
         /// </summary>
         internal static string AppName {
@@ -69,11 +96,56 @@ namespace MaterialZip.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Copy .
+        ///   Looks up a localized string similar to Zip Archive.
+        /// </summary>
+        internal static string Archive {
+            get {
+                return ResourceManager.GetString("Archive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By regex.
+        /// </summary>
+        internal static string ByRegex {
+            get {
+                return ResourceManager.GetString("ByRegex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy.
+        /// </summary>
+        internal static string Copy {
+            get {
+                return ResourceManager.GetString("Copy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy.
         /// </summary>
         internal static string CopyStackTrace {
             get {
                 return ResourceManager.GetString("CopyStackTrace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create.
+        /// </summary>
+        internal static string Create {
+            get {
+                return ResourceManager.GetString("Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cut.
+        /// </summary>
+        internal static string Cut {
+            get {
+                return ResourceManager.GetString("Cut", resourceCulture);
             }
         }
         
@@ -96,6 +168,24 @@ namespace MaterialZip.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Folder.
+        /// </summary>
+        internal static string Directory {
+            get {
+                return ResourceManager.GetString("Directory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         internal static string Edit {
@@ -105,7 +195,7 @@ namespace MaterialZip.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error occured.
+        ///   Looks up a localized string similar to Error occurred.
         /// </summary>
         internal static string ExceptionOccured {
             get {
@@ -114,11 +204,47 @@ namespace MaterialZip.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to We sorry but error occured during this application.
+        ///   Looks up a localized string similar to We&apos;re sorry but an error occurred during application execution.
         /// </summary>
         internal static string ExceptionOccuredMessage {
             get {
                 return ResourceManager.GetString("ExceptionOccuredMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extract here.
+        /// </summary>
+        internal static string ExtractHere {
+            get {
+                return ResourceManager.GetString("ExtractHere", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extract to specific folder.
+        /// </summary>
+        internal static string ExtractToSpecificFolder {
+            get {
+                return ResourceManager.GetString("ExtractToSpecificFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File.
+        /// </summary>
+        internal static string File {
+            get {
+                return ResourceManager.GetString("File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List view.
+        /// </summary>
+        internal static string ListView {
+            get {
+                return ResourceManager.GetString("ListView", resourceCulture);
             }
         }
         
@@ -132,6 +258,15 @@ namespace MaterialZip.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open source code.
+        /// </summary>
+        internal static string OpenGitHub {
+            get {
+                return ResourceManager.GetString("OpenGitHub", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open logs.
         /// </summary>
         internal static string OpenLogs {
@@ -141,11 +276,65 @@ namespace MaterialZip.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Paste.
+        /// </summary>
+        internal static string Paste {
+            get {
+                return ResourceManager.GetString("Paste", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename.
+        /// </summary>
+        internal static string Rename {
+            get {
+                return ResourceManager.GetString("Rename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select.
+        /// </summary>
+        internal static string Select {
+            get {
+                return ResourceManager.GetString("Select", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Services.
         /// </summary>
         internal static string Services {
             get {
                 return ResourceManager.GetString("Services", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        internal static string Settings {
+            get {
+                return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show history.
+        /// </summary>
+        internal static string ShowHistory {
+            get {
+                return ResourceManager.GetString("ShowHistory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show in explorer.
+        /// </summary>
+        internal static string ShowInWindowsExplorer {
+            get {
+                return ResourceManager.GetString("ShowInWindowsExplorer", resourceCulture);
             }
         }
         
@@ -164,6 +353,15 @@ namespace MaterialZip.Resources {
         internal static string Size {
             get {
                 return ResourceManager.GetString("Size", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Table view.
+        /// </summary>
+        internal static string TableView {
+            get {
+                return ResourceManager.GetString("TableView", resourceCulture);
             }
         }
         

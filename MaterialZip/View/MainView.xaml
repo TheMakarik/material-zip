@@ -2,6 +2,7 @@
     AllowsTransparency="True"
     Height="450"
     Icon="/Assets/Icon.png"
+    Name="MainWindow"
     ResizeMode="CanResizeWithGrip"
     Style="{DynamicResource MaterialDesignWindow}"
     Title="{Binding Localization.AppName}"
@@ -15,6 +16,8 @@
     xmlns:controls="clr-namespace:MaterialZip.View.Controls"
     xmlns:convertors="clr-namespace:MaterialZip.Convertors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:entities="clr-namespace:MaterialZip.Model.Entities"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="clr-namespace:MaterialZip.ViewModel"
@@ -73,13 +76,31 @@
         <Menu Grid.Row="1" materialDesign:MenuAssist.MenuItemsPresenterMargin="0">
 
             <MenuItem Header="{Binding Localization.Edit}">
-                <!--  Menu items  -->
+                <MenuItem Header="{Binding Localization.Create}" Icon="{materialDesign:PackIcon Kind=Create}">
+                    <MenuItem Header="{Binding Localization.File}" Icon="{materialDesign:PackIcon Kind=File}" />
+                    <MenuItem Header="{Binding Localization.Directory}" Icon="{materialDesign:PackIcon Kind=Folder}" />
+                    <MenuItem Header="{Binding Localization.Archive}" />
+                </MenuItem>
+                <MenuItem Header="{Binding Localization.Copy}" Icon="{materialDesign:PackIcon Kind=ContentCopy}" />
+                <MenuItem Header="{Binding Localization.Paste}" Icon="{materialDesign:PackIcon Kind=ContentPaste}" />
+                <MenuItem Header="{Binding Localization.Cut}" Icon="{materialDesign:PackIcon Kind=ContentCut}" />
+                <MenuItem Header="{Binding Localization.Delete}" Icon="{materialDesign:PackIcon Kind=Delete}" />
+                <MenuItem Header="{Binding Localization.Select}" Icon="{materialDesign:PackIcon Kind=Select}">
+                    <MenuItem Header="{Binding Localization.AllFiles}" Icon="{materialDesign:PackIcon Kind=Files}" />
+                    <MenuItem Header="{Binding Localization.AllDirectories}" Icon="{materialDesign:PackIcon Kind=Folders}" />
+                    <MenuItem Header="{Binding Localization.ByRegex}" Icon="{materialDesign:PackIcon Kind=Regex}" />
+                </MenuItem>
+
             </MenuItem>
+
             <MenuItem Header="{Binding Localization.View}">
-                <!--  Menu items  -->
+                <MenuItem Header="{Binding Localization.Settings}" />
+                <MenuItem Header="{Binding Localization.ListView}" />
+                <MenuItem Header="{Binding Localization.TableView}" />
             </MenuItem>
             <MenuItem Header="{Binding Localization.Services}">
-                <!--  Menu items  -->
+                <MenuItem Header="{Binding Localization.OpenGitHub}" Icon="{materialDesign:PackIcon Kind=Github}" />
+                <MenuItem Header="{Binding Localization.ShowHistory}" Icon="{materialDesign:PackIcon Kind=ClipboardTextHistory}" />
             </MenuItem>
 
             <MenuItem
@@ -133,11 +154,10 @@
             HorizontalScrollBarVisibility="Auto"
             IsReadOnly="True"
             ItemsSource="{Binding Entities, Converter={x:Static convertors:FileEntityEnumerableToFileDataGridEntityEnumerableConvertor.Instance}}"
-            VerticalScrollBarVisibility="Auto"
-            x:Name="DataGridViewer">
+            VerticalScrollBarVisibility="Auto">
+
 
             <DataGrid.Resources>
-
                 <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
                     <Setter Property="Background" Value="{Binding ElementName=CloseButton, Path=Background}" />
                 </Style>
@@ -149,8 +169,6 @@
                         </Trigger>
                     </Style.Triggers>
                 </Style>
-
-
             </DataGrid.Resources>
 
             <DataGrid.Columns>
@@ -216,7 +234,6 @@
 
             </DataGrid.Columns>
 
-
             <!--
                 Here is the reason why I deleted ViewModelLocator, I need to put somehow command here,
                 but I cant, and due to ViewModelLocator I cant go to Code Behind
@@ -225,11 +242,33 @@
             <DataGrid.RowStyle>
                 <Style BasedOn="{StaticResource {x:Type DataGridRow}}" TargetType="DataGridRow">
                     <EventSetter Event="MouseDoubleClick" Handler="InvokeResetDirectoryContent" />
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu PlacementTarget="{Binding ElementName=MainWindow}" materialDesign:MenuAssist.MenuItemsPresenterMargin="0">
+                                <ContextMenu.Resources>
+                                    <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="MenuItem">
+                                        <Setter Property="DataContext" Value="{Binding PlacementTarget, Converter={x:Static convertors:PlacementTargetToDataContextConvertor.Instance}, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+                                    </Style>
+                                </ContextMenu.Resources>
+                                <!--  Jetbrains Rider does not see d:DataContext from Style Setter  -->
+                                <MenuItem
+                                    Command="{Binding ShowInWindowsExplorerCommand}"
+                                    CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}, Converter={x:Static convertors:FileDataGridEntityToFileEntityConvertor.Instance}}"
+                                    Header="{Binding Localization.ShowInWindowsExplorer}"
+                                    Icon="{materialDesign:PackIcon Kind=MicrosoftWindows}"
+                                    d:DataContext="{d:DesignInstance Type=viewModel:MainViewModel}" />
+                                <MenuItem
+                                    Header="{Binding Localization.Rename}"
+                                    Icon="{materialDesign:PackIcon Kind=Rename}"
+                                    Visibility="{Binding DataContext.Path, RelativeSource={RelativeSource AncestorType=ContextMenu}, Converter={x:Static convertors:PathToVisibilityCollapsingLogicalDrivesConvertor.Instance}}"
+                                    d:DataContext="{d:DesignInstance Type=viewModel:MainViewModel}" />
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
                 </Style>
             </DataGrid.RowStyle>
 
         </DataGrid>
-
 
         <!--  Footer  -->
         <controls:FastGrid

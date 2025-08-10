@@ -5,20 +5,14 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Shapes;
 using MaterialZip.Convertors;
 using MaterialZip.Model.Entities;
 using MaterialZip.ViewModel;
 using Microsoft.Extensions.Logging;
-using ILogger = Serilog.ILogger;
 
 
 namespace MaterialZip.View;
 
-/// <summary>
-/// Interaction logic for MainView.xaml
-/// </summary>
 public sealed partial class MainView
 {
     private const string WindowWasLoadedLogMessage = "Window was loaded successefully";
@@ -27,9 +21,10 @@ public sealed partial class MainView
         "Directory path was changed using text box editing to {path}";
     private const string TryingToChangePathToUnexistingDirectoryLogMessage =
         "Trying to change path to unexisting directory {path}, directory was not changed";
-    
+   
     private readonly ILogger<MainView> _logger;
     private readonly MainViewModel _viewModel;
+    private string A = "AAAAA";
 
     public MainView(MainViewModel viewModel, ILogger<MainView> logger)
     {
@@ -38,6 +33,7 @@ public sealed partial class MainView
         _logger = logger;
         InitializeComponent();
         _logger.LogDebug(WindowWasLoadedLogMessage);
+      
     }
 
    
@@ -60,22 +56,18 @@ public sealed partial class MainView
     }
 
     // WARNING: this is a HUGE crutch
-    private async void InvokeResetDirectoryContent(object sender, MouseButtonEventArgs eventArgs)
+    private async void InvokeResetDirectoryContent(object sender, MouseButtonEventArgs mouseButtonEventArgs)
     {
         try
         {
-            var row = sender as DataGridRow;
-            if (row is null)
+            if (mouseButtonEventArgs.ChangedButton != MouseButton.Left)
                 return;
-
-            var fileDataGridEntity = row.DataContext as FileDataGridEntity?;
-
-            var fileEntityObject = FileDataGridEntityToFileEntityConvertor
-                .Instance
-                .Convert(fileDataGridEntity, typeof(FileEntity), null, null);
-            if (fileEntityObject is not FileEntity entity)
+            
+            var entity = GetFileEntity(sender);
+            if (entity is null)
                 return;
-            await _viewModel.ResetDirectoryContentCommand.ExecuteAsync(entity)!;
+            
+            await _viewModel.ResetDirectoryContentCommand.ExecuteAsync(entity);
         }
         catch (Exception exception)
         {
@@ -112,4 +104,19 @@ public sealed partial class MainView
         DragMove();
         base.OnMouseLeftButtonDown(e);
     }
+
+  
+
+    private FileEntity? GetFileEntity(object rowObject)
+    {
+        var row = rowObject as DataGridRow;
+        var fileDataGridEntity = row?.DataContext as FileDataGridEntity?;
+        var fileEntityObject = FileDataGridEntityToFileEntityConvertor
+            .Instance
+            .Convert(fileDataGridEntity, typeof(FileEntity), null, null);
+        
+        return fileEntityObject as FileEntity?;
+    }
+    
+    
 }
